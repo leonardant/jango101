@@ -222,3 +222,5 @@ __marimo__/
 /Scripts*
 CACHEDIR.TAG
 pyvenv.cfg
+
+demo/staticfiles/**
