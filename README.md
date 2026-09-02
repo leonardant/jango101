@@ -19,5 +19,5 @@ source .venv/bin/activate
 ## Django
 uv pip install django \
 then \
-django-admin --version \
+django-admin --version
 
