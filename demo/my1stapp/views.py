@@ -12,3 +12,9 @@ def todos(request):
     from .models import ToDoItem
     todos = ToDoItem.objects.all()
     return render(request, "my1stapp/todos.html", {"todos": todos})
+
+def profile(request):
+    return render(
+        request,
+        "my1stapp/profile.html",
+    )

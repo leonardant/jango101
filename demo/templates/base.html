@@ -10,10 +10,13 @@
     <title>{% block title %}Sensor Application{% endblock %}</title>
 
     <!-- Tabler CSS -->
-    <link rel="stylesheet"
-          href="{% static 'tabler/css/tabler.min.css' %}">
+    <link
+        rel="stylesheet"
+        href="{% static 'tabler/css/tabler.min.css' %}"
+    >
 
     {% block extra_css %}{% endblock %}
+
 </head>
 
 
@@ -29,81 +32,86 @@
         <div class="container-fluid">
 
             <!-- Mobile menu button -->
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#sidebar-menu"
-                    aria-controls="sidebar-menu"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#sidebar-menu"
+                aria-controls="sidebar-menu"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
                 <span class="navbar-toggler-icon"></span>
-
             </button>
 
 
-<!-- Application name -->
-<a href="{% url 'my1stapp:home' %}"
-   class="navbar-brand">
+            <!-- Application name -->
+            <a
+                href="{% url 'my1stapp:home' %}"
+                class="navbar-brand"
+            >
 
-{% icon "activity" 28 %}
+                {% icon "activity" 28 %}
 
-        <span class="ms-2">
-        Sensor App
-    </span>
-</a>
+                <span class="ms-2">
+                    Sensor App
+                </span>
+
+            </a>
 
 
             <!-- Navigation -->
-<div class="collapse navbar-collapse"
-     id="sidebar-menu">
+            <div
+                class="collapse navbar-collapse"
+                id="sidebar-menu"
+            >
 
-    <ul class="navbar-nav pt-lg-3">
+                <ul class="navbar-nav pt-lg-3">
 
-        <!-- Home -->
-        <li class="nav-item">
+                    <!-- Home -->
+                    <li class="nav-item">
 
-            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-               href="{% url 'my1stapp:home' %}">
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                            href="{% url 'my1stapp:home' %}"
+                        >
 
-                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                {% icon "home" %}
+                            </span>
 
-{% icon "home" %}
+                            <span class="nav-link-title">
+                                Home
+                            </span>
 
-                </span>
+                        </a>
 
-                <span class="nav-link-title">
-                    Home
-                </span>
-
-            </a>
-
-        </li>
+                    </li>
 
 
-        <!-- To Do Items -->
-        <li class="nav-item">
+                    <!-- To Do Items -->
+                    <li class="nav-item">
 
-            <a class="nav-link {% if request.resolver_match.url_name == 'todos' %}active{% endif %}"
-               href="{% url 'my1stapp:todos' %}">
+                        <a
+                            class="nav-link {% if request.resolver_match.url_name == 'todos' %}active{% endif %}"
+                            href="{% url 'my1stapp:todos' %}"
+                        >
 
-                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                {% icon "checklist" %}
+                            </span>
 
- {% icon "checklist" %}
+                            <span class="nav-link-title">
+                                To Do Items
+                            </span>
 
-                </span>
+                        </a>
 
-                <span class="nav-link-title">
-                    To Do Items
-                </span>
+                    </li>
 
-            </a>
+                </ul>
 
-        </li>
-
-    </ul>
-
-</div>
+            </div>
 
         </div>
 
@@ -125,65 +133,111 @@
 
                 <div class="navbar-nav ms-auto">
 
-                    {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
 
-                        <div class="nav-item dropdown">
+    <div class="nav-item dropdown">
 
-                            <a href="#"
-                               class="nav-link d-flex lh-1 text-reset p-0"
-                               data-bs-toggle="dropdown"
-                               aria-label="Open user menu">
+        <!-- User menu toggle -->
+        <button
+            id="user-menu-toggle"
+            type="button"
+            class="nav-link d-flex lh-1 text-reset p-0 border-0 bg-transparent"
+            aria-label="Open user menu"
+            aria-expanded="false"
+            style="cursor: pointer;"
+        >
 
-                                <!-- User avatar -->
-                                <span class="avatar">
-                                    {{ user.username|slice:":1"|upper }}
-                                </span>
-
-
-                                <!-- Username -->
-                                <div class="d-none d-xl-block ps-2">
-
-                                    <div>
-                                        {{ user.username }}
-                                    </div>
-
-                                    <div class="mt-1 small text-secondary">
-                                        Logged in
-                                    </div>
-
-                                </div>
-
-                            </a>
+            <!-- User avatar -->
+            <span class="avatar">
+                {{ user.username|slice:":1"|upper }}
+            </span>
 
 
-                            <!-- User dropdown -->
-                            <div class="dropdown-menu dropdown-menu-end">
+            <!-- Username -->
+            <div class="d-none d-xl-block ps-2 text-start">
 
-                                <form method="post"
-                                      action="{% url 'logout' %}">
-
-                                    {% csrf_token %}
-
-                                    <button type="submit"
-        class="dropdown-item d-flex align-items-center">
-
-    {% icon "logout" 18 %}
-
-    <span class="ms-2">
-        Logout
-    </span>
-
-</button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-
-                    {% endif %}
-
+                <div>
+                    {{ user.username }}
                 </div>
+
+                <div class="mt-1 small text-secondary">
+                    Logged in
+                </div>
+
+            </div>
+
+        </button>
+
+
+        <!-- User dropdown -->
+        <div
+            id="user-menu-dropdown"
+            class="dropdown-menu dropdown-menu-end"
+        >
+
+            <!-- Profile -->
+            <a
+                class="dropdown-item d-flex align-items-center"
+                href="{% url 'my1stapp:profile' %}"
+            >
+
+                {% icon "user" 18 %}
+
+                <span class="ms-2">
+                    Profile
+                </span>
+
+            </a>
+
+
+            <!-- Change Password -->
+            <a
+                class="dropdown-item d-flex align-items-center"
+                href="{% url 'password_change' %}"
+            >
+
+                {% icon "key" 18 %}
+
+                <span class="ms-2">
+                    Change Password
+                </span>
+
+            </a>
+
+
+            <div class="dropdown-divider"></div>
+
+
+            <!-- Logout -->
+            <form
+                method="post"
+                action="{% url 'logout' %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="dropdown-item d-flex align-items-center"
+                >
+
+                    {% icon "logout" 18 %}
+
+                    <span class="ms-2">
+                        Logout
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+</div>
 
             </div>
 
@@ -199,22 +253,22 @@
 
                 <div class="row g-2 align-items-center">
 
-                    <!-- Page title -->
+                    <!-- Page title and breadcrumbs -->
                     <div class="col">
 
-    {% block breadcrumbs %}
-    {% endblock %}
+                        {% block breadcrumbs %}
+                        {% endblock %}
 
 
-    <h2 class="page-title">
+                        <h2 class="page-title">
 
-        {% block page_title %}
-            Sensor Application
-        {% endblock %}
+                            {% block page_title %}
+                                Sensor Application
+                            {% endblock %}
 
-    </h2>
+                        </h2>
 
-</div>
+                    </div>
 
 
                     <!-- Page-specific actions -->
@@ -239,7 +293,6 @@
 
             <div class="container-xl">
 
-                <!-- Page-specific content -->
                 {% block content %}
                 {% endblock %}
 
@@ -270,14 +323,17 @@
 
 </div>
 
+
 <!-- ========================= -->
 <!-- Django Toast Messages     -->
 <!-- ========================= -->
 
 {% if messages %}
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3"
-         style="z-index: 1100;">
+    <div
+        class="toast-container position-fixed bottom-0 end-0 p-3"
+        style="z-index: 1100;"
+    >
 
         {% for message in messages %}
 
@@ -350,26 +406,73 @@
 
 {% endif %}
 
+
 <!-- ========================= -->
-<!-- Tabler JavaScript          -->
+<!-- JavaScript                 -->
 <!-- ========================= -->
- <!-- Bootstrap JavaScript -->
-<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Bootstrap JavaScript -->
+<script
+    src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"
+></script>
 
 <!-- Tabler JavaScript -->
-<script src="{% static 'tabler/js/tabler.min.js' %}"></script>
+<script
+    src="{% static 'tabler/js/tabler.min.js' %}"
+></script>
 
 
-<!-- Django Toast Messages -->
+<!-- ========================= -->
+<!-- Django Toast Messages     -->
+<!-- ========================= -->
+
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
 
-        const toastElements = document.querySelectorAll(".toast");
+        /*
+         * User dropdown
+         */
+
+        const userMenuToggle = document.getElementById(
+            "user-menu-toggle"
+        );
+
+
+        if (userMenuToggle) {
+
+            const userDropdown =
+                bootstrap.Dropdown.getOrCreateInstance(
+                    userMenuToggle
+                );
+
+
+            userMenuToggle.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    userDropdown.toggle();
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Django toast messages
+         */
+
+        const toastElements =
+            document.querySelectorAll(".toast");
+
 
         toastElements.forEach(function (toastElement) {
 
-            const toast = new bootstrap.Toast(toastElement);
+            const toast =
+                new bootstrap.Toast(toastElement);
 
             toast.show();
 
@@ -380,7 +483,10 @@
 </script>
 
 
-<!-- Page-specific JavaScript -->
+<!-- ========================= -->
+<!-- Page-specific JavaScript  -->
+<!-- ========================= -->
+
 {% block extra_js %}
 {% endblock %}
 

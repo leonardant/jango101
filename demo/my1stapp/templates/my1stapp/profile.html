@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Profile | Sensor Application
+{% endblock %}
+
+
+{% block breadcrumbs %}
+
+<nav aria-label="breadcrumb">
+
+    <ol class="breadcrumb">
+
+        <li class="breadcrumb-item">
+
+            <a href="{% url 'my1stapp:home' %}">
+                Home
+            </a>
+
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+
+            Profile
+
+        </li>
+
+    </ol>
+
+</nav>
+
+{% endblock %}
+
+
+{% block page_title %}
+My Profile
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-8 col-lg-6">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-auto">
+
+                        <span class="avatar avatar-xl">
+
+                            {{ user.username|slice:":1"|upper }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="col">
+
+                        <h3 class="mb-1">
+
+                            {{ user.username }}
+
+                        </h3>
+
+                        {% if user.email %}
+
+                            <div class="text-secondary">
+
+                                {{ user.email }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <hr>
+
+
+                <dl class="row mb-0">
+
+                    <dt class="col-sm-4">
+                        Username
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        {{ user.username }}
+                    </dd>
+
+
+                    <dt class="col-sm-4">
+                        First name
+                    </dt>
+
+                    <dd class="col-sm-8">
+
+                        {{ user.first_name|default:"Not set" }}
+
+                    </dd>
+
+
+                    <dt class="col-sm-4">
+                        Last name
+                    </dt>
+
+                    <dd class="col-sm-8">
+
+                        {{ user.last_name|default:"Not set" }}
+
+                    </dd>
+
+
+                    <dt class="col-sm-4">
+                        Email
+                    </dt>
+
+                    <dd class="col-sm-8">
+
+                        {{ user.email|default:"Not set" }}
+
+                    </dd>
+
+
+                    <dt class="col-sm-4">
+                        Member since
+                    </dt>
+
+                    <dd class="col-sm-8">
+
+                        {{ user.date_joined|date:"j F Y" }}
+
+                    </dd>
+
+                </dl>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
