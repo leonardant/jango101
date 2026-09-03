@@ -236,21 +236,44 @@
             <div class="container-xl">
 
 
-                <!-- Django messages -->
-                {% if messages %}
+<!-- Django messages -->
+{% if messages %}
 
-                    {% for message in messages %}
+    {% for message in messages %}
 
-                        <div class="alert alert-info"
-                             role="alert">
+        <div
+            class="alert
+            {% if message.tags == 'success' %}
+                alert-success
+            {% elif message.tags == 'error' %}
+                alert-danger
+            {% elif message.tags == 'warning' %}
+                alert-warning
+            {% else %}
+                alert-info
+            {% endif %}
+            alert-dismissible"
+            role="alert"
+        >
 
-                            {{ message }}
+            <div>
 
-                        </div>
+                {{ message }}
 
-                    {% endfor %}
+            </div>
 
-                {% endif %}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+            ></button>
+
+        </div>
+
+    {% endfor %}
+
+{% endif %}
 
 
                 <!-- Page-specific content -->
