@@ -210,3 +210,26 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 # =====================================
 
 API_BASE_URL = "http://127.0.0.1:8000/api/"
+
+# =====================================
+# Logging
+# =====================================
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+
+    "loggers": {
+        "my1stapp": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}

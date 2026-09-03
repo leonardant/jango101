@@ -1,8 +1,14 @@
+import logging
+
 import requests
 
 from django.conf import settings
 
 from rest_framework_simplejwt.tokens import RefreshToken
+
+
+# Create a logger for this module
+logger = logging.getLogger(__name__)
 
 
 class APIClientError(Exception):
@@ -94,24 +100,47 @@ class APIClient:
                 **kwargs,
             )
 
-        except requests.exceptions.Timeout:
+
+        except requests.exceptions.Timeout as error:
+
+            logger.error(
+                "API request timed out. Method=%s URL=%s Error=%s",
+                method,
+                url,
+                error,
+            )
 
             raise APIConnectionError(
-                "The API request timed out. Please try again."
+                "The service took too long to respond. Please try again."
             )
 
 
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as error:
+
+            logger.error(
+                "Unable to connect to API. Method=%s URL=%s Error=%s",
+                method,
+                url,
+                error,
+            )
 
             raise APIConnectionError(
-                "Unable to connect to the API. Please try again later."
+                "Unable to connect to the service. Please try again later."
             )
 
 
-        except requests.exceptions.RequestException:
+        except requests.exceptions.RequestException as error:
+
+            logger.exception(
+                "Unexpected API communication error. "
+                "Method=%s URL=%s",
+                method,
+                url,
+            )
 
             raise APIConnectionError(
-                "An error occurred while communicating with the API."
+                "Unable to communicate with the service. "
+                "Please try again later."
             )
 
 
@@ -121,12 +150,30 @@ class APIClient:
 
         if response.status_code == 401:
 
+            logger.warning(
+                "API authentication failed. "
+                "Method=%s URL=%s Status=%s User=%s",
+                method,
+                url,
+                response.status_code,
+                self.user.username,
+            )
+
             raise APIAuthenticationError(
-                "API authentication failed."
+                "Authentication with the service failed."
             )
 
 
         if response.status_code == 403:
+
+            logger.warning(
+                "API permission denied. "
+                "Method=%s URL=%s Status=%s User=%s",
+                method,
+                url,
+                response.status_code,
+                self.user.username,
+            )
 
             raise APIPermissionError(
                 "You do not have permission to perform this action."
@@ -134,6 +181,14 @@ class APIClient:
 
 
         if response.status_code == 404:
+
+            logger.info(
+                "API resource not found. "
+                "Method=%s URL=%s Status=%s",
+                method,
+                url,
+                response.status_code,
+            )
 
             raise APINotFoundError(
                 "The requested item could not be found."
@@ -148,34 +203,55 @@ class APIClient:
 
             except ValueError:
 
-                errors = None
+                errors = response.text
 
 
-            if errors:
-
-                raise APIValidationError(
-                    str(errors)
-                )
-
+            logger.warning(
+                "API validation error. "
+                "Method=%s URL=%s Status=%s Response=%s",
+                method,
+                url,
+                response.status_code,
+                errors,
+            )
 
             raise APIValidationError(
-                "The submitted data was invalid."
+                "The submitted information was invalid."
             )
 
 
         if response.status_code >= 500:
 
+            logger.error(
+                "API server error. "
+                "Method=%s URL=%s Status=%s Response=%s",
+                method,
+                url,
+                response.status_code,
+                response.text,
+            )
+
             raise APIServerError(
-                "The API encountered a server error. Please try again later."
+                "The service encountered an error. "
+                "Please try again later."
             )
 
 
-        # Catch any other unexpected error
+        # Catch any other unexpected HTTP error
         if response.status_code >= 400:
 
+            logger.error(
+                "Unexpected API HTTP error. "
+                "Method=%s URL=%s Status=%s Response=%s",
+                method,
+                url,
+                response.status_code,
+                response.text,
+            )
+
             raise APIClientError(
-                f"API request failed with status "
-                f"{response.status_code}."
+                "An unexpected error occurred while communicating "
+                "with the service."
             )
 
 
