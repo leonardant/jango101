@@ -10,6 +10,7 @@ urlpatterns = [
     path("todos/", views.todos, name='todos'),
     path("todos/add/", views.add_todo, name="add_todo"),
     path("todos/<int:todo_id>/toggle/", views.toggle_todo, name="toggle_todo" ),
+    path("todos/<int:todo_id>/edit/", views.edit_todo, name="edit_todo" ),
 
 
     path("profile/", views.profile, name="profile"),

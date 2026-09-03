@@ -133,6 +133,60 @@ def toggle_todo(request, todo_id):
     )
 
 # =====================================
+# Edit To Do Item
+# =====================================
+
+@login_required
+def edit_todo(request, todo_id):
+
+    api = APIClient(request.user)
+
+    # Get the existing item from the API.
+    # The API remains responsible for checking ownership.
+    todo = api.get_todo(todo_id)
+
+    if request.method == "POST":
+
+        form = ToDoForm(request.POST)
+
+        if form.is_valid():
+
+            api.update_todo(
+                todo_id,
+                title=form.cleaned_data["title"],
+                description=form.cleaned_data["description"],
+                completed=form.cleaned_data["completed"],
+            )
+
+            messages.success(
+                request,
+                "To Do item updated successfully."
+            )
+
+            return redirect("my1stapp:todos")
+
+    else:
+
+        # Populate the form with data returned by the API
+        form = ToDoForm(
+            initial={
+                "title": todo["title"],
+                "description": todo["description"],
+                "completed": todo["completed"],
+            }
+        )
+
+    return render(
+        request,
+        "my1stapp/edit_todo.html",
+        {
+            "form": form,
+            "todo": todo,
+        },
+    )
+
+
+# =====================================
 # Profile
 # =====================================
 

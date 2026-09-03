@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Edit To Do Item | Sensor Application
+{% endblock %}
+
+
+{% block breadcrumbs %}
+
+<nav aria-label="breadcrumb">
+
+    <ol class="breadcrumb">
+
+        <li class="breadcrumb-item">
+
+            <a href="{% url 'my1stapp:home' %}">
+                Home
+            </a>
+
+        </li>
+
+        <li class="breadcrumb-item">
+
+            <a href="{% url 'my1stapp:todos' %}">
+                To Do Items
+            </a>
+
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+
+            Edit To Do Item
+
+        </li>
+
+    </ol>
+
+</nav>
+
+{% endblock %}
+
+
+{% block page_title %}
+Edit To Do Item
+{% endblock %}
+
+
+{% block content %}
+
+<div class="card">
+
+    <div class="card-body">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <!-- Title -->
+            <div class="mb-3">
+
+                <label class="form-label"
+                       for="{{ form.title.id_for_label }}">
+
+                    {{ form.title.label }}
+
+                </label>
+
+                {{ form.title }}
+
+                {% if form.title.errors %}
+
+                    <div class="text-danger mt-1">
+
+                        {{ form.title.errors }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Description -->
+            <div class="mb-3">
+
+                <label class="form-label"
+                       for="{{ form.description.id_for_label }}">
+
+                    {{ form.description.label }}
+
+                </label>
+
+                {{ form.description }}
+
+                {% if form.description.errors %}
+
+                    <div class="text-danger mt-1">
+
+                        {{ form.description.errors }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Completed -->
+            <div class="mb-3">
+
+                <label class="form-check">
+
+                    {{ form.completed }}
+
+                    <span class="form-check-label">
+
+                        {{ form.completed.label }}
+
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+
+                <a href="{% url 'my1stapp:todos' %}"
+                   class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
