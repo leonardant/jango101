@@ -7,5 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "django>=6.1.1",
     "django-unfold>=0.104.1",
+    "djangorestframework>=3.18.0",
+    "drf-spectacular>=0.30.0",
     "whitenoise>=6.12.0",
 ]

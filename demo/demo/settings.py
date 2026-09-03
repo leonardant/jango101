@@ -32,6 +32,25 @@ ALLOWED_HOSTS = ["127.0.0.1",
 
 # Application definition
 
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Sensor Application API",
+
+    "DESCRIPTION": (
+        "REST API for the Sensor Application."
+    ),
+
+    "VERSION": "1.0.0",
+
+    "SERVE_INCLUDE_SCHEMA": False,
+}
+
 INSTALLED_APPS = [
     'unfold',
     'django.contrib.admin',
@@ -41,6 +60,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my1stapp',
+    "rest_framework",
+    "api",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [

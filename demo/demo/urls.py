@@ -3,6 +3,12 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required
 from django.urls import include, path
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+
 from my1stapp.auth_views import CustomPasswordChangeView
 
 
@@ -10,36 +16,38 @@ urlpatterns = [
 
     path("admin/", admin.site.urls),
 
+    # =========================
+    # API
+    # =========================
 
-    # Login
+    path("api/", include("api.urls")),
+
+    # OpenAPI schema
     path(
-        "accounts/login/",
-        login_not_required(
-            auth_views.LoginView.as_view(
-                template_name="registration/login.html"
-            )
+        "api/schema/",
+        SpectacularAPIView.as_view(),
+        name="schema",
+    ),
+
+    # Swagger UI
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(
+            url_name="schema"
         ),
-        name="login",
+        name="swagger-ui",
     ),
 
-
-    # Logout
+    # ReDoc
     path(
-        "accounts/logout/",
-        auth_views.LogoutView.as_view(),
-        name="logout",
+        "api/redoc/",
+        SpectacularRedocView.as_view(
+            url_name="schema"
+        ),
+        name="redoc",
     ),
 
+    # ... your existing accounts URLs ...
 
-    # Change password
-    path(
-        "accounts/password-change/",
-        CustomPasswordChangeView.as_view(),
-        name="password_change",
-    ),
-
-
-    # Application URLs
     path("", include("my1stapp.urls")),
-
 ]
