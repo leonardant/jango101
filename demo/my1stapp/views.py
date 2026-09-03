@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from .forms import ProfileForm, ToDoForm
-from .api_client import APIClient
+from .api_client import APIClient, APIClientError
 
 
 # =====================================
@@ -30,7 +30,18 @@ def todos(request):
 
     api = APIClient(request.user)
 
-    todos = api.get_todos()
+    try:
+
+        todos = api.get_todos()
+
+    except APIClientError as error:
+
+        messages.error(
+            request,
+            str(error),
+        )
+
+        todos = []
 
     return render(
         request,
@@ -56,20 +67,31 @@ def add_todo(request):
 
             api = APIClient(request.user)
 
-            api.create_todo(
-                title=form.cleaned_data["title"],
-                description=form.cleaned_data["description"],
-                completed=form.cleaned_data["completed"],
-            )
+            try:
 
-            messages.success(
-                request,
-                "To Do item created successfully."
-            )
+                api.create_todo(
+                    title=form.cleaned_data["title"],
+                    description=form.cleaned_data["description"],
+                    completed=form.cleaned_data["completed"],
+                )
 
-            return redirect(
-                "my1stapp:todos"
-            )
+            except APIClientError as error:
+
+                messages.error(
+                    request,
+                    str(error),
+                )
+
+            else:
+
+                messages.success(
+                    request,
+                    "To Do item created successfully."
+                )
+
+                return redirect(
+                    "my1stapp:todos"
+                )
 
     else:
 
@@ -92,27 +114,29 @@ def toggle_todo(request, todo_id):
 
     if request.method != "POST":
 
-        return redirect(
-            "my1stapp:todos"
+        return redirect("my1stapp:todos")
+
+    api = APIClient(request.user)
+
+    try:
+
+        todo = api.get_todo(todo_id)
+
+        new_status = not todo["completed"]
+
+        api.update_todo(
+            todo_id,
+            completed=new_status,
         )
 
-    api = APIClient(
-        request.user
-    )
+    except APIClientError as error:
 
-    # Get the current To Do item
-    todo = api.get_todo(
-        todo_id
-    )
+        messages.error(
+            request,
+            str(error),
+        )
 
-    # Reverse the completed status
-    new_status = not todo["completed"]
-
-    # PATCH the API
-    api.update_todo(
-        todo_id,
-        completed=new_status,
-    )
+        return redirect("my1stapp:todos")
 
     if new_status:
 
@@ -128,9 +152,7 @@ def toggle_todo(request, todo_id):
             "To Do item marked as incomplete."
         )
 
-    return redirect(
-        "my1stapp:todos"
-    )
+    return redirect("my1stapp:todos")
 
 # =====================================
 # Edit To Do Item
@@ -141,9 +163,19 @@ def edit_todo(request, todo_id):
 
     api = APIClient(request.user)
 
-    # Get the existing item from the API.
-    # The API remains responsible for checking ownership.
-    todo = api.get_todo(todo_id)
+    try:
+
+        todo = api.get_todo(todo_id)
+
+    except APIClientError as error:
+
+        messages.error(
+            request,
+            str(error),
+        )
+
+        return redirect("my1stapp:todos")
+
 
     if request.method == "POST":
 
@@ -151,23 +183,33 @@ def edit_todo(request, todo_id):
 
         if form.is_valid():
 
-            api.update_todo(
-                todo_id,
-                title=form.cleaned_data["title"],
-                description=form.cleaned_data["description"],
-                completed=form.cleaned_data["completed"],
-            )
+            try:
 
-            messages.success(
-                request,
-                "To Do item updated successfully."
-            )
+                api.update_todo(
+                    todo_id,
+                    title=form.cleaned_data["title"],
+                    description=form.cleaned_data["description"],
+                    completed=form.cleaned_data["completed"],
+                )
 
-            return redirect("my1stapp:todos")
+            except APIClientError as error:
+
+                messages.error(
+                    request,
+                    str(error),
+                )
+
+            else:
+
+                messages.success(
+                    request,
+                    "To Do item updated successfully."
+                )
+
+                return redirect("my1stapp:todos")
 
     else:
 
-        # Populate the form with data returned by the API
         form = ToDoForm(
             initial={
                 "title": todo["title"],
@@ -198,12 +240,23 @@ def delete_todo(request, todo_id):
 
     api = APIClient(request.user)
 
-    api.delete_todo(todo_id)
+    try:
 
-    messages.success(
-        request,
-        "To Do item deleted successfully."
-    )
+        api.delete_todo(todo_id)
+
+    except APIClientError as error:
+
+        messages.error(
+            request,
+            str(error),
+        )
+
+    else:
+
+        messages.success(
+            request,
+            "To Do item deleted successfully."
+        )
 
     return redirect("my1stapp:todos")
 
