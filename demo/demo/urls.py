@@ -3,6 +3,8 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required, login_required
 from django.urls import include, path
 
+from my1stapp.forms import StyledPasswordChangeForm
+
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -33,7 +35,7 @@ urlpatterns = [
     path(
         "api/schema/",
         login_required(
-        SpectacularAPIView.as_view()
+            SpectacularAPIView.as_view()
         ),
         name="schema",
     ),
@@ -81,7 +83,10 @@ urlpatterns = [
 
     path(
         "accounts/password-change/",
-        auth_views.PasswordChangeView.as_view(),
+        auth_views.PasswordChangeView.as_view(
+            form_class=StyledPasswordChangeForm,
+            template_name="registration/password_change_form.html",
+        ),
         name="password_change",
     ),
 
@@ -89,6 +94,53 @@ urlpatterns = [
         "accounts/password-change/done/",
         auth_views.PasswordChangeDoneView.as_view(),
         name="password_change_done",
+    ),
+
+
+    # =========================
+    # Password Reset
+    # =========================
+
+    path(
+        "accounts/password-reset/",
+        login_not_required(
+            auth_views.PasswordResetView.as_view(
+                template_name="registration/password_reset_form.html",
+                email_template_name="registration/password_reset_email.html",
+                subject_template_name="registration/password_reset_subject.txt",
+            )
+        ),
+        name="password_reset",
+    ),
+
+    path(
+        "accounts/password-reset/done/",
+        login_not_required(
+            auth_views.PasswordResetDoneView.as_view(
+                template_name="registration/password_reset_done.html"
+            )
+        ),
+        name="password_reset_done",
+    ),
+
+    path(
+        "accounts/reset/<uidb64>/<token>/",
+        login_not_required(
+            auth_views.PasswordResetConfirmView.as_view(
+                template_name="registration/password_reset_confirm.html"
+            )
+        ),
+        name="password_reset_confirm",
+    ),
+
+    path(
+        "accounts/reset/done/",
+        login_not_required(
+            auth_views.PasswordResetCompleteView.as_view(
+                template_name="registration/password_reset_complete.html"
+            )
+        ),
+        name="password_reset_complete",
     ),
 
 

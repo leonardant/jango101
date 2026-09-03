@@ -1,36 +1,201 @@
+{% load static icons %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Login</title>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Login | Sensor Application</title>
+
+    <!-- Tabler CSS -->
+    <link rel="stylesheet"
+          href="{% static 'tabler/css/tabler.min.css' %}">
+
 </head>
 
-<body>
 
-    <h1>Login</h1>
+<body class="d-flex flex-column">
 
-    {% if form.errors %}
-        <p>
-            Your username or password was incorrect.
-        </p>
-    {% endif %}
+<div class="page page-center">
 
-    {% if next %}
-        <p>
-            Please log in to access this page.
-        </p>
-    {% endif %}
+    <div class="container container-tight py-4">
 
-    <form method="post">
-        {% csrf_token %}
+        <!-- Application branding -->
+        <div class="text-center mb-4">
 
-        {{ form.as_p }}
+            <div class="navbar-brand navbar-brand-autodark">
 
-        <button type="submit">
-            Login
-        </button>
+                {% icon "activity" 32 %}
 
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+                <span class="ms-2 fs-2">
+                    Sensor App
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Login card -->
+        <div class="card card-md">
+
+            <div class="card-body">
+
+                <h2 class="h2 text-center mb-4">
+                    Sign in to your account
+                </h2>
+
+
+                <!-- Login errors -->
+                {% if form.non_field_errors %}
+
+                    <div class="alert alert-danger">
+
+                        {% for error in form.non_field_errors %}
+
+                            {{ error }}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+
+                    <!-- Username -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Username
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                            value="{{ form.username.value|default:'' }}"
+                            autocomplete="username"
+                            autofocus
+                            required
+                        >
+
+                        {% for error in form.username.errors %}
+
+                            <div class="invalid-feedback">
+
+                                {{ error }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Password
+
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control {% if form.password.errors %}is-invalid{% endif %}"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        {% for error in form.password.errors %}
+
+                            <div class="invalid-feedback">
+
+                                {{ error }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="text-end mb-3">
+
+    <a href="{% url 'password_reset' %}">
+
+        Forgot password?
+
+    </a>
+
+</div>
+
+                    <!-- Submit -->
+                    <div class="form-footer">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100"
+                        >
+
+                            {% icon "login" 18 %}
+
+                            <span class="ms-2">
+                                Sign In
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- Preserve ?next= -->
+                    {% if next %}
+
+                        <input
+                            type="hidden"
+                            name="next"
+                            value="{{ next }}"
+                        >
+
+                    {% endif %}
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="text-center text-secondary mt-3">
+
+            Sensor Application
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Tabler JavaScript -->
+<script src="{% static 'tabler/js/tabler.min.js' %}"></script>
 
 </body>
+
 </html>
