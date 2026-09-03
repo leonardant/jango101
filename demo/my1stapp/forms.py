@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.models import User
 
 User = get_user_model()
 
@@ -38,3 +38,38 @@ class ProfileForm(forms.ModelForm):
             ),
 
         }
+
+class ToDoForm(forms.Form):
+
+    title = forms.CharField(
+        max_length=100,
+        label="Title",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter a title",
+            }
+        ),
+    )
+
+    description = forms.CharField(
+        label="Description",
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "rows": 4,
+                "placeholder": "Enter a description",
+            }
+        ),
+    )
+
+    completed = forms.BooleanField(
+        required=False,
+        label="Completed",
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+            }
+        ),
+    )
