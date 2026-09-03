@@ -224,3 +224,4 @@ CACHEDIR.TAG
 pyvenv.cfg
 
 demo/staticfiles/**
+demo/frontend/**

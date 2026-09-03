@@ -1,5 +1,61 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+
+{% block title %}
+Home | Sensor Application
+{% endblock %}
+
 {% block content %}
-    <p>Welcome to my first Django app!</p>
+
+<div class="page-header">
+
+    <div class="row align-items-center">
+
+        <div class="col">
+
+            <h2 class="page-title">
+                Welcome
+            </h2>
+
+            <div class="text-secondary">
+                Welcome back, {{ user.username }}.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-6 col-lg-4">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h3 class="card-title">
+                    To Do Items
+                </h3>
+
+                <p class="text-secondary">
+                    View and manage your current tasks.
+                </p>
+
+                <a href="{% url 'my1stapp:todos' %}"
+                   class="btn btn-primary">
+
+                    View To Do Items
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}
