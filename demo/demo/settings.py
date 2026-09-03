@@ -53,6 +53,28 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 
     "SERVE_INCLUDE_SCHEMA": False,
+
+    # JWT authentication for Swagger
+    "COMPONENT_SPLIT_REQUEST": True,
+
+    "SECURITY": [
+        {
+            "BearerAuth": [],
+        }
+    ],
+
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": (
+                    "Enter your JWT access token."
+                ),
+            }
+        }
+    },
 }
 
 INSTALLED_APPS = [
