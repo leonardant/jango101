@@ -202,15 +202,19 @@
                     <!-- Page title -->
                     <div class="col">
 
-                        <h2 class="page-title">
+    {% block breadcrumbs %}
+    {% endblock %}
 
-                            {% block page_title %}
-                                Sensor Application
-                            {% endblock %}
 
-                        </h2>
+    <h2 class="page-title">
 
-                    </div>
+        {% block page_title %}
+            Sensor Application
+        {% endblock %}
+
+    </h2>
+
+</div>
 
 
                     <!-- Page-specific actions -->
@@ -272,15 +276,13 @@
 
 {% if messages %}
 
-    <div
-        class="toast-container position-fixed bottom-0 end-0 p-3"
-        style="z-index: 1100;"
-    >
+    <div class="toast-container position-fixed bottom-0 end-0 p-3"
+         style="z-index: 1100;">
 
         {% for message in messages %}
 
             <div
-                class="toast
+                class="toast border-0
                 {% if message.tags == 'success' %}
                     text-bg-success
                 {% elif message.tags == 'error' %}
@@ -296,14 +298,41 @@
                 data-bs-delay="5000"
             >
 
-                <div class="d-flex">
+                <div class="d-flex align-items-center">
 
+                    <!-- Message type icon -->
+                    <div class="ps-3">
+
+                        {% if message.tags == 'success' %}
+
+                            {% icon "circle-check" 24 %}
+
+                        {% elif message.tags == 'error' %}
+
+                            {% icon "alert-circle" 24 %}
+
+                        {% elif message.tags == 'warning' %}
+
+                            {% icon "alert-triangle" 24 %}
+
+                        {% else %}
+
+                            {% icon "info-circle" 24 %}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Message -->
                     <div class="toast-body">
 
                         {{ message }}
 
                     </div>
 
+
+                    <!-- Close button -->
                     <button
                         type="button"
                         class="btn-close me-2 m-auto"
