@@ -36,6 +36,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
@@ -171,8 +175,10 @@ MAILERS = {
     },
 }
 
-LOGIN_URL = "login"
+# Authentication
 
-LOGIN_REDIRECT_URL = "my1stapp:home"
+LOGIN_URL = "/accounts/login/"
 
-LOGOUT_REDIRECT_URL = "login"
+LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "/accounts/login/"

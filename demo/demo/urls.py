@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_not_required
+from django.contrib.auth.decorators import login_not_required, login_required
 from django.urls import include, path
 
 from drf_spectacular.views import (
@@ -9,12 +9,15 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-from my1stapp.auth_views import CustomPasswordChangeView
-
 
 urlpatterns = [
 
+    # =========================
+    # Django Admin
+    # =========================
+
     path("admin/", admin.site.urls),
+
 
     # =========================
     # API
@@ -22,32 +25,77 @@ urlpatterns = [
 
     path("api/", include("api.urls")),
 
-    # OpenAPI schema
+
+    # =========================
+    # API Documentation
+    # =========================
+
     path(
         "api/schema/",
-        SpectacularAPIView.as_view(),
+        login_required(
+        SpectacularAPIView.as_view()
+        ),
         name="schema",
     ),
 
-    # Swagger UI
     path(
         "api/docs/",
-        SpectacularSwaggerView.as_view(
-            url_name="schema"
+        login_required(
+            SpectacularSwaggerView.as_view(
+                url_name="schema"
+            )
         ),
         name="swagger-ui",
     ),
 
-    # ReDoc
     path(
         "api/redoc/",
-        SpectacularRedocView.as_view(
-            url_name="schema"
+        login_required(
+            SpectacularRedocView.as_view(
+                url_name="schema"
+            )
         ),
         name="redoc",
     ),
 
-    # ... your existing accounts URLs ...
+
+    # =========================
+    # Authentication
+    # =========================
+
+    path(
+        "accounts/login/",
+        login_not_required(
+            auth_views.LoginView.as_view(
+                template_name="registration/login.html"
+            )
+        ),
+        name="login",
+    ),
+
+    path(
+        "accounts/logout/",
+        auth_views.LogoutView.as_view(),
+        name="logout",
+    ),
+
+    path(
+        "accounts/password-change/",
+        auth_views.PasswordChangeView.as_view(),
+        name="password_change",
+    ),
+
+    path(
+        "accounts/password-change/done/",
+        auth_views.PasswordChangeDoneView.as_view(),
+        name="password_change_done",
+    ),
+
+
+    # =========================
+    # Main Application
+    # =========================
 
     path("", include("my1stapp.urls")),
+
 ]
