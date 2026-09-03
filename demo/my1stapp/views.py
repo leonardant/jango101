@@ -185,6 +185,28 @@ def edit_todo(request, todo_id):
         },
     )
 
+# =====================================
+# Delete To Do Item
+# =====================================
+
+@login_required
+def delete_todo(request, todo_id):
+
+    if request.method != "POST":
+
+        return redirect("my1stapp:todos")
+
+    api = APIClient(request.user)
+
+    api.delete_todo(todo_id)
+
+    messages.success(
+        request,
+        "To Do item deleted successfully."
+    )
+
+    return redirect("my1stapp:todos")
+
 
 # =====================================
 # Profile

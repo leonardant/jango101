@@ -146,14 +146,26 @@ My To Do Items
                         <!-- Actions -->
                         <td class="text-end">
 
-                            <a
-                                href="{% url 'my1stapp:edit_todo' todo.id %}"
-                                class="btn btn-sm btn-outline-primary"
-                            >
-                                Edit
-                            </a>
+    <!-- Edit -->
+    <a
+        href="{% url 'my1stapp:edit_todo' todo.id %}"
+        class="btn btn-sm btn-outline-primary"
+    >
+        Edit
+    </a>
 
-                        </td>
+
+    <!-- Delete -->
+    <button
+        type="button"
+        class="btn btn-sm btn-outline-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteTodoModal{{ todo.id }}"
+    >
+        Delete
+    </button>
+
+</td>
 
 
                     </tr>
@@ -180,5 +192,77 @@ My To Do Items
     </div>
 
 </div>
+
+
+{% for todo in todos %}
+
+<div
+    class="modal modal-blur fade"
+    id="deleteTodoModal{{ todo.id }}"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-body text-center py-4">
+
+                <h3>
+                    Delete To Do Item?
+                </h3>
+
+                <div class="text-secondary">
+
+                    Are you sure you want to delete:
+
+                    <strong>{{ todo.title }}</strong>
+
+                    ?
+
+                    This action cannot be undone.
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Cancel
+                </button>
+
+
+                <form
+                    method="post"
+                    action="{% url 'my1stapp:delete_todo' todo.id %}"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger"
+                    >
+                        Yes, Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
 
 {% endblock %}
