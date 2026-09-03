@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load icons %}
 
 {% block title %}
 Profile | Sensor Application
@@ -151,5 +151,22 @@ My Profile
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block page_actions %}
+
+    <a
+        href="{% url 'my1stapp:edit_profile' %}"
+        class="btn btn-primary"
+    >
+
+        {% icon "edit" 18 %}
+
+        <span class="ms-1">
+            Edit Profile
+        </span>
+
+    </a>
 
 {% endblock %}

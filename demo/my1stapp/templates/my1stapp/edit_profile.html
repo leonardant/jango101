@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load icons %}
+
+
+{% block title %}
+Edit Profile | Sensor Application
+{% endblock %}
+
+
+{% block breadcrumbs %}
+
+    <nav aria-label="breadcrumb">
+
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item">
+
+                <a href="{% url 'my1stapp:home' %}">
+                    Home
+                </a>
+
+            </li>
+
+
+            <li class="breadcrumb-item">
+
+                <a href="{% url 'my1stapp:profile' %}">
+                    Profile
+                </a>
+
+            </li>
+
+
+            <li
+                class="breadcrumb-item active"
+                aria-current="page"
+            >
+                Edit Profile
+            </li>
+
+        </ol>
+
+    </nav>
+
+{% endblock %}
+
+
+{% block page_title %}
+Edit Profile
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+
+                        <!-- First name -->
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.first_name.id_for_label }}"
+                            >
+                                First name
+                            </label>
+
+                            {{ form.first_name }}
+
+                            {% for error in form.first_name.errors %}
+
+                                <div class="invalid-feedback d-block">
+
+                                    {{ error }}
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- Last name -->
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.last_name.id_for_label }}"
+                            >
+                                Last name
+                            </label>
+
+                            {{ form.last_name }}
+
+                            {% for error in form.last_name.errors %}
+
+                                <div class="invalid-feedback d-block">
+
+                                    {{ error }}
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label"
+                                for="{{ form.email.id_for_label }}"
+                            >
+                                Email address
+                            </label>
+
+                            {{ form.email }}
+
+                            {% for error in form.email.errors %}
+
+                                <div class="invalid-feedback d-block">
+
+                                    {{ error }}
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+
+                            <a
+                                href="{% url 'my1stapp:profile' %}"
+                                class="btn btn-outline-secondary"
+                            >
+
+                                {% icon "arrow-left" 18 %}
+
+                                <span class="ms-1">
+                                    Cancel
+                                </span>
+
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+
+                                {% icon "device-floppy" 18 %}
+
+                                <span class="ms-1">
+                                    Save Changes
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

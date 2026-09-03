@@ -3,10 +3,15 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required
 from django.urls import include, path
 
+from my1stapp.auth_views import CustomPasswordChangeView
+
 
 urlpatterns = [
+
     path("admin/", admin.site.urls),
 
+
+    # Login
     path(
         "accounts/login/",
         login_not_required(
@@ -17,27 +22,24 @@ urlpatterns = [
         name="login",
     ),
 
+
+    # Logout
     path(
         "accounts/logout/",
         auth_views.LogoutView.as_view(),
         name="logout",
     ),
 
+
+    # Change password
     path(
-    "accounts/password-change/",
-    auth_views.PasswordChangeView.as_view(
-        template_name="registration/password_change.html"
+        "accounts/password-change/",
+        CustomPasswordChangeView.as_view(),
+        name="password_change",
     ),
-    name="password_change",
-),
 
-path(
-    "accounts/password-change/done/",
-    auth_views.PasswordChangeDoneView.as_view(
-        template_name="registration/password_change_done.html"
-    ),
-    name="password_change_done",
-),
 
+    # Application URLs
     path("", include("my1stapp.urls")),
+
 ]
