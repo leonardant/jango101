@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>My To-Do Items</h2>
+  <ul>
+    {% for item in todos %}
+      <li>{{ item.title }} - {{ item.description }} - {{ item.completed }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
