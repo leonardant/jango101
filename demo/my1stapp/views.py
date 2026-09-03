@@ -83,6 +83,54 @@ def add_todo(request):
         },
     )
 
+# ===================================== 
+# Toggle To Do Item
+# =====================================
+
+@login_required
+def toggle_todo(request, todo_id):
+
+    if request.method != "POST":
+
+        return redirect(
+            "my1stapp:todos"
+        )
+
+    api = APIClient(
+        request.user
+    )
+
+    # Get the current To Do item
+    todo = api.get_todo(
+        todo_id
+    )
+
+    # Reverse the completed status
+    new_status = not todo["completed"]
+
+    # PATCH the API
+    api.update_todo(
+        todo_id,
+        completed=new_status,
+    )
+
+    if new_status:
+
+        messages.success(
+            request,
+            "To Do item marked as completed."
+        )
+
+    else:
+
+        messages.success(
+            request,
+            "To Do item marked as incomplete."
+        )
+
+    return redirect(
+        "my1stapp:todos"
+    )
 
 # =====================================
 # Profile

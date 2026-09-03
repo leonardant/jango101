@@ -4,6 +4,7 @@
 To Do Items | Sensor Application
 {% endblock %}
 
+
 {% block breadcrumbs %}
 
 <nav aria-label="breadcrumb">
@@ -39,12 +40,12 @@ My To Do Items
 
 {% block page_actions %}
 
-    <a href="{% url 'my1stapp:add_todo' %}"
-       class="btn btn-primary">
+<a href="{% url 'my1stapp:add_todo' %}"
+   class="btn btn-primary">
 
-        Add To Do Item
+    Add To Do Item
 
-    </a>
+</a>
 
 {% endblock %}
 
@@ -58,29 +59,100 @@ My To Do Items
         <table class="table table-vcenter card-table">
 
             <thead>
+
                 <tr>
+
                     <th>Title</th>
                     <th>Description</th>
-                    <th>Completed</th>
+                    <th class="text-center">Completed</th>
+
                 </tr>
+
             </thead>
+
 
             <tbody>
 
                 {% for todo in todos %}
 
                     <tr>
-                        <td>{{ todo.title }}</td>
-                        <td>{{ todo.description  }}</td>
-                        <td>{{ todo.completed|yesno:"Yes,No" }}</td>
+
+                        <!-- Title -->
+                        <td>
+
+                            {% if todo.completed %}
+
+                                <span class="text-secondary text-decoration-line-through">
+
+                                    {{ todo.title }}
+
+                                </span>
+
+                            {% else %}
+
+                                {{ todo.title }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Description -->
+                        <td>
+
+                            {% if todo.completed %}
+
+                                <span class="text-secondary text-decoration-line-through">
+
+                                    {{ todo.description }}
+
+                                </span>
+
+                            {% else %}
+
+                                {{ todo.description }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Completed -->
+                        <td class="text-center">
+
+                            <form
+                                method="post"
+                                action="{% url 'my1stapp:toggle_todo' todo.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <label class="form-check form-check-single">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        onchange="this.form.submit()"
+                                        {% if todo.completed %}checked{% endif %}
+                                    >
+
+                                </label>
+
+                            </form>
+
+                        </td>
+
                     </tr>
 
                 {% empty %}
 
                     <tr>
 
-                        <td class="text-secondary">
+                        <td colspan="3"
+                            class="text-center text-secondary py-4">
+
                             No to-do items found.
+
                         </td>
 
                     </tr>
