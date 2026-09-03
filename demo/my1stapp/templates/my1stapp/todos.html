@@ -1,10 +1,67 @@
 {% extends "base.html" %}
 
+{% block title %}
+To Do Items | Sensor Application
+{% endblock %}
+
+
+{% block page_title %}
+To Do Items
+{% endblock %}
+
+
+{% block page_actions %}
+
+    <a href="#"
+       class="btn btn-primary">
+
+        Add To Do Item
+
+    </a>
+
+{% endblock %}
+
+
 {% block content %}
-  <h2>My To-Do Items</h2>
-  <ul>
-    {% for item in todos %}
-      <li>{{ item.title }} - {{ item.description }} - {{ item.completed }}</li>
-    {% endfor %}
-  </ul>
+
+<div class="card">
+
+    <div class="table-responsive">
+
+        <table class="table table-vcenter card-table">
+
+            <thead>
+                <tr>
+                    <th>Item</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for todo in todos %}
+
+                    <tr>
+                        <td>{{ todo }}</td>
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td class="text-secondary">
+                            No to-do items found.
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
 {% endblock %}

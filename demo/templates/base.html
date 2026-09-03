@@ -1,6 +1,7 @@
-{% load static %}
+{% load static icons %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
 
@@ -15,11 +16,14 @@
     {% block extra_css %}{% endblock %}
 </head>
 
+
 <body>
 
 <div class="page">
 
-    <!-- Sidebar -->
+    <!-- ========================= -->
+    <!-- Sidebar                   -->
+    <!-- ========================= -->
     <aside class="navbar navbar-vertical navbar-expand-lg">
 
         <div class="container-fluid">
@@ -30,65 +34,91 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#sidebar-menu"
                     aria-controls="sidebar-menu"
-                    aria-expanded="false">
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
 
                 <span class="navbar-toggler-icon"></span>
 
             </button>
 
 
-            <!-- Application name -->
-            <h1 class="navbar-brand">
-                Sensor App
-            </h1>
+<!-- Application name -->
+<a href="{% url 'my1stapp:home' %}"
+   class="navbar-brand">
+
+{% icon "activity" 28 %}
+
+        <span class="ms-2">
+        Sensor App
+    </span>
+</a>
 
 
             <!-- Navigation -->
-            <div class="collapse navbar-collapse"
-                 id="sidebar-menu">
+<div class="collapse navbar-collapse"
+     id="sidebar-menu">
 
-                <ul class="navbar-nav pt-lg-3">
+    <ul class="navbar-nav pt-lg-3">
 
-                    <li class="nav-item">
+        <!-- Home -->
+        <li class="nav-item">
 
-                        <a class="nav-link"
-                           href="{% url 'my1stapp:home' %}">
+            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+               href="{% url 'my1stapp:home' %}">
 
-                            <span class="nav-link-title">
-                                Home
-                            </span>
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
 
-                        </a>
+{% icon "home" %}
 
-                    </li>
+                </span>
+
+                <span class="nav-link-title">
+                    Home
+                </span>
+
+            </a>
+
+        </li>
 
 
-                    <li class="nav-item">
+        <!-- To Do Items -->
+        <li class="nav-item">
 
-                        <a class="nav-link"
-                           href="{% url 'my1stapp:todos' %}">
+            <a class="nav-link {% if request.resolver_match.url_name == 'todos' %}active{% endif %}"
+               href="{% url 'my1stapp:todos' %}">
 
-                            <span class="nav-link-title">
-                                To Do Items
-                            </span>
+                <span class="nav-link-icon d-md-none d-lg-inline-block">
 
-                        </a>
+ {% icon "checklist" %}
 
-                    </li>
+                </span>
 
-                </ul>
+                <span class="nav-link-title">
+                    To Do Items
+                </span>
 
-            </div>
+            </a>
+
+        </li>
+
+    </ul>
+
+</div>
 
         </div>
 
     </aside>
 
 
-    <!-- Main area -->
+    <!-- ========================= -->
+    <!-- Main area                 -->
+    <!-- ========================= -->
     <div class="page-wrapper">
 
-        <!-- Top header -->
+
+        <!-- ========================= -->
+        <!-- Top header                -->
+        <!-- ========================= -->
         <header class="navbar navbar-expand-md d-print-none">
 
             <div class="container-xl">
@@ -104,10 +134,13 @@
                                data-bs-toggle="dropdown"
                                aria-label="Open user menu">
 
+                                <!-- User avatar -->
                                 <span class="avatar">
                                     {{ user.username|slice:":1"|upper }}
                                 </span>
 
+
+                                <!-- Username -->
                                 <div class="d-none d-xl-block ps-2">
 
                                     <div>
@@ -123,6 +156,7 @@
                             </a>
 
 
+                            <!-- User dropdown -->
                             <div class="dropdown-menu dropdown-menu-end">
 
                                 <form method="post"
@@ -131,11 +165,15 @@
                                     {% csrf_token %}
 
                                     <button type="submit"
-                                            class="dropdown-item">
+        class="dropdown-item d-flex align-items-center">
 
-                                        Logout
+    {% icon "logout" 18 %}
 
-                                    </button>
+    <span class="ms-2">
+        Logout
+    </span>
+
+</button>
 
                                 </form>
 
@@ -152,10 +190,51 @@
         </header>
 
 
-        <!-- Page content -->
+        <!-- ========================= -->
+        <!-- Page header               -->
+        <!-- ========================= -->
+        <div class="page-header d-print-none">
+
+            <div class="container-xl">
+
+                <div class="row g-2 align-items-center">
+
+                    <!-- Page title -->
+                    <div class="col">
+
+                        <h2 class="page-title">
+
+                            {% block page_title %}
+                                Sensor Application
+                            {% endblock %}
+
+                        </h2>
+
+                    </div>
+
+
+                    <!-- Page-specific actions -->
+                    <div class="col-auto ms-auto d-print-none">
+
+                        {% block page_actions %}
+                        {% endblock %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Page content              -->
+        <!-- ========================= -->
         <div class="page-body">
 
             <div class="container-xl">
+
 
                 <!-- Django messages -->
                 {% if messages %}
@@ -174,6 +253,7 @@
                 {% endif %}
 
 
+                <!-- Page-specific content -->
                 {% block content %}
                 {% endblock %}
 
@@ -182,7 +262,9 @@
         </div>
 
 
-        <!-- Footer -->
+        <!-- ========================= -->
+        <!-- Footer                    -->
+        <!-- ========================= -->
         <footer class="footer footer-transparent d-print-none">
 
             <div class="container-xl">
@@ -197,16 +279,22 @@
 
         </footer>
 
+
     </div>
 
 </div>
 
 
-<!-- Tabler JavaScript -->
+<!-- ========================= -->
+<!-- Tabler JavaScript          -->
+<!-- ========================= -->
 <script src="{% static 'tabler/js/tabler.min.js' %}"></script>
 
+
+<!-- Page-specific JavaScript -->
 {% block extra_js %}
 {% endblock %}
+
 
 </body>
 </html>
