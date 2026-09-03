@@ -33,7 +33,7 @@ To Do Items | Sensor Application
 
 
 {% block page_title %}
-To Do Items
+My To Do Items
 {% endblock %}
 
 
@@ -59,7 +59,9 @@ To Do Items
 
             <thead>
                 <tr>
-                    <th>Item</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Completed</th>
                 </tr>
             </thead>
 
@@ -68,7 +70,9 @@ To Do Items
                 {% for todo in todos %}
 
                     <tr>
-                        <td>{{ todo }}</td>
+                        <td>{{ todo.title }}</td>
+                        <td>{{ todo.description  }}</td>
+                        <td>{{ todo.completed|yesno:"Yes,No" }}</td>
                     </tr>
 
                 {% empty %}

@@ -4,16 +4,34 @@ from django.contrib import messages
 
 from .forms import ProfileForm
 
+from .api_client import APIClient
+
 # Create your views here.
 def home(request):
     return render(request, "my1stapp/home.html", {"a_variable": "Hello World! This is my first Django app."})
         ##HttpResponse("Hello World! This is my first Django app.")    
 
-
+@login_required
 def todos(request):
-    from .models import ToDoItem
-    todos = ToDoItem.objects.all()
-    return render(request, "my1stapp/todos.html", {"todos": todos})
+
+    api = APIClient(
+        request.user
+    )
+
+    todos = api.get_todos()
+
+    return render(
+        request,
+        "my1stapp/todos.html",
+        {
+            "todos": todos,
+        },
+    )
+
+##def todos(request):
+##    from .models import ToDoItem
+##    todos = ToDoItem.objects.all()
+##    return render(request, "my1stapp/todos.html", {"todos": todos})
 
 def profile(request):
     return render(

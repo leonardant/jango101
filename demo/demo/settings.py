@@ -204,3 +204,9 @@ LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
 
 LOGOUT_REDIRECT_URL = "/accounts/login/"
+
+# =====================================
+# Internal API configuration
+# =====================================
+
+API_BASE_URL = "http://127.0.0.1:8000/api/"
