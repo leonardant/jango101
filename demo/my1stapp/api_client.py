@@ -31,7 +31,12 @@ class APINotFoundError(APIClientError):
 
 
 class APIValidationError(APIClientError):
-    pass
+
+    def __init__(self, message, errors=None):
+
+        super().__init__(message)
+
+        self.errors = errors or {}
 
 
 class APIServerError(APIClientError):
@@ -76,6 +81,38 @@ class APIClient:
             "Authorization": f"Bearer {token}",
         }
 
+    # =====================================
+    # Format API validation errors
+    # =====================================
+
+    def format_validation_errors(self, errors):
+
+        if not isinstance(errors, dict):
+
+            return "The submitted information was invalid."
+
+        messages = []
+
+        for field, field_errors in errors.items():
+
+            # Convert field name to something readable
+            field_name = field.replace("_", " ").title()
+
+            # Ensure errors are always handled as a list
+            if not isinstance(field_errors, list):
+                field_errors = [field_errors]
+
+            for error in field_errors:
+
+                messages.append(
+                    f"{field_name}: {error}"
+                )
+
+        if messages:
+
+            return " ".join(messages)
+
+        return "The submitted information was invalid."
 
     # =====================================
     # Central API request handler
@@ -203,7 +240,7 @@ class APIClient:
 
             except ValueError:
 
-                errors = response.text
+                errors = {}
 
 
             logger.warning(
@@ -215,8 +252,15 @@ class APIClient:
                 errors,
             )
 
+
+            formatted_errors = self.format_validation_errors(
+                errors
+            )
+
+
             raise APIValidationError(
-                "The submitted information was invalid."
+                formatted_errors,
+                errors=errors,
             )
 
 

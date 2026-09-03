@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from .forms import ProfileForm, ToDoForm
-from .api_client import APIClient, APIClientError
+from .api_client import APIClient, APIClientError, APIValidationError
 
 
 # =====================================
@@ -75,12 +75,22 @@ def add_todo(request):
                     completed=form.cleaned_data["completed"],
                 )
 
+
+            except APIValidationError as error:
+
+                add_api_errors_to_form(
+                    form,
+                    error.errors,
+                )
+
+
             except APIClientError as error:
 
                 messages.error(
                     request,
                     str(error),
                 )
+
 
             else:
 
@@ -174,7 +184,9 @@ def edit_todo(request, todo_id):
             str(error),
         )
 
-        return redirect("my1stapp:todos")
+        return redirect(
+            "my1stapp:todos"
+        )
 
 
     if request.method == "POST":
@@ -192,12 +204,22 @@ def edit_todo(request, todo_id):
                     completed=form.cleaned_data["completed"],
                 )
 
+
+            except APIValidationError as error:
+
+                add_api_errors_to_form(
+                    form,
+                    error.errors,
+                )
+
+
             except APIClientError as error:
 
                 messages.error(
                     request,
                     str(error),
                 )
+
 
             else:
 
@@ -206,7 +228,9 @@ def edit_todo(request, todo_id):
                     "To Do item updated successfully."
                 )
 
-                return redirect("my1stapp:todos")
+                return redirect(
+                    "my1stapp:todos"
+                )
 
     else:
 
@@ -217,6 +241,7 @@ def edit_todo(request, todo_id):
                 "completed": todo["completed"],
             }
         )
+
 
     return render(
         request,
@@ -259,6 +284,42 @@ def delete_todo(request, todo_id):
         )
 
     return redirect("my1stapp:todos")
+
+
+# =====================================
+# API ERROR HANDLING
+# =====================================
+def add_api_errors_to_form(form, api_errors):
+
+    for field, errors in api_errors.items():
+
+        # DRF may return non-field errors
+        if field == "non_field_errors":
+
+            for error in errors:
+
+                form.add_error(
+                    None,
+                    error,
+                )
+
+            continue
+
+
+        # Only add errors to fields that exist on this form
+        if field in form.fields:
+
+            if not isinstance(errors, list):
+
+                errors = [errors]
+
+
+            for error in errors:
+
+                form.add_error(
+                    field,
+                    error,
+                )
 
 
 # =====================================
