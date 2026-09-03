@@ -235,47 +235,6 @@
 
             <div class="container-xl">
 
-
-<!-- Django messages -->
-{% if messages %}
-
-    {% for message in messages %}
-
-        <div
-            class="alert
-            {% if message.tags == 'success' %}
-                alert-success
-            {% elif message.tags == 'error' %}
-                alert-danger
-            {% elif message.tags == 'warning' %}
-                alert-warning
-            {% else %}
-                alert-info
-            {% endif %}
-            alert-dismissible"
-            role="alert"
-        >
-
-            <div>
-
-                {{ message }}
-
-            </div>
-
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-            ></button>
-
-        </div>
-
-    {% endfor %}
-
-{% endif %}
-
-
                 <!-- Page-specific content -->
                 {% block content %}
                 {% endblock %}
@@ -307,11 +266,89 @@
 
 </div>
 
+<!-- ========================= -->
+<!-- Django Toast Messages     -->
+<!-- ========================= -->
+
+{% if messages %}
+
+    <div
+        class="toast-container position-fixed bottom-0 end-0 p-3"
+        style="z-index: 1100;"
+    >
+
+        {% for message in messages %}
+
+            <div
+                class="toast
+                {% if message.tags == 'success' %}
+                    text-bg-success
+                {% elif message.tags == 'error' %}
+                    text-bg-danger
+                {% elif message.tags == 'warning' %}
+                    text-bg-warning
+                {% else %}
+                    text-bg-info
+                {% endif %}"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                data-bs-delay="5000"
+            >
+
+                <div class="d-flex">
+
+                    <div class="toast-body">
+
+                        {{ message }}
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-close me-2 m-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"
+                    ></button>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
 
 <!-- ========================= -->
 <!-- Tabler JavaScript          -->
 <!-- ========================= -->
+ <!-- Bootstrap JavaScript -->
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Tabler JavaScript -->
 <script src="{% static 'tabler/js/tabler.min.js' %}"></script>
+
+
+<!-- Django Toast Messages -->
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const toastElements = document.querySelectorAll(".toast");
+
+        toastElements.forEach(function (toastElement) {
+
+            const toast = new bootstrap.Toast(toastElement);
+
+            toast.show();
+
+        });
+
+    });
+
+</script>
 
 
 <!-- Page-specific JavaScript -->
