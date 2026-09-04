@@ -33,3 +33,131 @@
 .related-widget-wrapper-link svg {
     pointer-events: none;
 }
+
+/* =====================================
+   Client secret regenerate button
+   ===================================== */
+
+.client-secret-display {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+}
+
+
+.client-secret-value {
+
+    font-family: monospace;
+
+}
+
+
+.regenerate-secret-button {
+
+    white-space: nowrap;
+
+}
+
+
+/* =====================================
+   Client secret modal
+   ===================================== */
+
+.client-secret-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(0, 0, 0, 0.5);
+
+    z-index: 9999;
+
+}
+
+
+.client-secret-modal {
+
+    width: 500px;
+
+    max-width: calc(
+        100vw - 40px
+    );
+
+    padding: 30px;
+
+    border-radius: 10px;
+
+    background: white;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, 0.3);
+
+}
+
+
+.client-secret-modal h2 {
+
+    margin-top: 0;
+
+}
+
+
+.client-secret-warning {
+
+    margin-top: 15px;
+
+    color: #b42318;
+
+    font-weight: bold;
+
+}
+
+
+.client-secret-box {
+
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 6px;
+
+    background: #f5f5f5;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.client-secret-box code {
+
+    font-size: 14px;
+
+    word-break: break-all;
+
+}
+
+
+.client-secret-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+}
