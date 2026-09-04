@@ -1,25 +1,42 @@
-from django.contrib.auth.decorators import login_not_required, login_required
 from django.urls import path
 
+from . import views
 from .views import (
+    ClientCredentialsTokenView,
     ToDoDetailAPIView,
     ToDoListCreateAPIView,
-    ClientCredentialsTokenView,
 )
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
-from . import views
 
 app_name = "api"
+
 
 urlpatterns = [
 
     # =========================
-    # ToDo API endpoints
+    # Client Credentials Token
+    # =========================
+
+    path(
+        "token/",
+        ClientCredentialsTokenView.as_view(),
+        name="client-token",
+    ),
+
+
+    # =========================
+    # API Test Endpoint
+    # =========================
+
+    path(
+        "whoami/",
+        views.WhoAmIView.as_view(),
+        name="whoami",
+    ),
+
+
+    # =========================
+    # To Do API
     # =========================
 
     path(
@@ -34,42 +51,4 @@ urlpatterns = [
         name="todo-detail",
     ),
 
-    # =========================
-    # API test endpoint
-    # =========================
-
-    path(
-        "whoami/",
-        views.WhoAmIView.as_view(),
-        name="whoami",
-    ),
-
-
-    # =========================
-    # JWT Authentication
-    # =========================
-
-    path(
-        "auth/token/",
-        login_not_required(
-            TokenObtainPairView.as_view()
-        ),
-        name="token_obtain_pair",
-    ),
-
-    path(
-        "auth/token/refresh/",
-        login_not_required(
-            TokenRefreshView.as_view()
-        ),
-        name="token_refresh",
-    ),
-
-    # =========================
-    # Client Credentials Token Endpoint
-    path(
-    "token/",
-    ClientCredentialsTokenView.as_view(),
-    name="client-token",
-),
 ]
