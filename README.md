@@ -28,3 +28,26 @@ source .venv/bin/activate
 ...$ python manage.py startapp my1stapp \
 ...$ python manage.py runserver 0.0.0.0:8000
 ```
+
+
+## Architecture
+
+/api
+
+api/
+│
+├── admin.py
+│       Django admin entry point
+│
+├── admin_forms.py
+│       User creation/change forms
+│
+├── credential_admin.py
+│       API credential admin
+│
+├── user_admin.py
+│       Custom User admin
+│
+└── services/
+    └── credentials.py
+            API credential business logic
