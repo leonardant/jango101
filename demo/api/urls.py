@@ -4,6 +4,7 @@ from django.urls import path
 from .views import (
     ToDoDetailAPIView,
     ToDoListCreateAPIView,
+    ClientCredentialsTokenView,
 )
 
 from rest_framework_simplejwt.views import (
@@ -64,4 +65,11 @@ urlpatterns = [
         name="token_refresh",
     ),
 
+    # =========================
+    # Client Credentials Token Endpoint
+    path(
+    "token/",
+    ClientCredentialsTokenView.as_view(),
+    name="client-token",
+),
 ]

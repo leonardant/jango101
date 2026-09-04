@@ -2,13 +2,14 @@ from django.contrib.auth.decorators import login_not_required
 from django.utils.decorators import method_decorator
 
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from my1stapp.models import ToDoItem
 
-from .serializers import ToDoItemSerializer
+from .serializers import ToDoItemSerializer, ClientCredentialsSerializer
 
 
 # =====================================
@@ -85,4 +86,47 @@ class ToDoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
         return ToDoItem.objects.filter(
             owner=self.request.user
+        )
+
+# =====================================
+# Client Credentials Token API
+# =====================================
+
+class ClientCredentialsTokenView(APIView):
+
+    authentication_classes = []
+
+    permission_classes = [
+        AllowAny,
+    ]
+
+
+    def post(self, request):
+
+        serializer = ClientCredentialsSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(
+            raise_exception=True
+        )
+
+        credential = serializer.validated_data[
+            "credential"
+        ]
+
+        user = credential.user
+
+
+        # Create JWT tokens for the user
+        refresh = RefreshToken.for_user(user)
+
+        return Response(
+            {
+                "access": str(
+                    refresh.access_token
+                ),
+
+                "token_type": "Bearer",
+            }
         )

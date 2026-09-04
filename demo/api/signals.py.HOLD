@@ -1,0 +1,38 @@
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from .models import APIClientCredential
+
+
+User = get_user_model()
+
+
+@receiver(post_save, sender=User)
+def create_api_client_credentials(
+    sender,
+    instance,
+    created,
+    **kwargs,
+):
+
+    if created:
+
+        client_id = (
+            APIClientCredential.generate_client_id()
+        )
+
+        raw_secret = (
+            APIClientCredential.generate_client_secret()
+        )
+
+        credential = APIClientCredential(
+            user=instance,
+            client_id=client_id,
+        )
+
+        credential.set_client_secret(
+            raw_secret
+        )
+
+        credential.save()
