@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-04 15:39+0000\n"
+"POT-Creation-Date: 2026-09-04 16:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: demo/settings.py:170
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: demo/settings.py:171
 msgid "Français"
-msgstr ""
+msgstr "Französisch"
 
 #: demo/settings.py:172
 msgid "Deutsch"
-msgstr ""
+msgstr "Deutsch"
 
 #: my1stapp/templates/my1stapp/language_settings.html:7
 msgid "Language settings"
-msgstr ""
+msgstr "Spracheinstellungen"
 
 #: my1stapp/templates/my1stapp/language_settings.html:16
 msgid "Save language"
@@ -39,8 +40,68 @@ msgstr ""
 
 #: my1stapp/templates/my1stapp/todos.html:5
 msgid "To Do Items | Sensor Application"
-msgstr ""
+msgstr "Sprache speichern"
+
+#: my1stapp/templates/my1stapp/todos.html:18
+msgid "Home"
+msgstr "Startseite"
 
 #: my1stapp/templates/my1stapp/todos.html:26
 msgid "To Do Items"
+msgstr "Aufgaben"
+
+#: my1stapp/templates/my1stapp/todos.html:38
+msgid "My To Do Items"
+msgstr "asdasdasd asad sad asd asd"
+
+#: my1stapp/templates/my1stapp/todos.html:47
+#, fuzzy
+#| msgid "To Do Items"
+msgid "Add To Do Item"
+msgstr "Aufgaben"
+
+#: my1stapp/templates/my1stapp/todos.html:66
+msgid "Title"
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:67
+msgid "Description"
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:68
+msgid "Completed"
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:69
+msgid "Actions"
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:166
+msgid "Delete"
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:181
+msgid "No to-do items found."
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:214
+#, fuzzy
+#| msgid "To Do Items"
+msgid "Delete To Do Item?"
+msgstr "Aufgaben"
+
+#: my1stapp/templates/my1stapp/todos.html:219
+msgid "Are you sure you want to delete: "
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:225
+msgid "This action cannot be undone."
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:239
+msgid "Cancel"
+msgstr ""
+
+#: my1stapp/templates/my1stapp/todos.html:254
+msgid "Yes, Delete"
 msgstr ""

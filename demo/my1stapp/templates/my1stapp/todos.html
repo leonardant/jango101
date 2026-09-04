@@ -15,7 +15,7 @@
         <li class="breadcrumb-item">
 
             <a href="{% url 'my1stapp:home' %}">
-                {% trans Home
+                {% trans "Home"   %}
             </a>
 
         </li>
@@ -35,7 +35,7 @@
 
 
 {% block page_title %}
-My To Do Items
+{% trans "My To Do Items" %}
 {% endblock %}
 
 
@@ -44,7 +44,7 @@ My To Do Items
 <a href="{% url 'my1stapp:add_todo' %}"
    class="btn btn-primary">
 
-    Add To Do Item
+    {% trans "Add To Do Item" %}
 
 </a>
 
@@ -63,10 +63,10 @@ My To Do Items
 
                 <tr>
 
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th class="text-center">Completed</th>
-                    <th class="text-end">Actions</th>
+                    <th>{% trans "Title" %}</th>
+                    <th>{% trans "Description" %}</th>
+                    <th class="text-center">{% trans "Completed" %}</th>
+                    <th class="text-end">{% trans "Actions" %}</th>
 
                 </tr>
 
@@ -163,7 +163,7 @@ My To Do Items
         data-bs-toggle="modal"
         data-bs-target="#deleteTodoModal{{ todo.id }}"
     >
-        Delete
+        {% trans "Delete" %}
     </button>
 
 </td>
@@ -178,7 +178,7 @@ My To Do Items
                         <td colspan="4"
                             class="text-center text-secondary py-4">
 
-                            No to-do items found.
+                            {% trans "No to-do items found." %}
 
                         </td>
 
@@ -211,18 +211,18 @@ My To Do Items
             <div class="modal-body text-center py-4">
 
                 <h3>
-                    Delete To Do Item?
+                    {% trans "Delete To Do Item?" %}
                 </h3>
 
                 <div class="text-secondary">
 
-                    Are you sure you want to delete:
+                    {% trans "Are you sure you want to delete: " %}
 
                     <strong>{{ todo.title }}</strong>
 
                     ?
 
-                    This action cannot be undone.
+                    {% trans "This action cannot be undone." %} 
 
                 </div>
 
@@ -236,7 +236,7 @@ My To Do Items
                     class="btn btn-secondary"
                     data-bs-dismiss="modal"
                 >
-                    Cancel
+                    {% trans "Cancel" %}
                 </button>
 
 
@@ -251,7 +251,7 @@ My To Do Items
                         type="submit"
                         class="btn btn-danger"
                     >
-                        Yes, Delete
+                        {% trans "Yes, Delete" %}
                     </button>
 
                 </form>
