@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry, CHANGE
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -180,6 +183,14 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
                 "updated_at",
             ]
         )
+        # Add this action to the user's
+        # Django admin history
+
+        self.log_user_api_event(
+            request=request,
+            user=credential.user,
+            message="API client secret regenerated.",
+        )
 
         return JsonResponse(
             {
@@ -187,6 +198,33 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
             }
         )
 
+    # =====================================
+    # Add API events to User history
+    # =====================================
+
+    def log_user_api_event(
+        self,
+        request,
+        user,
+        message,
+    ):
+
+        LogEntry.objects.create(
+
+            user_id=request.user.pk,
+
+            content_type=ContentType.objects.get_for_model(
+                User
+            ),
+
+            object_id=str(user.pk),
+
+            object_repr=str(user),
+
+            action_flag=CHANGE,
+
+            change_message=message,
+        )
 
 # ============================================================
 # CUSTOM USER ADMIN
