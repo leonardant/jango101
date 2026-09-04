@@ -1,16 +1,131 @@
+from django import forms
+
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry, CHANGE
+
 from django.contrib.auth.admin import UserAdmin
+
+from django.contrib.auth.forms import (
+    UserChangeForm,
+    UserCreationForm,
+)
+
 from django.contrib.auth.models import User
+
 from django.contrib.contenttypes.models import ContentType
 
-from django.http import JsonResponse, HttpResponseNotAllowed
-from django.urls import path, reverse
+from django.http import (
+    JsonResponse,
+    HttpResponseNotAllowed,
+)
+
+from django.urls import (
+    path,
+    reverse,
+)
+
 from django.utils.html import format_html
 
 from django.utils.safestring import mark_safe
 
+from my1stapp.models import UserProfile
+
 from .models import APIClientCredential
+
+
+# ============================================================
+# USER CREATION FORM
+# ============================================================
+
+class CustomUserCreationForm(UserCreationForm):
+
+    language = forms.ChoiceField(
+        choices=UserProfile.LANGUAGE_CHOICES,
+        initial="en-gb",
+        label="Preferred language / culture",
+        required=True,
+    )
+
+    class Meta(UserCreationForm.Meta):
+
+        model = User
+
+        fields = (
+            "username",
+            "language",
+        )
+
+    def save(self, commit=True):
+
+        user = super().save(commit=commit)
+
+        if commit:
+
+            UserProfile.objects.update_or_create(
+                user=user,
+                defaults={
+                    "language": self.cleaned_data[
+                        "language"
+                    ],
+                },
+            )
+
+        return user
+
+
+# ============================================================
+# USER CHANGE FORM
+# ============================================================
+
+class CustomUserChangeForm(UserChangeForm):
+
+    language = forms.ChoiceField(
+        choices=UserProfile.LANGUAGE_CHOICES,
+        label="Preferred language / culture",
+        required=True,
+    )
+
+    class Meta(UserChangeForm.Meta):
+
+        model = User
+
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+
+            profile, created = (
+                UserProfile.objects.get_or_create(
+                    user=self.instance,
+                    defaults={
+                        "language": "en-gb",
+                    },
+                )
+            )
+
+            self.fields[
+                "language"
+            ].initial = profile.language
+
+    def save(self, commit=True):
+
+        user = super().save(commit=commit)
+
+        if commit:
+
+            UserProfile.objects.update_or_create(
+                user=user,
+                defaults={
+                    "language": self.cleaned_data[
+                        "language"
+                    ],
+                },
+            )
+
+        return user
 
 
 # ============================================================
@@ -61,6 +176,10 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
 
         return {}
 
+    # =====================================
+    # CSS and JavaScript
+    # =====================================
+
     class Media:
 
         css = {
@@ -97,11 +216,13 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
 
         url = reverse(
             "admin:api_apiclientcredential_regenerate_secret",
-            args=[obj.pk],
+            args=[
+                obj.pk,
+            ],
         )
 
         return format_html(
-            '''
+            """
             <div class="client-secret-display">
 
                 <span class="masked-secret">
@@ -117,7 +238,7 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
                 </button>
 
             </div>
-            ''',
+            """,
             url,
         )
 
@@ -130,13 +251,17 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         urls = super().get_urls()
 
         custom_urls = [
+
             path(
                 "<int:credential_id>/regenerate-secret/",
                 self.admin_site.admin_view(
                     self.regenerate_secret_view
                 ),
-                name="api_apiclientcredential_regenerate_secret",
+                name=(
+                    "api_apiclientcredential_regenerate_secret"
+                ),
             ),
+
         ]
 
         return custom_urls + urls
@@ -166,7 +291,9 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
 
             return JsonResponse(
                 {
-                    "error": "Credential not found.",
+                    "error": (
+                        "Credential not found."
+                    ),
                 },
                 status=404,
             )
@@ -185,13 +312,16 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
                 "updated_at",
             ]
         )
-        # Add this action to the user's
+
+        # Add this event to the user's
         # Django admin history
 
         self.log_user_api_event(
             request=request,
             user=credential.user,
-            message="API client secret regenerated.",
+            message=(
+                "API client secret regenerated."
+            ),
         )
 
         return JsonResponse(
@@ -215,8 +345,10 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
 
             user_id=request.user.pk,
 
-            content_type=ContentType.objects.get_for_model(
-                User
+            content_type=(
+                ContentType.objects.get_for_model(
+                    User
+                )
             ),
 
             object_id=str(user.pk),
@@ -226,13 +358,16 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
             action_flag=CHANGE,
 
             change_message=message,
+
         )
+
 
 # ============================================================
 # CUSTOM USER ADMIN
 # ============================================================
 
-# Remove Django's existing User admin registration
+# Remove Django's default User admin registration
+
 admin.site.unregister(User)
 
 
@@ -240,7 +375,15 @@ admin.site.unregister(User)
 class CustomUserAdmin(UserAdmin):
 
     # =====================================
-    # Include our CSS and JavaScript
+    # Custom forms
+    # =====================================
+
+    add_form = CustomUserCreationForm
+
+    form = CustomUserChangeForm
+
+    # =====================================
+    # CSS and JavaScript
     # =====================================
 
     class Media:
@@ -256,31 +399,177 @@ class CustomUserAdmin(UserAdmin):
         )
 
     # =====================================
+    # ADD USER PAGE
+    # =====================================
+
+    add_fieldsets = (
+
+        (
+            None,
+            {
+                "classes": (
+                    "wide",
+                ),
+
+                "fields": (
+                    "username",
+                    "language",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+
+    )
+
+    # =====================================
+    # CHANGE USER PAGE
+    # =====================================
+
+    def get_fieldsets(
+        self,
+        request,
+        obj=None,
+    ):
+
+        # ---------------------------------
+        # ADD USER
+        # ---------------------------------
+
+        if obj is None:
+
+            return self.add_fieldsets
+
+        # ---------------------------------
+        # EDIT EXISTING USER
+        # ---------------------------------
+
+        fieldsets = list(
+            super().get_fieldsets(
+                request,
+                obj,
+            )
+        )
+
+        # ---------------------------------
+        # Add language to Personal info
+        # ---------------------------------
+
+        for index, fieldset in enumerate(
+            fieldsets
+        ):
+
+            title = fieldset[0]
+
+            options = fieldset[1].copy()
+
+            fields = list(
+                options.get(
+                    "fields",
+                    (),
+                )
+            )
+
+            if title == "Personal info":
+
+                if "language" not in fields:
+
+                    fields.append(
+                        "language"
+                    )
+
+                options["fields"] = tuple(
+                    fields
+                )
+
+                fieldsets[index] = (
+                    title,
+                    options,
+                )
+
+                break
+
+        # ---------------------------------
+        # API credentials section
+        # ---------------------------------
+
+        api_credentials_fieldset = (
+
+            "API client credentials",
+
+            {
+                "fields": (
+                    "api_credentials_display",
+                ),
+            },
+
+        )
+
+        # ---------------------------------
+        # Insert before Important dates
+        # ---------------------------------
+
+        for index, fieldset in enumerate(
+            fieldsets
+        ):
+
+            if fieldset[0] == "Important dates":
+
+                fieldsets.insert(
+                    index,
+                    api_credentials_fieldset,
+                )
+
+                break
+
+        else:
+
+            fieldsets.append(
+                api_credentials_fieldset
+            )
+
+        return fieldsets
+
+    # =====================================
     # API credential section
     # =====================================
 
-    @admin.display(description="API client credentials")
-    def api_credentials_display(self, obj):
+    @admin.display(
+        description="API client credentials"
+    )
+    def api_credentials_display(
+        self,
+        obj,
+    ):
+
+        if not obj:
+
+            return "-"
 
         try:
 
-            credential = APIClientCredential.objects.get(
-                user=obj
+            credential = (
+                APIClientCredential.objects.get(
+                    user=obj
+                )
             )
 
         except APIClientCredential.DoesNotExist:
 
             return mark_safe(
-                '''
+                """
                 <div class="api-credentials-empty">
-                    No API client credential exists for this user.
+                    No API client credential exists
+                    for this user.
                 </div>
-                '''
+                """
             )
 
         regenerate_url = reverse(
             "admin:api_apiclientcredential_regenerate_secret",
-            args=[credential.pk],
+            args=[
+                credential.pk,
+            ],
         )
 
         active_display = (
@@ -296,7 +585,7 @@ class CustomUserAdmin(UserAdmin):
         )
 
         return format_html(
-            '''
+            """
             <div class="embedded-api-credentials">
 
                 <div class="api-credential-row">
@@ -376,7 +665,7 @@ class CustomUserAdmin(UserAdmin):
                 </div>
 
             </div>
-            ''',
+            """,
 
             regenerate_url,
 
@@ -395,61 +684,7 @@ class CustomUserAdmin(UserAdmin):
         )
 
     # =====================================
-    # Position API credentials before
-    # Important dates
-    # =====================================
-
-    def get_fieldsets(
-        self,
-        request,
-        obj=None,
-    ):
-
-        fieldsets = list(
-            super().get_fieldsets(
-                request,
-                obj,
-            )
-        )
-
-        api_credentials_fieldset = (
-            "API client credentials",
-            {
-                "fields": (
-                    "api_credentials_display",
-                ),
-            },
-        )
-
-        # Insert immediately before
-        # Django's "Important dates" section
-
-        for index, fieldset in enumerate(
-            fieldsets
-        ):
-
-            if fieldset[0] == "Important dates":
-
-                fieldsets.insert(
-                    index,
-                    api_credentials_fieldset,
-                )
-
-                break
-
-        else:
-
-            # Fallback if Important dates
-            # cannot be found
-
-            fieldsets.append(
-                api_credentials_fieldset
-            )
-
-        return fieldsets
-
-    # =====================================
-    # Make custom display readonly
+    # Read-only custom display
     # =====================================
 
     def get_readonly_fields(
@@ -465,8 +700,10 @@ class CustomUserAdmin(UserAdmin):
             )
         )
 
-        readonly_fields.append(
-            "api_credentials_display"
-        )
+        if obj is not None:
+
+            readonly_fields.append(
+                "api_credentials_display"
+            )
 
         return readonly_fields

@@ -31,10 +31,11 @@ class ToDoItem(models.Model):
     def __str__(self):
         return self.title
 
+
 class UserProfile(models.Model):
 
     LANGUAGE_CHOICES = [
-        ("en-gb", "English (Uk)"),
+        ("en-gb", "English (United Kingdom)"),
         ("fr", "Français"),
         ("de", "Deutsch"),
     ]
