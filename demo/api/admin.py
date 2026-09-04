@@ -50,7 +50,43 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         }
 
         js = (
-            "admin/js/api_admin.js",
+            "admin/js/api_credentials.js",
+        )
+
+    # =====================================
+    # Client secret display
+    # =====================================
+
+    @admin.display(description="Client secret")
+    def client_secret_display(self, obj):
+
+        if not obj:
+            return "-"
+
+        url = reverse(
+            "admin:api_apiclientcredential_regenerate_secret",
+            args=[obj.pk],
+        )
+
+        return format_html(
+            '''
+            <div class="client-secret-display">
+
+                <span class="masked-secret">
+                    ********
+                </span>
+
+                <button
+                    type="button"
+                    class="button regenerate-secret-button"
+                    data-url="{}"
+                >
+                    Generate new secret
+                </button>
+
+            </div>
+            ''',
+            url,
         )
 
     # =====================================
@@ -72,46 +108,6 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         ]
 
         return custom_urls + urls
-
-
-    # =====================================
-    # Client secret display
-    # =====================================
-
-    def client_secret_display(self, obj):
-
-        if not obj:
-            return "-"
-
-        url = reverse(
-            "admin:api_apiclientcredential_regenerate_secret",
-            args=[obj.pk],
-        )
-
-        return format_html(
-            '''
-            <div class="client-secret-display">
-
-                <span class="client-secret-value">
-                    {0}
-                </span>
-
-                <button
-                    type="button"
-                    class="button regenerate-secret-button"
-                    data-url="{1}"
-                >
-                    Generate new secret
-                </button>
-
-            </div>
-            ''',
-            obj.client_secret,
-            url,
-        )
-
-    client_secret_display.short_description = "Client secret"
-
 
     # =====================================
     # Regenerate client secret
@@ -160,7 +156,7 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
             ]
         )
 
-        # Return raw secret ONCE
+        # Return the raw secret ONCE
         return JsonResponse(
             {
                 "client_secret": raw_secret,
