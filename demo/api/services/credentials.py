@@ -1,14 +1,14 @@
-from api.models import APIClientCredential
+from ..models import APIClientCredential
 
 
 def regenerate_client_secret(
     credential: APIClientCredential,
 ) -> str:
     """
-    Generate and store a new client secret.
+    Generate a new client secret, store only its hashed version,
+    and return the raw secret.
 
-    The raw secret is returned so it can be displayed once to
-    the administrator. Only the hashed version is stored.
+    The raw secret should only be displayed once.
     """
 
     raw_secret = (
