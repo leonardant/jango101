@@ -239,3 +239,112 @@
 
     padding-bottom: 12px !important;
 }
+
+/* =====================================
+   Embedded API credentials on User page
+   ===================================== */
+
+.embedded-api-credentials {
+
+    width: 100%;
+
+}
+
+
+.api-credential-row {
+
+    display: grid;
+
+    grid-template-columns: 180px 1fr;
+
+    gap: 20px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px dashed
+        var(--border-color, #ddd);
+
+}
+
+
+.api-credential-row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.api-credential-label {
+
+    font-weight: 500;
+
+}
+
+
+.api-credential-value {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.api-client-id {
+
+    font-family: monospace;
+
+}
+
+
+.api-active {
+
+    color: #198754;
+
+    font-weight: bold;
+
+}
+
+
+.api-inactive {
+
+    color: #dc3545;
+
+    font-weight: bold;
+
+}
+
+
+.api-credentials-empty {
+
+    padding: 12px;
+
+    color: #666;
+
+    font-style: italic;
+
+}
+
+.regenerate-secret-button {
+    background-color: #417690 !important;
+    border: 1px solid #417690 !important;
+    color: white !important;
+
+    padding: 8px 14px;
+
+    border-radius: 6px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+
+.regenerate-secret-button:hover {
+    background-color: #205067 !important;
+    border-color: #205067 !important;
+}
