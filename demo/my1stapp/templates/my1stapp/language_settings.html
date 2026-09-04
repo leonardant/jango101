@@ -1,0 +1,21 @@
+{% load i18n %}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{% trans "Language settings" %}</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        {% trans "Save language" %}
+    </button>
+
+</form>
+
+{% endblock %}

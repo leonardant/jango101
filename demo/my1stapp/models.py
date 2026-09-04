@@ -30,3 +30,26 @@ class ToDoItem(models.Model):
 
     def __str__(self):
         return self.title
+
+class UserProfile(models.Model):
+
+    LANGUAGE_CHOICES = [
+        ("en-gb", "English (Uk)"),
+        ("fr", "Français"),
+        ("de", "Deutsch"),
+    ]
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="profile",
+    )
+
+    language = models.CharField(
+        max_length=10,
+        choices=LANGUAGE_CHOICES,
+        default="en-gb",
+    )
+
+    def __str__(self):
+        return self.user.username

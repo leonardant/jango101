@@ -3,8 +3,22 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 
+from .models import UserProfile
+
 User = get_user_model()
 
+
+
+
+class LanguageForm(forms.ModelForm):
+
+    class Meta:
+
+        model = UserProfile
+
+        fields = [
+            "language",
+        ]
 
 class ProfileForm(forms.ModelForm):
 

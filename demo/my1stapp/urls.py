@@ -16,4 +16,6 @@ urlpatterns = [
 
     path("profile/", views.profile, name="profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
+
+    path("settings/language/", views.language_settings, name="language_settings" ),
 ]

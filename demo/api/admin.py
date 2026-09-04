@@ -8,6 +8,8 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 from django.urls import path, reverse
 from django.utils.html import format_html
 
+from django.utils.safestring import mark_safe
+
 from .models import APIClientCredential
 
 
@@ -268,7 +270,7 @@ class CustomUserAdmin(UserAdmin):
 
         except APIClientCredential.DoesNotExist:
 
-            return format_html(
+            return mark_safe(
                 '''
                 <div class="api-credentials-empty">
                     No API client credential exists for this user.

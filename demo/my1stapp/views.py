@@ -2,9 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from .forms import ProfileForm, ToDoForm
+from .forms import ProfileForm, ToDoForm, LanguageForm
 from .api_client import APIClient, APIClientError, APIValidationError
-
 
 # =====================================
 # Home
@@ -369,6 +368,42 @@ def edit_profile(request):
     return render(
         request,
         "my1stapp/edit_profile.html",
+        {
+            "form": form,
+        },
+    )
+
+@login_required
+def language_settings(request):
+
+    profile, created = request.user.profile.__class__.objects.get_or_create(
+        user=request.user
+    )
+
+    if request.method == "POST":
+
+        form = LanguageForm(
+            request.POST,
+            instance=profile,
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect(
+                "my1stapp:language_settings"
+            )
+
+    else:
+
+        form = LanguageForm(
+            instance=profile
+        )
+
+    return render(
+        request,
+        "my1stapp/language_settings.html",
         {
             "form": form,
         },

@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}
-To Do Items | Sensor Application
+{% trans "To Do Items | Sensor Application" %}
 {% endblock %}
 
 
@@ -14,7 +15,7 @@ To Do Items | Sensor Application
         <li class="breadcrumb-item">
 
             <a href="{% url 'my1stapp:home' %}">
-                Home
+                {% trans Home
             </a>
 
         </li>
@@ -22,7 +23,7 @@ To Do Items | Sensor Application
         <li class="breadcrumb-item active"
             aria-current="page">
 
-            To Do Items
+            {% trans "To Do Items" %}
 
         </li>
 
