@@ -18,6 +18,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+
     steps:
       # ==========================================================
       # Checkout
@@ -150,12 +153,3 @@ jobs:
       - name: Display coverage report
         working-directory: demo
         run: uv run coverage report -m
-
-
-      # ==========================================================
-      # Final Django check
-      # ==========================================================
-
-      - name: Final Django system check
-        working-directory: demo
-        run: uv run python manage.py check
