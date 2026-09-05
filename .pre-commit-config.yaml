@@ -8,3 +8,11 @@ repos:
         pass_filenames: false
         stages:
           - pre-commit
+
+      - id: archive-successful-commit
+        name: Archive successful commit
+        entry: ./scripts/archive.sh
+        language: system
+        pass_filenames: false
+        stages:
+          - post-commit
