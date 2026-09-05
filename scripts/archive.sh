@@ -51,7 +51,8 @@ if [[ ! -d "$ARTIFACTS_DIR" ]]; then
     echo
     echo "ERROR: No staged artefacts found."
     echo
-    echo "Run ./scripts/check.sh successfully first."
+    echo "The check pipeline must complete successfully before"
+    echo "an archive can be created."
     echo
 
     exit 1
@@ -89,6 +90,9 @@ section "Creating archive directory"
 
 mkdir -p "$RUN_DIR"
 
+echo "Archive directory:"
+echo "  $RUN_DIR"
+
 
 # ============================================================
 # Copy staged artefacts
@@ -116,6 +120,28 @@ echo "Source archive created."
 
 
 # ============================================================
+# Verify source archive
+# ============================================================
+
+section "Verifying source archive"
+
+if [[ ! -f "$RUN_DIR/repo.zip" ]]; then
+
+    echo
+    echo "ERROR: Source archive was not created."
+    echo
+
+    exit 1
+
+fi
+
+ARCHIVE_SIZE="$(du -h "$RUN_DIR/repo.zip" | cut -f1)"
+
+echo "Source archive verified."
+echo "Archive size: $ARCHIVE_SIZE"
+
+
+# ============================================================
 # Create metadata
 # ============================================================
 
@@ -133,7 +159,7 @@ echo "Metadata created."
 
 
 # ============================================================
-# Verify archive
+# Verify archive artefacts
 # ============================================================
 
 section "Verifying archive artefacts"
@@ -147,6 +173,7 @@ REQUIRED_FILES=(
     "$RUN_DIR/repo.zip"
     "$RUN_DIR/metadata.txt"
 )
+
 
 for FILE in "${REQUIRED_FILES[@]}"; do
 
@@ -170,13 +197,39 @@ if [[ ! -d "$RUN_DIR/coverage" ]]; then
     echo
     echo "ERROR: Coverage directory is missing:"
     echo
+    echo "  $RUN_DIR/coverage"
+    echo
 
     exit 1
 
 fi
 
 
-echo "All archive artefacts verified."
+if [[ ! -f "$RUN_DIR/coverage/index.html" ]]; then
+
+    echo
+    echo "ERROR: Coverage index.html is missing:"
+    echo
+    echo "  $RUN_DIR/coverage/index.html"
+    echo
+
+    exit 1
+
+fi
+
+
+echo "All archive artefacts verified successfully."
+
+
+# ============================================================
+# Clean up staged artefacts
+# ============================================================
+
+section "Cleaning up staged artefacts"
+
+rm -rf "$ARTIFACTS_DIR"
+
+echo "Staged artefacts removed."
 
 
 # ============================================================
