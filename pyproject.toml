@@ -20,3 +20,6 @@ dev = [
     "coverage>=7.16.0",
     "ruff>=0.16.6",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"**/migrations/*.py" = ["RUF012"]

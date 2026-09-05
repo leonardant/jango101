@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 
-## from django.contrib.auth.models import User
 from .models import UserProfile
+
 
 User = get_user_model()
 
@@ -12,22 +12,20 @@ class LanguageForm(forms.ModelForm):
     class Meta:
         model = UserProfile
 
-        fields = [
-            "language",
-        ]
+        fields = ("language",)
 
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
 
-        fields = [
+        fields = (
             "first_name",
             "last_name",
             "email",
-        ]
+        )
 
-        widgets = {
+        widgets = {  # noqa: RUF012
             "first_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
@@ -47,9 +45,16 @@ class ProfileForm(forms.ModelForm):
 
 
 class StyledPasswordChangeForm(PasswordChangeForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(
+        self,
+        *args,
+        **kwargs,
+    ):
 
-        super().__init__(*args, **kwargs)
+        super().__init__(
+            *args,
+            **kwargs,
+        )
 
         for field in self.fields.values():
             field.widget.attrs.update(

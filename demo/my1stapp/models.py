@@ -32,11 +32,11 @@ class ToDoItem(models.Model):
 
 
 class UserProfile(models.Model):
-    LANGUAGE_CHOICES = [
+    LANGUAGE_CHOICES = (
         ("en-gb", "English (United Kingdom)"),
         ("fr", "Français"),
         ("de", "Deutsch"),
-    ]
+    )
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,

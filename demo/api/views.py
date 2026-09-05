@@ -10,6 +10,7 @@ from my1stapp.models import ToDoItem
 
 from .serializers import ClientCredentialsSerializer, ToDoItemSerializer
 
+
 # =====================================
 # Who Am I API endpoint
 # =====================================
@@ -20,9 +21,7 @@ from .serializers import ClientCredentialsSerializer, ToDoItemSerializer
     name="dispatch",
 )
 class WhoAmIView(APIView):
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
 
@@ -47,9 +46,7 @@ class WhoAmIView(APIView):
 class ToDoListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ToDoItemSerializer
 
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
 
@@ -72,9 +69,7 @@ class ToDoListCreateAPIView(generics.ListCreateAPIView):
 class ToDoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ToDoItemSerializer
 
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
 
@@ -87,11 +82,9 @@ class ToDoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ClientCredentialsTokenView(APIView):
-    authentication_classes = []
+    authentication_classes = ()
 
-    permission_classes = [
-        AllowAny,
-    ]
+    permission_classes = (AllowAny,)
 
     def post(self, request):
 

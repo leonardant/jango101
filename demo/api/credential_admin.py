@@ -76,7 +76,9 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
     # =====================================
 
     class Media:
-        css = {"all": ("admin/css/api_admin.css",)}
+        css = {  # noqa: RUF012
+            "all": ("admin/css/api_admin.css",)
+        }
 
         js = ("admin/js/api_credentials.js",)
 

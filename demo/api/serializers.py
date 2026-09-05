@@ -10,20 +10,20 @@ class ToDoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoItem
 
-        fields = [
+        fields = (
             "id",
             "title",
             "description",
             "completed",
             "created_at",
             "updated_at",
-        ]
+        )
 
-        read_only_fields = [
+        read_only_fields = (
             "id",
             "created_at",
             "updated_at",
-        ]
+        )
 
 
 class ClientCredentialsSerializer(serializers.Serializer):
@@ -44,18 +44,30 @@ class ClientCredentialsSerializer(serializers.Serializer):
             )
 
         except APIClientCredential.DoesNotExist:
-            raise serializers.ValidationError({"detail": "Invalid client credentials."})
+            raise serializers.ValidationError(
+                {
+                    "detail": "Invalid client credentials.",
+                }
+            )
 
         # Do not allow inactive users
         if not credential.user.is_active:
-            raise serializers.ValidationError({"detail": "Invalid client credentials."})
+            raise serializers.ValidationError(
+                {
+                    "detail": "Invalid client credentials.",
+                }
+            )
 
         # Check the supplied secret against the stored hash
         if not check_password(
             client_secret,
             credential.client_secret,
         ):
-            raise serializers.ValidationError({"detail": "Invalid client credentials."})
+            raise serializers.ValidationError(
+                {
+                    "detail": "Invalid client credentials.",
+                }
+            )
 
         attrs["credential"] = credential
 
