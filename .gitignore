@@ -219,7 +219,7 @@ __marimo__/
 
 
 ### mine!
-/Scripts*
+# /Scripts*
 CACHEDIR.TAG
 pyvenv.cfg
 
@@ -230,3 +230,18 @@ repo.zip
 repo-*.zip
 
 *.sarif
+
+# Ruff reports
+ruff-report.sarif
+ruff_safe_fixes_diff.txt
+ruff_unsafe_fixes.txt
+
+# Coverage
+.coverage
+htmlcov/
+
+# Local archives
+archives/
+
+# Generated OpenAPI temporary files
+schema-temp.yml
