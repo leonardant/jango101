@@ -3,7 +3,7 @@ from django.contrib.admin.models import (
     CHANGE,
     LogEntry,
 )
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 
 from django.http import (
@@ -23,6 +23,7 @@ from .services.credentials import (
     regenerate_client_secret,
 )
 
+User = get_user_model()
 
 # ============================================================
 # API CLIENT CREDENTIAL ADMIN
