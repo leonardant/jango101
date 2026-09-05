@@ -122,16 +122,16 @@ uv run bandit \
 
 
 # ============================================================
-# Bandit JSON report
+# Bandit HTML report
 # ============================================================
 
-section "Generating Bandit security report"
+section "Generating Bandit HTML report"
 
 uv run bandit \
     -r api my1stapp \
     --exclude "api/tests,my1stapp/tests" \
     --format html \
-    --output "$BANDIT_TEMP_REPORT"
+    > "$BANDIT_TEMP_REPORT"
 
 echo "Temporary Bandit HTML report generated."
 
@@ -148,14 +148,14 @@ uv run pip-audit
 
 
 # ============================================================
-# pip-audit JSON report
+# pip-audit Markdown report
 # ============================================================
 
-section "Generating pip-audit dependency report"
+section "Generating pip-audit Markdown report"
 
 uv run pip-audit \
     --format markdown \
-    --output "$PIP_AUDIT_TEMP_REPORT"
+    > "$PIP_AUDIT_TEMP_REPORT"
 
 echo "Temporary pip-audit Markdown report generated."
 
@@ -230,6 +230,53 @@ uv run coverage html \
     --directory "$COVERAGE_TEMP_DIR"
 
 echo "Temporary HTML coverage report generated."
+
+
+# ============================================================
+# Verify generated artefacts
+# ============================================================
+
+section "Verifying generated artefacts"
+
+REQUIRED_FILES=(
+    "$RUFF_TEMP_REPORT"
+    "$BANDIT_TEMP_REPORT"
+    "$PIP_AUDIT_TEMP_REPORT"
+    "$SCHEMA_TEMP_REPORT"
+)
+
+
+for FILE in "${REQUIRED_FILES[@]}"; do
+
+    if [[ ! -f "$FILE" ]]; then
+
+        echo
+        echo "ERROR: Expected report was not generated:"
+        echo
+        echo "  $FILE"
+        echo
+
+        exit 1
+
+    fi
+
+done
+
+
+if [[ ! -d "$COVERAGE_TEMP_DIR" ]]; then
+
+    echo
+    echo "ERROR: Coverage report directory was not generated:"
+    echo
+    echo "  $COVERAGE_TEMP_DIR"
+    echo
+
+    exit 1
+
+fi
+
+
+echo "All expected artefacts were generated successfully."
 
 
 # ============================================================
