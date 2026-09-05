@@ -4,7 +4,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from .models import UserProfile
 
-
 User = get_user_model()
 
 

@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from my1stapp.models import ToDoItem
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from api.models import APIClientCredential
-from my1stapp.models import ToDoItem
 
 User = get_user_model()
 
