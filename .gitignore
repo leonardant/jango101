@@ -228,3 +228,5 @@ demo/frontend/**
 
 repo.zip
 repo-*.zip
+
+*.sarif
