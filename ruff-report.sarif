@@ -1,0 +1,2551 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/admin.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 18,
+                        "startColumn": 1,
+                        "startLine": 17
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove unused import: `.credential_admin.APIClientCredentialAdmin`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/admin.py"
+                },
+                "region": {
+                  "endColumn": 55,
+                  "endLine": 17,
+                  "startColumn": 31,
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "`.credential_admin.APIClientCredentialAdmin` imported but unused"
+          },
+          "ruleId": "F401"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/admin.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 19,
+                        "startColumn": 1,
+                        "startLine": 18
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove unused import: `.user_admin.CustomUserAdmin`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/admin.py"
+                },
+                "region": {
+                  "endColumn": 40,
+                  "endLine": 18,
+                  "startColumn": 25,
+                  "startLine": 18
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "`.user_admin.CustomUserAdmin` imported but unused"
+          },
+          "ruleId": "F401"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/admin_forms.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 11,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django import forms\nfrom django.contrib.auth import get_user_model\nfrom django.contrib.auth.forms import (\n    UserChangeForm,\n    UserCreationForm,\n)\nfrom my1stapp.models import UserProfile\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/admin_forms.py"
+                },
+                "region": {
+                  "endColumn": 40,
+                  "endLine": 9,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/admin_forms.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 29,
+                        "endLine": 81,
+                        "startColumn": 22,
+                        "startLine": 81
+                      },
+                      "insertedContent": {
+                        "text": "_created"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Prefix it with an underscore or any other dummy variable pattern"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/admin_forms.py"
+                },
+                "region": {
+                  "endColumn": 29,
+                  "endLine": 81,
+                  "startColumn": 22,
+                  "startLine": 81
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Unpacked variable `created` is never used"
+          },
+          "ruleId": "RUF059"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/apps.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 27,
+                        "endLine": 10,
+                        "startColumn": 9,
+                        "startLine": 10
+                      },
+                      "insertedContent": {
+                        "text": "pass"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove unused import: `api.signals`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/apps.py"
+                },
+                "region": {
+                  "endColumn": 27,
+                  "endLine": 10,
+                  "startColumn": 16,
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "`api.signals` imported but unused"
+          },
+          "ruleId": "F401"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/credential_admin.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 26,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib import admin\nfrom django.contrib.admin.models import (\n    CHANGE,\n    LogEntry,\n)\nfrom django.contrib.auth import get_user_model\nfrom django.contrib.contenttypes.models import ContentType\nfrom django.http import (\n    HttpResponseNotAllowed,\n    JsonResponse,\n)\nfrom django.urls import (\n    path,\n    reverse,\n)\nfrom django.utils.html import format_html\n\nfrom .models import APIClientCredential\nfrom .services.credentials import (\n    regenerate_client_secret,\n)\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/credential_admin.py"
+                },
+                "region": {
+                  "endColumn": 2,
+                  "endLine": 24,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/credential_admin.py"
+                },
+                "region": {
+                  "endColumn": 52,
+                  "endLine": 82,
+                  "startColumn": 15,
+                  "startLine": 82
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/management/commands/create_api_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 7,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth import get_user_model\nfrom django.core.management.base import BaseCommand, CommandError\n\nfrom api.models import APIClientCredential\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/management/commands/create_api_credentials.py"
+                },
+                "region": {
+                  "endColumn": 43,
+                  "endLine": 4,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/migrations/0001_initial.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 13,
+                  "startColumn": 20,
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/migrations/0001_initial.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 46,
+                  "startColumn": 18,
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/migrations/0002_alter_apiclientcredential_client_secret.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 9,
+                  "startColumn": 20,
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/migrations/0002_alter_apiclientcredential_client_secret.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 17,
+                  "startColumn": 18,
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/serializers.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 10,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth.hashers import check_password\nfrom my1stapp.models import ToDoItem\nfrom rest_framework import serializers\n\nfrom .models import APIClientCredential\n\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/serializers.py"
+                },
+                "region": {
+                  "endColumn": 40,
+                  "endLine": 7,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/serializers.py"
+                },
+                "region": {
+                  "endColumn": 10,
+                  "endLine": 21,
+                  "startColumn": 18,
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/serializers.py"
+                },
+                "region": {
+                  "endColumn": 10,
+                  "endLine": 27,
+                  "startColumn": 28,
+                  "startLine": 23
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/signals.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 8,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth import get_user_model\nfrom django.db.models.signals import post_save\nfrom django.dispatch import receiver\n\nfrom .models import APIClientCredential\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/signals.py"
+                },
+                "region": {
+                  "endColumn": 40,
+                  "endLine": 5,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_client_credentials_api.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 11,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth import get_user_model\nfrom django.test import TestCase\nfrom my1stapp.models import ToDoItem\nfrom rest_framework import status\nfrom rest_framework.test import APIClient\n\nfrom api.models import APIClientCredential\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_client_credentials_api.py"
+                },
+                "region": {
+                  "endColumn": 43,
+                  "endLine": 8,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 9,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth import get_user_model\nfrom django.contrib.auth.hashers import check_password\nfrom django.test import TestCase\nfrom django.urls import reverse\n\nfrom api.models import APIClientCredential\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 43,
+                  "endLine": 6,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 347,
+                        "startColumn": 9,
+                        "startLine": 347
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 347,
+                  "startColumn": 9,
+                  "startLine": 347
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 381,
+                        "startColumn": 9,
+                        "startLine": 381
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 381,
+                  "startColumn": 9,
+                  "startLine": 381
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 415,
+                        "startColumn": 9,
+                        "startLine": 415
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 415,
+                  "startColumn": 9,
+                  "startLine": 415
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 453,
+                        "startColumn": 9,
+                        "startLine": 453
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 453,
+                  "startColumn": 9,
+                  "startLine": 453
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 495,
+                        "startColumn": 9,
+                        "startLine": 495
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 495,
+                  "startColumn": 9,
+                  "startLine": 495
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 538,
+                        "startColumn": 9,
+                        "startLine": 538
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 538,
+                  "startColumn": 9,
+                  "startLine": 538
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 22,
+                        "endLine": 593,
+                        "startColumn": 9,
+                        "startLine": 593
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `admin_user`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_credentials.py"
+                },
+                "region": {
+                  "endColumn": 19,
+                  "endLine": 593,
+                  "startColumn": 9,
+                  "startLine": 593
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `admin_user` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/tests/test_todos_api.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 9,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth import get_user_model\nfrom my1stapp.models import ToDoItem\nfrom rest_framework import status\nfrom rest_framework.test import APITestCase\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/tests/test_todos_api.py"
+                },
+                "region": {
+                  "endColumn": 37,
+                  "endLine": 6,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/urls.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 11,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.urls import path\n\nfrom . import views\nfrom .views import (\n    ClientCredentialsTokenView,\n    ToDoDetailAPIView,\n    ToDoListCreateAPIView,\n)\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/urls.py"
+                },
+                "region": {
+                  "endColumn": 2,
+                  "endLine": 8,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/user_admin.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 15,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib import admin\nfrom django.contrib.auth import get_user_model\nfrom django.contrib.auth.admin import UserAdmin\nfrom django.urls import reverse\nfrom django.utils.html import format_html\n\nfrom .admin_forms import (\n    CustomUserChangeForm,\n    CustomUserCreationForm,\n)\nfrom .models import APIClientCredential\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/user_admin.py"
+                },
+                "region": {
+                  "endColumn": 40,
+                  "endLine": 13,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/user_admin.py"
+                },
+                "region": {
+                  "endColumn": 52,
+                  "endLine": 37,
+                  "startColumn": 15,
+                  "startLine": 37
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/api/views.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 15,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth.decorators import login_not_required\nfrom django.utils.decorators import method_decorator\nfrom my1stapp.models import ToDoItem\nfrom rest_framework import generics\nfrom rest_framework.permissions import AllowAny, IsAuthenticated\nfrom rest_framework.response import Response\nfrom rest_framework.views import APIView\nfrom rest_framework_simplejwt.tokens import RefreshToken\n\nfrom .serializers import ClientCredentialsSerializer, ToDoItemSerializer\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/views.py"
+                },
+                "region": {
+                  "endColumn": 73,
+                  "endLine": 12,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/views.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 27,
+                  "startColumn": 26,
+                  "startLine": 25
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/views.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 54,
+                  "startColumn": 26,
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/views.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 79,
+                  "startColumn": 26,
+                  "startLine": 77
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/views.py"
+                },
+                "region": {
+                  "endColumn": 32,
+                  "endLine": 92,
+                  "startColumn": 30,
+                  "startLine": 92
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/api/views.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 96,
+                  "startColumn": 26,
+                  "startLine": 94
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/demo/settings.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 21,
+                        "startColumn": 1,
+                        "startLine": 13
+                      },
+                      "insertedContent": {
+                        "text": "import os\nfrom pathlib import Path\n\nfrom django.utils.translation import gettext_lazy as _\nfrom dotenv import load_dotenv\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/demo/settings.py"
+                },
+                "region": {
+                  "endColumn": 55,
+                  "endLine": 19,
+                  "startColumn": 1,
+                  "startLine": 13
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/demo/urls.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 15,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib import admin\nfrom django.contrib.auth import views as auth_views\nfrom django.contrib.auth.decorators import login_not_required, login_required\nfrom django.urls import include, path\nfrom drf_spectacular.views import (\n    SpectacularAPIView,\n    SpectacularRedocView,\n    SpectacularSwaggerView,\n)\nfrom my1stapp.forms import StyledPasswordChangeForm\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/demo/urls.py"
+                },
+                "region": {
+                  "endColumn": 2,
+                  "endLine": 12,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/api_client.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 10,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "import logging\n\nimport requests\nfrom django.conf import settings\nfrom rest_framework_simplejwt.tokens import RefreshToken\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/api_client.py"
+                },
+                "region": {
+                  "endColumn": 57,
+                  "endLine": 7,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/api_client.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 20,
+                        "startColumn": 1,
+                        "startLine": 19
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove unnecessary `pass`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/api_client.py"
+                },
+                "region": {
+                  "endColumn": 9,
+                  "endLine": 19,
+                  "startColumn": 5,
+                  "startLine": 19
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Unnecessary `pass` statement"
+          },
+          "ruleId": "PIE790"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/api_client.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 61,
+                        "endLine": 152,
+                        "startColumn": 52,
+                        "startLine": 152
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove assignment to unused variable `error`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/api_client.py"
+                },
+                "region": {
+                  "endColumn": 61,
+                  "endLine": 152,
+                  "startColumn": 56,
+                  "startLine": 152
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Local variable `error` is assigned to but never used"
+          },
+          "ruleId": "F841"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/apps.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 32,
+                        "endLine": 13,
+                        "startColumn": 9,
+                        "startLine": 13
+                      },
+                      "insertedContent": {
+                        "text": "pass"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Remove unused import: `my1stapp.signals`"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/apps.py"
+                },
+                "region": {
+                  "endColumn": 32,
+                  "endLine": 13,
+                  "startColumn": 16,
+                  "startLine": 13
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "`my1stapp.signals` imported but unused"
+          },
+          "ruleId": "F401"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/forms.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 8,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django import forms\nfrom django.contrib.auth import get_user_model\nfrom django.contrib.auth.forms import PasswordChangeForm\n\n## from django.contrib.auth.models import User\nfrom .models import UserProfile\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/forms.py"
+                },
+                "region": {
+                  "endColumn": 32,
+                  "endLine": 6,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/forms.py"
+                },
+                "region": {
+                  "endColumn": 10,
+                  "endLine": 17,
+                  "startColumn": 18,
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/forms.py"
+                },
+                "region": {
+                  "endColumn": 10,
+                  "endLine": 28,
+                  "startColumn": 18,
+                  "startLine": 24
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/forms.py"
+                },
+                "region": {
+                  "endColumn": 10,
+                  "endLine": 46,
+                  "startColumn": 19,
+                  "startLine": 30
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0001_initial.py"
+                },
+                "region": {
+                  "endColumn": 22,
+                  "endLine": 9,
+                  "startColumn": 20,
+                  "startLine": 9
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0001_initial.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 29,
+                  "startColumn": 18,
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0002_todoitem_created_at_todoitem_owner_and_more.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 13,
+                  "startColumn": 20,
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0002_todoitem_created_at_todoitem_owner_and_more.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 40,
+                  "startColumn": 18,
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0003_userprofile.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 12,
+                  "startColumn": 20,
+                  "startLine": 9
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0003_userprofile.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 49,
+                  "startColumn": 18,
+                  "startLine": 14
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0004_alter_userprofile_language.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 9,
+                  "startColumn": 20,
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0004_alter_userprofile_language.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 25,
+                  "startColumn": 18,
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0005_alter_userprofile_language.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 9,
+                  "startColumn": 20,
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0005_alter_userprofile_language.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 25,
+                  "startColumn": 18,
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0006_alter_userprofile_language.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 9,
+                  "startColumn": 20,
+                  "startLine": 7
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/migrations/0006_alter_userprofile_language.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 25,
+                  "startColumn": 18,
+                  "startLine": 11
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/models.py"
+                },
+                "region": {
+                  "endColumn": 6,
+                  "endLine": 39,
+                  "startColumn": 24,
+                  "startLine": 35
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Mutable default value for class attribute"
+          },
+          "ruleId": "RUF012"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/signals.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 8,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib.auth import get_user_model\nfrom django.db.models.signals import post_save\nfrom django.dispatch import receiver\n\nfrom .models import UserProfile\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/signals.py"
+                },
+                "region": {
+                  "endColumn": 32,
+                  "endLine": 5,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_api_client.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 20,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from unittest.mock import Mock, patch\n\nimport requests\nfrom django.contrib.auth import get_user_model\nfrom django.test import TestCase\n\nfrom my1stapp.api_client import (\n    APIAuthenticationError,\n    APIClient,\n    APIClientError,\n    APIConnectionError,\n    APINotFoundError,\n    APIPermissionError,\n    APIServerError,\n    APIValidationError,\n)\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_api_client.py"
+                },
+                "region": {
+                  "endColumn": 2,
+                  "endLine": 17,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_api_client.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 21,
+                        "endLine": 104,
+                        "startColumn": 15,
+                        "startLine": 104
+                      },
+                      "insertedContent": {
+                        "text": "_kwargs"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Prefix it with an underscore or any other dummy variable pattern"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_api_client.py"
+                },
+                "region": {
+                  "endColumn": 21,
+                  "endLine": 104,
+                  "startColumn": 15,
+                  "startLine": 104
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Unpacked variable `kwargs` is never used"
+          },
+          "ruleId": "RUF059"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_api_client.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 13,
+                        "endLine": 133,
+                        "startColumn": 9,
+                        "startLine": 133
+                      },
+                      "insertedContent": {
+                        "text": "_args"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Prefix it with an underscore or any other dummy variable pattern"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_api_client.py"
+                },
+                "region": {
+                  "endColumn": 13,
+                  "endLine": 133,
+                  "startColumn": 9,
+                  "startLine": 133
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Unpacked variable `args` is never used"
+          },
+          "ruleId": "RUF059"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_user_creation.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 8,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from api.models import APIClientCredential\nfrom django.contrib.auth import get_user_model\nfrom django.test import TestCase\n\nfrom my1stapp.models import UserProfile\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/tests/test_user_creation.py"
+                },
+                "region": {
+                  "endColumn": 40,
+                  "endLine": 5,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/urls.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 4,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.urls import path\n\nfrom . import views\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/urls.py"
+                },
+                "region": {
+                  "endColumn": 20,
+                  "endLine": 2,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/views.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 1,
+                        "endLine": 8,
+                        "startColumn": 1,
+                        "startLine": 1
+                      },
+                      "insertedContent": {
+                        "text": "from django.contrib import messages\nfrom django.contrib.auth.decorators import login_required\nfrom django.shortcuts import redirect, render\n\nfrom .api_client import APIClient, APIClientError, APIValidationError\nfrom .forms import LanguageForm, ProfileForm, ToDoForm\n\n"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Organize imports"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/views.py"
+                },
+                "region": {
+                  "endColumn": 70,
+                  "endLine": 6,
+                  "startColumn": 1,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Import block is un-sorted or un-formatted"
+          },
+          "ruleId": "I001"
+        },
+        {
+          "fixes": [
+            {
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "file:///home/leona/jango101/demo/my1stapp/views.py"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "endColumn": 21,
+                        "endLine": 319,
+                        "startColumn": 14,
+                        "startLine": 319
+                      },
+                      "insertedContent": {
+                        "text": "_created"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "description": {
+                "text": "Prefix it with an underscore or any other dummy variable pattern"
+              }
+            }
+          ],
+          "level": "error",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/leona/jango101/demo/my1stapp/views.py"
+                },
+                "region": {
+                  "endColumn": 21,
+                  "endLine": 319,
+                  "startColumn": 14,
+                  "startLine": 319
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Unpacked variable `created` is never used"
+          },
+          "ruleId": "RUF059"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/astral-sh/ruff",
+          "name": "ruff",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "## What it does\nChecks for unused imports.\n\n## Why is this bad?\nUnused imports add a performance overhead at runtime, and risk creating\nimport cycles. They also increase the cognitive load of reading the code.\n\nIf an import statement is used to check for the availability or existence\nof a module, consider using `importlib.util.find_spec` instead.\n\nIf an import statement is used to re-export a symbol as part of a module's\npublic interface, consider using a \"redundant\" import alias, which\ninstructs Ruff (and other tools) to respect the re-export, and avoid\nmarking it as unused, as in:\n\n```python\nfrom module import member as member\n```\n\nAlternatively, you can use `__all__` to declare a symbol as part of the module's\ninterface, as in:\n\n```python\n# __init__.py\nimport some_module\n\n__all__ = [\"some_module\"]\n```\n\n## Preview\nWhen [preview] is enabled (and certain simplifying assumptions\nare met), we analyze all import statements for a given module\nwhen determining whether an import is used, rather than simply\nthe last of these statements. This can result in both different and\nmore import statements being marked as unused.\n\nFor example, if a module consists of\n\n```python\nimport a\nimport a.b\n```\n\nthen both statements are marked as unused under [preview], whereas\nonly the second is marked as unused under stable behavior.\n\nAs another example, if a module consists of\n\n```python\nimport a.b\nimport a\n\na.b.foo()\n```\n\nthen a diagnostic will be emitted for the second line under [preview],\nwhereas no diagnostic is emitted under stable behavior.\n\nNote that this behavior is somewhat subjective and is designed\nto conform to the developer's intuition rather than Python's actual\nexecution. To wit, the statement `import a.b` automatically executes\n`import a`, so in some sense `import a` is _always_ redundant\nin the presence of `import a.b`.\n\n\n## Fix safety\n\nFixes to remove unused imports are safe, except in `__init__.py` files.\n\nApplying fixes to `__init__.py` files is currently in preview. The fix offered depends on the\ntype of the unused import. Ruff will suggest a safe fix to export first-party imports with\neither a redundant alias or, if already present in the file, an `__all__` entry. If multiple\n`__all__` declarations are present, Ruff will not offer a fix. Ruff will suggest an unsafe fix\nto remove third-party and standard library imports -- the fix is unsafe because the module's\ninterface changes.\n\nSee [this FAQ section](https://docs.astral.sh/ruff/faq/#how-does-ruff-determine-which-of-my-imports-are-first-party-third-party-etc)\nfor more details on how Ruff\ndetermines whether an import is first or third-party.\n\n## Example\n\n```python\nimport numpy as np  # unused import\n\n\ndef area(radius):\n    return 3.14 * radius**2\n```\n\nUse instead:\n\n```python\ndef area(radius):\n    return 3.14 * radius**2\n```\n\nTo check the availability of a module, use `importlib.util.find_spec`:\n\n```python\nfrom importlib.util import find_spec\n\nif find_spec(\"numpy\") is not None:\n    print(\"numpy is installed\")\nelse:\n    print(\"numpy is not installed\")\n```\n\n## Options\n- `lint.ignore-init-module-imports`\n- `lint.pyflakes.allowed-unused-imports`\n\n## References\n- [Python documentation: `import`](https://docs.python.org/3/reference/simple_stmts.html#the-import-statement)\n- [Python documentation: `importlib.util.find_spec`](https://docs.python.org/3/library/importlib.html#importlib.util.find_spec)\n- [Typing documentation: interface conventions](https://typing.python.org/en/latest/spec/distributing.html#library-interface-public-and-private-symbols)\n\n[preview]: https://docs.astral.sh/ruff/preview/\n"
+              },
+              "help": {
+                "text": "`{name}` imported but unused; consider using `importlib.util.find_spec` to test for availability"
+              },
+              "helpUri": "https://docs.astral.sh/ruff/rules/unused-import",
+              "id": "F401",
+              "properties": {
+                "id": "F401",
+                "kind": "Pyflakes",
+                "name": "unused-import",
+                "problem.severity": "error"
+              },
+              "shortDescription": {
+                "text": "`{name}` imported but unused; consider using `importlib.util.find_spec` to test for availability"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "## What it does\nChecks for the presence of unused variables in function scopes.\n\n## Why is this bad?\nA variable that is defined but not used is likely a mistake, and should\nbe removed to avoid confusion.\n\nIf a variable is intentionally defined-but-not-used, it should be\nprefixed with an underscore, or some other value that adheres to the\n[`lint.dummy-variable-rgx`] pattern.\n\n## Example\n```python\ndef foo():\n    x = 1\n    y = 2\n    return x\n```\n\nUse instead:\n```python\ndef foo():\n    x = 1\n    return x\n```\n\n## Fix safety\n\nThis rule's fix is marked as unsafe because removing an unused variable assignment may\ndelete comments that are attached to the assignment.\n\n## See also\n\nThis rule does not apply to bindings in unpacked assignments (e.g. `x, y = 1, 2`). See\n[`unused-unpacked-variable`][RUF059] for this case.\n\n## Options\n- `lint.dummy-variable-rgx`\n\n[RUF059]: https://docs.astral.sh/ruff/rules/unused-unpacked-variable/\n"
+              },
+              "help": {
+                "text": "Local variable `{name}` is assigned to but never used"
+              },
+              "helpUri": "https://docs.astral.sh/ruff/rules/unused-variable",
+              "id": "F841",
+              "properties": {
+                "id": "F841",
+                "kind": "Pyflakes",
+                "name": "unused-variable",
+                "problem.severity": "error"
+              },
+              "shortDescription": {
+                "text": "Local variable `{name}` is assigned to but never used"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "## What it does\nDe-duplicates, groups, and sorts imports based on the provided `isort` settings.\n\n## Why is this bad?\nConsistency is good. Use a common convention for imports to make your code\nmore readable and idiomatic.\n\n## Example\n```python\nimport pandas\nimport numpy as np\n```\n\nUse instead:\n```python\nimport numpy as np\nimport pandas\n```\n\n"
+              },
+              "help": {
+                "text": "Import block is un-sorted or un-formatted"
+              },
+              "helpUri": "https://docs.astral.sh/ruff/rules/unsorted-imports",
+              "id": "I001",
+              "properties": {
+                "id": "I001",
+                "kind": "isort",
+                "name": "unsorted-imports",
+                "problem.severity": "error"
+              },
+              "shortDescription": {
+                "text": "Import block is un-sorted or un-formatted"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "## What it does\nChecks for unnecessary `pass` statements and ellipsis (`...`) literals in\nfunctions, classes, and other blocks.\n\n## Why is this bad?\nIn Python, the `pass` statement and ellipsis (`...`) literal serve as\nplaceholders, allowing for syntactically correct empty code blocks. The\nprimary purpose of these nodes is to avoid syntax errors in situations\nwhere a statement or expression is syntactically required, but no code\nneeds to be executed.\n\nIf a `pass` or ellipsis is present in a code block that includes at least\none other statement (even, e.g., a docstring), it is unnecessary and should\nbe removed.\n\n## Example\n```python\ndef func():\n    \"\"\"Placeholder docstring.\"\"\"\n    pass\n```\n\nUse instead:\n```python\ndef func():\n    \"\"\"Placeholder docstring.\"\"\"\n```\n\nOr, given:\n```python\ndef func():\n    \"\"\"Placeholder docstring.\"\"\"\n    ...\n```\n\nUse instead:\n```python\ndef func():\n    \"\"\"Placeholder docstring.\"\"\"\n```\n\n## Fix safety\nThis rule's fix is marked as unsafe in the rare case that the `pass` or ellipsis\nis followed by a string literal, since removal of the placeholder would convert the\nsubsequent string literal into a docstring.\n\n## References\n- [Python documentation: The `pass` statement](https://docs.python.org/3/reference/simple_stmts.html#the-pass-statement)\n"
+              },
+              "help": {
+                "text": "Unnecessary `pass` statement"
+              },
+              "helpUri": "https://docs.astral.sh/ruff/rules/unnecessary-placeholder",
+              "id": "PIE790",
+              "properties": {
+                "id": "PIE790",
+                "kind": "flake8-pie",
+                "name": "unnecessary-placeholder",
+                "problem.severity": "error"
+              },
+              "shortDescription": {
+                "text": "Unnecessary `pass` statement"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "## What it does\nChecks for mutable default values in class attributes.\n\n## Why is this bad?\nMutable default values share state across all instances of the class,\nwhile not being obvious. This can lead to bugs when the attributes are\nchanged in one instance, as those changes will unexpectedly affect all\nother instances.\n\nGenerally speaking, you probably want to avoid having mutable default\nvalues in the class body at all; instead, these variables should usually\nbe initialized in `__init__`. However, other possible fixes for the issue\ncan include:\n- Explicitly annotating the variable with [`typing.ClassVar`][ClassVar] to\n  indicate that it is intended to be shared across all instances.\n- Using an immutable data type (e.g. a tuple instead of a list)\n  for the default value.\n\n## Example\n\n```python\nclass A:\n    variable_1: list[int] = []\n    variable_2: set[int] = set()\n    variable_3: dict[str, int] = {}\n```\n\nUse instead:\n\n```python\nclass A:\n    def __init__(self) -> None:\n        self.variable_1: list[int] = []\n        self.variable_2: set[int] = set()\n        self.variable_3: dict[str, int] = {}\n```\n\nOr:\n\n```python\nfrom typing import ClassVar\n\n\nclass A:\n    variable_1: ClassVar[list[int]] = []\n    variable_2: ClassVar[set[int]] = set()\n    variable_3: ClassVar[dict[str, int]] = {}\n```\n\nOr:\n\n```python\nclass A:\n    variable_1: list[int] | None = None\n    variable_2: set[int] | None = None\n    variable_3: dict[str, int] | None = None\n```\n\nOr:\n\n```python\nfrom collections.abc import Sequence, Mapping, Set as AbstractSet\nfrom types import MappingProxyType\n\n\nclass A:\n    variable_1: Sequence[int] = ()\n    variable_2: AbstractSet[int] = frozenset()\n    variable_3: Mapping[str, int] = MappingProxyType({})\n```\n\n[ClassVar]: https://docs.python.org/3/library/typing.html#typing.ClassVar\n"
+              },
+              "help": {
+                "text": "Mutable default value for class attribute"
+              },
+              "helpUri": "https://docs.astral.sh/ruff/rules/mutable-class-default",
+              "id": "RUF012",
+              "properties": {
+                "id": "RUF012",
+                "kind": "Ruff-specific rules",
+                "name": "mutable-class-default",
+                "problem.severity": "error"
+              },
+              "shortDescription": {
+                "text": "Mutable default value for class attribute"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "## What it does\nChecks for the presence of unused variables in unpacked assignments.\n\n## Why is this bad?\nA variable that is defined but never used can confuse readers.\n\nIf a variable is intentionally defined-but-not-used, it should be\nprefixed with an underscore, or some other value that adheres to the\n[`lint.dummy-variable-rgx`] pattern.\n\n## Example\n\n```python\ndef get_pair():\n    return 1, 2\n\n\ndef foo():\n    x, y = get_pair()\n    return x\n```\n\nUse instead:\n\n```python\ndef foo():\n    x, _ = get_pair()\n    return x\n```\n\n## See also\n\nThis rule applies only to unpacked assignments. For regular assignments, see\n[`unused-variable`][F841].\n\n## Options\n- `lint.dummy-variable-rgx`\n\n[F841]: https://docs.astral.sh/ruff/rules/unused-variable/\n"
+              },
+              "help": {
+                "text": "Unpacked variable `{name}` is never used"
+              },
+              "helpUri": "https://docs.astral.sh/ruff/rules/unused-unpacked-variable",
+              "id": "RUF059",
+              "properties": {
+                "id": "RUF059",
+                "kind": "Ruff-specific rules",
+                "name": "unused-unpacked-variable",
+                "problem.severity": "error"
+              },
+              "shortDescription": {
+                "text": "Unpacked variable `{name}` is never used"
+              }
+            }
+          ],
+          "version": "0.16.6"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
