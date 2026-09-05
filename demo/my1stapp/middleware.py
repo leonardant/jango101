@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.utils import translation
 
+from .models import UserProfile
+
 
 class My1stAppLocaleMiddleware:
 
@@ -17,32 +19,25 @@ class My1stAppLocaleMiddleware:
 
         if request.path.startswith("/admin/"):
 
-            translation.activate("en-gb")
+            language = "en-gb"
 
-            request.LANGUAGE_CODE = "en-gb"
+        else:
 
-            response = self.get_response(request)
+            # -----------------------------------
+            # My 1st App language
+            # -----------------------------------
 
-            translation.deactivate()
+            language = settings.LANGUAGE_CODE
 
-            return response
+            if request.user.is_authenticated:
 
+                try:
 
-        # -----------------------------------
-        # My 1st App language
-        # -----------------------------------
+                    language = request.user.profile.language
 
-        language = settings.LANGUAGE_CODE
+                except UserProfile.DoesNotExist:
 
-        if request.user.is_authenticated:
-
-            try:
-
-                language = request.user.profile.language
-
-            except Exception:
-
-                language = settings.LANGUAGE_CODE
+                    language = settings.LANGUAGE_CODE
 
 
         translation.activate(language)
