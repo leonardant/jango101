@@ -1,7 +1,7 @@
 # jango101
 
 
-typically inside WSL or on Ubuntu/Linux!
+typically inside WSL or on Ubuntu/Linux!!
 
 do
 ```
