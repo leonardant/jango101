@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: Sensor Application API
+  version: 1.0.0
+  description: REST API for the Sensor Application.
+paths:
+  /api/todos/:
+    get:
+      operationId: todos_list
+      tags:
+      - todos
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToDoItem'
+          description: ''
+    post:
+      operationId: todos_create
+      tags:
+      - todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDoItemRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ToDoItemRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ToDoItemRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDoItem'
+          description: ''
+  /api/todos/{id}/:
+    get:
+      operationId: todos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - todos
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDoItem'
+          description: ''
+    put:
+      operationId: todos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDoItemRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ToDoItemRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ToDoItemRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDoItem'
+          description: ''
+    patch:
+      operationId: todos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - todos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedToDoItemRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedToDoItemRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedToDoItemRequest'
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDoItem'
+          description: ''
+    delete:
+      operationId: todos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - todos
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/token/:
+    post:
+      operationId: token_create
+      tags:
+      - token
+      security:
+      - BearerAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/whoami/:
+    get:
+      operationId: whoami_retrieve
+      tags:
+      - whoami
+      security:
+      - jwtAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    PatchedToDoItemRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+        completed:
+          type: boolean
+    ToDoItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        completed:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - id
+      - title
+      - updated_at
+    ToDoItemRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+        completed:
+          type: boolean
+      required:
+      - description
+      - title
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT access token.
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
