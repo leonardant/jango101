@@ -100,6 +100,6 @@ class ClientCredentialsTokenView(APIView):
         return Response(
             {
                 "access": str(refresh.access_token),
-                "token_type": "Bearer",
+                "token_type": "Bearer",  # nosec B105
             }
         )

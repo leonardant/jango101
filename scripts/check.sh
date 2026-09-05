@@ -116,7 +116,9 @@ section "Bandit security scan"
 
 cd "$DEMO_DIR"
 
-uv run bandit -r api my1stapp
+uv run bandit \
+    -r api my1stapp \
+    --exclude "api/tests,my1stapp/tests"
 
 
 # ============================================================
