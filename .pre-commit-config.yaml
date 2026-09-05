@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: full-project-check
+        name: Full project check
+        entry: ./scripts/check.sh
+        language: system
+        pass_filenames: false
+        stages:
+          - pre-commit

@@ -20,6 +20,7 @@ dev = [
     "bandit>=1.9.4",
     "coverage>=7.16.0",
     "pip-audit>=2.10.1",
+    "pre-commit>=4.6.2",
     "ruff>=0.16.6",
 ]
 
