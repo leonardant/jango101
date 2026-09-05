@@ -9,8 +9,15 @@ on:
     branches:
       - main
 
+
 permissions:
   contents: read
+
+
+env:
+  # Force JavaScript-based GitHub Actions to use Node.js 24.
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 
 jobs:
   checks:
@@ -27,7 +34,7 @@ jobs:
       # ==========================================================
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
 
       # ==========================================================
@@ -35,7 +42,7 @@ jobs:
       # ==========================================================
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
