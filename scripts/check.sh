@@ -36,10 +36,12 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 TEMP_DIR="$(mktemp -d)"
 
 RUFF_TEMP_REPORT="$TEMP_DIR/ruff-report.sarif"
+BANDIT_TEMP_REPORT="$TEMP_DIR/bandit-report.json"
 SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
 COVERAGE_TEMP_DIR="$TEMP_DIR/coverage"
 
 RUFF_ARCHIVE_REPORT="$ARCHIVE_DIR/ruff-report-${SHORT_COMMIT}-${TIMESTAMP}.sarif"
+BANDIT_ARCHIVE_REPORT="$ARCHIVE_DIR/bandit-report-${SHORT_COMMIT}-${TIMESTAMP}.json"
 SCHEMA_ARCHIVE_REPORT="$ARCHIVE_DIR/schema-${SHORT_COMMIT}-${TIMESTAMP}.yml"
 COVERAGE_ARCHIVE_DIR="$ARCHIVE_DIR/coverage-${SHORT_COMMIT}-${TIMESTAMP}"
 
@@ -119,6 +121,21 @@ cd "$DEMO_DIR"
 uv run bandit \
     -r api my1stapp \
     --exclude "api/tests,my1stapp/tests"
+
+
+# ============================================================
+# Bandit JSON report
+# ============================================================
+
+section "Generating Bandit security report"
+
+uv run bandit \
+    -r api my1stapp \
+    --exclude "api/tests,my1stapp/tests" \
+    --format json \
+    --output "$BANDIT_TEMP_REPORT"
+
+echo "Temporary Bandit JSON report generated."
 
 
 # ============================================================
@@ -224,6 +241,17 @@ echo "  $RUFF_ARCHIVE_REPORT"
 
 
 # ------------------------------------------------------------
+# Archive Bandit JSON report
+# ------------------------------------------------------------
+
+cp "$BANDIT_TEMP_REPORT" "$BANDIT_ARCHIVE_REPORT"
+
+echo
+echo "Bandit report archived:"
+echo "  $BANDIT_ARCHIVE_REPORT"
+
+
+# ------------------------------------------------------------
 # Archive OpenAPI schema
 # ------------------------------------------------------------
 
@@ -259,6 +287,9 @@ echo "Successful artefacts archived:"
 echo
 echo "  Ruff SARIF:"
 echo "    $RUFF_ARCHIVE_REPORT"
+echo
+echo "  Bandit JSON:"
+echo "    $BANDIT_ARCHIVE_REPORT"
 echo
 echo "  OpenAPI schema:"
 echo "    $SCHEMA_ARCHIVE_REPORT"
