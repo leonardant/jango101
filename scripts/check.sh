@@ -37,11 +37,13 @@ TEMP_DIR="$(mktemp -d)"
 
 RUFF_TEMP_REPORT="$TEMP_DIR/ruff-report.sarif"
 BANDIT_TEMP_REPORT="$TEMP_DIR/bandit-report.json"
+PIP_AUDIT_TEMP_REPORT="$TEMP_DIR/pip-audit-report.json"
 SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
 COVERAGE_TEMP_DIR="$TEMP_DIR/coverage"
 
 RUFF_ARCHIVE_REPORT="$ARCHIVE_DIR/ruff-report-${SHORT_COMMIT}-${TIMESTAMP}.sarif"
 BANDIT_ARCHIVE_REPORT="$ARCHIVE_DIR/bandit-report-${SHORT_COMMIT}-${TIMESTAMP}.json"
+PIP_AUDIT_ARCHIVE_REPORT="$ARCHIVE_DIR/pip-audit-report-${SHORT_COMMIT}-${TIMESTAMP}.json"
 SCHEMA_ARCHIVE_REPORT="$ARCHIVE_DIR/schema-${SHORT_COMMIT}-${TIMESTAMP}.yml"
 COVERAGE_ARCHIVE_DIR="$ARCHIVE_DIR/coverage-${SHORT_COMMIT}-${TIMESTAMP}"
 
@@ -139,7 +141,7 @@ echo "Temporary Bandit JSON report generated."
 
 
 # ============================================================
-# Dependency vulnerability scan
+# pip-audit dependency scan
 # ============================================================
 
 section "pip-audit dependency scan"
@@ -147,6 +149,19 @@ section "pip-audit dependency scan"
 cd "$PROJECT_ROOT"
 
 uv run pip-audit
+
+
+# ============================================================
+# pip-audit JSON report
+# ============================================================
+
+section "Generating pip-audit dependency report"
+
+uv run pip-audit \
+    --format json \
+    --output "$PIP_AUDIT_TEMP_REPORT"
+
+echo "Temporary pip-audit JSON report generated."
 
 
 # ============================================================
@@ -252,6 +267,17 @@ echo "  $BANDIT_ARCHIVE_REPORT"
 
 
 # ------------------------------------------------------------
+# Archive pip-audit JSON report
+# ------------------------------------------------------------
+
+cp "$PIP_AUDIT_TEMP_REPORT" "$PIP_AUDIT_ARCHIVE_REPORT"
+
+echo
+echo "pip-audit report archived:"
+echo "  $PIP_AUDIT_ARCHIVE_REPORT"
+
+
+# ------------------------------------------------------------
 # Archive OpenAPI schema
 # ------------------------------------------------------------
 
@@ -290,6 +316,9 @@ echo "    $RUFF_ARCHIVE_REPORT"
 echo
 echo "  Bandit JSON:"
 echo "    $BANDIT_ARCHIVE_REPORT"
+echo
+echo "  pip-audit JSON:"
+echo "    $PIP_AUDIT_ARCHIVE_REPORT"
 echo
 echo "  OpenAPI schema:"
 echo "    $SCHEMA_ARCHIVE_REPORT"
