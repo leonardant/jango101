@@ -10,7 +10,6 @@ User = get_user_model()
 
 
 class ToDoAPISecurityTests(APITestCase):
-
     def setUp(self):
 
         self.user_one = User.objects.create_user(
@@ -37,22 +36,18 @@ class ToDoAPISecurityTests(APITestCase):
 
         self.todos_url = "/api/todos/"
 
-
     # =====================================
     # Authentication tests
     # =====================================
 
     def test_unauthenticated_user_cannot_list_todos(self):
 
-        response = self.client.get(
-            self.todos_url
-        )
+        response = self.client.get(self.todos_url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_401_UNAUTHORIZED,
         )
-
 
     def test_unauthenticated_user_cannot_create_todo(self):
 
@@ -77,30 +72,22 @@ class ToDoAPISecurityTests(APITestCase):
             ).exists()
         )
 
-
     # =====================================
     # List security tests
     # =====================================
 
     def test_user_only_sees_own_todos(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        response = self.client.get(
-            self.todos_url
-        )
+        response = self.client.get(self.todos_url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK,
         )
 
-        todo_ids = [
-            todo["id"]
-            for todo in response.data
-        ]
+        todo_ids = [todo["id"] for todo in response.data]
 
         self.assertIn(
             self.user_one_todo.id,
@@ -112,27 +99,18 @@ class ToDoAPISecurityTests(APITestCase):
             todo_ids,
         )
 
-
     def test_user_does_not_see_other_users_todo_in_list(self):
 
-        self.client.force_authenticate(
-            user=self.user_two
-        )
+        self.client.force_authenticate(user=self.user_two)
 
-        response = self.client.get(
-            self.todos_url
-        )
+        response = self.client.get(self.todos_url)
 
-        todo_ids = [
-            todo["id"]
-            for todo in response.data
-        ]
+        todo_ids = [todo["id"] for todo in response.data]
 
         self.assertNotIn(
             self.user_one_todo.id,
             todo_ids,
         )
-
 
     # =====================================
     # Create tests
@@ -140,9 +118,7 @@ class ToDoAPISecurityTests(APITestCase):
 
     def test_authenticated_user_can_create_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
         response = self.client.post(
             self.todos_url,
@@ -159,21 +135,16 @@ class ToDoAPISecurityTests(APITestCase):
             status.HTTP_201_CREATED,
         )
 
-        todo = ToDoItem.objects.get(
-            title="New Todo"
-        )
+        todo = ToDoItem.objects.get(title="New Todo")
 
         self.assertEqual(
             todo.owner,
             self.user_one,
         )
 
-
     def test_user_cannot_choose_another_owner_when_creating_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
         response = self.client.post(
             self.todos_url,
@@ -191,15 +162,12 @@ class ToDoAPISecurityTests(APITestCase):
             status.HTTP_201_CREATED,
         )
 
-        todo = ToDoItem.objects.get(
-            title="Attempted Ownership Attack"
-        )
+        todo = ToDoItem.objects.get(title="Attempted Ownership Attack")
 
         self.assertEqual(
             todo.owner,
             self.user_one,
         )
-
 
     # =====================================
     # Retrieve security tests
@@ -207,17 +175,11 @@ class ToDoAPISecurityTests(APITestCase):
 
     def test_user_can_retrieve_own_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_one_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_one_todo.id}/"
 
-        response = self.client.get(
-            url
-        )
+        response = self.client.get(url)
 
         self.assertEqual(
             response.status_code,
@@ -229,26 +191,18 @@ class ToDoAPISecurityTests(APITestCase):
             self.user_one_todo.id,
         )
 
-
     def test_user_cannot_retrieve_other_users_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_two_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_two_todo.id}/"
 
-        response = self.client.get(
-            url
-        )
+        response = self.client.get(url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_404_NOT_FOUND,
         )
-
 
     # =====================================
     # Update security tests
@@ -256,13 +210,9 @@ class ToDoAPISecurityTests(APITestCase):
 
     def test_user_can_update_own_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_one_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_one_todo.id}/"
 
         response = self.client.patch(
             url,
@@ -284,18 +234,13 @@ class ToDoAPISecurityTests(APITestCase):
             "Updated Todo Title",
         )
 
-
     def test_user_cannot_update_other_users_todo(self):
 
         original_title = self.user_two_todo.title
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_two_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_two_todo.id}/"
 
         response = self.client.patch(
             url,
@@ -317,24 +262,17 @@ class ToDoAPISecurityTests(APITestCase):
             original_title,
         )
 
-
     # =====================================
     # Delete security tests
     # =====================================
 
     def test_user_can_delete_own_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_one_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_one_todo.id}/"
 
-        response = self.client.delete(
-            url
-        )
+        response = self.client.delete(url)
 
         self.assertEqual(
             response.status_code,
@@ -347,20 +285,13 @@ class ToDoAPISecurityTests(APITestCase):
             ).exists()
         )
 
-
     def test_user_cannot_delete_other_users_todo(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_two_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_two_todo.id}/"
 
-        response = self.client.delete(
-            url
-        )
+        response = self.client.delete(url)
 
         self.assertEqual(
             response.status_code,
@@ -373,20 +304,15 @@ class ToDoAPISecurityTests(APITestCase):
             ).exists()
         )
 
-
     # =====================================
     # Completed status tests
     # =====================================
 
     def test_user_can_mark_own_todo_as_completed(self):
 
-        self.client.force_authenticate(
-            user=self.user_one
-        )
+        self.client.force_authenticate(user=self.user_one)
 
-        url = (
-            f"/api/todos/{self.user_one_todo.id}/"
-        )
+        url = f"/api/todos/{self.user_one_todo.id}/"
 
         response = self.client.patch(
             url,
@@ -403,6 +329,4 @@ class ToDoAPISecurityTests(APITestCase):
 
         self.user_one_todo.refresh_from_db()
 
-        self.assertTrue(
-            self.user_one_todo.completed
-        )
+        self.assertTrue(self.user_one_todo.completed)

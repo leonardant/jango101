@@ -6,7 +6,6 @@ from django.db import models
 
 
 class APIClientCredential(models.Model):
-
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

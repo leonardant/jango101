@@ -14,8 +14,8 @@ User = get_user_model()
 # USER CREATION FORM
 # ============================================================
 
-class CustomUserCreationForm(UserCreationForm):
 
+class CustomUserCreationForm(UserCreationForm):
     language = forms.ChoiceField(
         choices=UserProfile.LANGUAGE_CHOICES,
         initial="en-gb",
@@ -24,7 +24,6 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     class Meta(UserCreationForm.Meta):
-
         model = User
 
         fields = (
@@ -37,18 +36,13 @@ class CustomUserCreationForm(UserCreationForm):
         commit=True,
     ):
 
-        user = super().save(
-            commit=commit
-        )
+        user = super().save(commit=commit)
 
         if commit:
-
             UserProfile.objects.update_or_create(
                 user=user,
                 defaults={
-                    "language": self.cleaned_data[
-                        "language"
-                    ],
+                    "language": self.cleaned_data["language"],
                 },
             )
 
@@ -59,8 +53,8 @@ class CustomUserCreationForm(UserCreationForm):
 # USER CHANGE FORM
 # ============================================================
 
-class CustomUserChangeForm(UserChangeForm):
 
+class CustomUserChangeForm(UserChangeForm):
     language = forms.ChoiceField(
         choices=UserProfile.LANGUAGE_CHOICES,
         label="Preferred language / culture",
@@ -68,7 +62,6 @@ class CustomUserChangeForm(UserChangeForm):
     )
 
     class Meta(UserChangeForm.Meta):
-
         model = User
 
         fields = "__all__"
@@ -84,41 +77,28 @@ class CustomUserChangeForm(UserChangeForm):
             **kwargs,
         )
 
-        if (
-            self.instance
-            and self.instance.pk
-        ):
-
-            profile, created = (
-                UserProfile.objects.get_or_create(
-                    user=self.instance,
-                    defaults={
-                        "language": "en-gb",
-                    },
-                )
+        if self.instance and self.instance.pk:
+            profile, created = UserProfile.objects.get_or_create(
+                user=self.instance,
+                defaults={
+                    "language": "en-gb",
+                },
             )
 
-            self.fields[
-                "language"
-            ].initial = profile.language
+            self.fields["language"].initial = profile.language
 
     def save(
         self,
         commit=True,
     ):
 
-        user = super().save(
-            commit=commit
-        )
+        user = super().save(commit=commit)
 
         if commit:
-
             UserProfile.objects.update_or_create(
                 user=user,
                 defaults={
-                    "language": self.cleaned_data[
-                        "language"
-                    ],
+                    "language": self.cleaned_data["language"],
                 },
             )
 

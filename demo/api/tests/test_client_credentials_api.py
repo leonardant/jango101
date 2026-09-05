@@ -12,7 +12,6 @@ User = get_user_model()
 
 
 class ClientCredentialsAPITests(TestCase):
-
     def setUp(self):
 
         self.client = APIClient()
@@ -35,39 +34,23 @@ class ClientCredentialsAPITests(TestCase):
         # Get automatically created credentials
         # =====================================
 
-        self.credential_one = (
-            APIClientCredential.objects.get(
-                user=self.user_one
-            )
-        )
+        self.credential_one = APIClientCredential.objects.get(user=self.user_one)
 
-        self.credential_two = (
-            APIClientCredential.objects.get(
-                user=self.user_two
-            )
-        )
+        self.credential_two = APIClientCredential.objects.get(user=self.user_two)
 
         # =====================================
         # Set known client secrets
         # =====================================
 
-        self.secret_one = (
-            "UserOneSecret123!"
-        )
+        self.secret_one = "UserOneSecret123!"
 
-        self.secret_two = (
-            "UserTwoSecret123!"
-        )
+        self.secret_two = "UserTwoSecret123!"
 
-        self.credential_one.set_client_secret(
-            self.secret_one
-        )
+        self.credential_one.set_client_secret(self.secret_one)
 
         self.credential_one.save()
 
-        self.credential_two.set_client_secret(
-            self.secret_two
-        )
+        self.credential_two.set_client_secret(self.secret_two)
 
         self.credential_two.save()
 
@@ -75,40 +58,25 @@ class ClientCredentialsAPITests(TestCase):
         # Create private ToDo data
         # =====================================
 
-        self.user_one_todo = (
-            ToDoItem.objects.create(
-                title="User One Todo",
-                description=(
-                    "Private todo belonging "
-                    "to User One."
-                ),
-                owner=self.user_one,
-            )
+        self.user_one_todo = ToDoItem.objects.create(
+            title="User One Todo",
+            description=("Private todo belonging to User One."),
+            owner=self.user_one,
         )
 
-        self.user_two_todo = (
-            ToDoItem.objects.create(
-                title="User Two Todo",
-                description=(
-                    "Private todo belonging "
-                    "to User Two."
-                ),
-                owner=self.user_two,
-            )
+        self.user_two_todo = ToDoItem.objects.create(
+            title="User Two Todo",
+            description=("Private todo belonging to User Two."),
+            owner=self.user_two,
         )
 
         # =====================================
         # API URLs
         # =====================================
 
-        self.token_url = (
-            "/api/token/"
-        )
+        self.token_url = "/api/token/"
 
-        self.todos_url = (
-            "/api/todos/"
-        )
-
+        self.todos_url = "/api/todos/"
 
     # =====================================
     # Valid credentials
@@ -135,10 +103,7 @@ class ClientCredentialsAPITests(TestCase):
             response.data,
         )
 
-        self.assertTrue(
-            response.data["access"]
-        )
-
+        self.assertTrue(response.data["access"])
 
     def test_valid_credentials_return_bearer_token_type(self):
 
@@ -161,7 +126,6 @@ class ClientCredentialsAPITests(TestCase):
             "Bearer",
         )
 
-
     # =====================================
     # Invalid credentials
     # =====================================
@@ -171,9 +135,7 @@ class ClientCredentialsAPITests(TestCase):
         response = self.client.post(
             self.token_url,
             {
-                "client_id": (
-                    "this-client-id-does-not-exist"
-                ),
+                "client_id": ("this-client-id-does-not-exist"),
                 "client_secret": self.secret_one,
             },
             format="json",
@@ -184,16 +146,13 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_400_BAD_REQUEST,
         )
 
-
     def test_invalid_client_secret_is_rejected(self):
 
         response = self.client.post(
             self.token_url,
             {
                 "client_id": self.credential_one.client_id,
-                "client_secret": (
-                    "DefinitelyTheWrongSecret"
-                ),
+                "client_secret": ("DefinitelyTheWrongSecret"),
             },
             format="json",
         )
@@ -202,7 +161,6 @@ class ClientCredentialsAPITests(TestCase):
             response.status_code,
             status.HTTP_400_BAD_REQUEST,
         )
-
 
     def test_missing_client_id_is_rejected(self):
 
@@ -219,7 +177,6 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_400_BAD_REQUEST,
         )
 
-
     def test_missing_client_secret_is_rejected(self):
 
         response = self.client.post(
@@ -234,7 +191,6 @@ class ClientCredentialsAPITests(TestCase):
             response.status_code,
             status.HTTP_400_BAD_REQUEST,
         )
-
 
     # =====================================
     # Inactive credentials
@@ -260,7 +216,6 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_400_BAD_REQUEST,
         )
 
-
     # =====================================
     # JWT access to protected API
     # =====================================
@@ -281,25 +236,16 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_200_OK,
         )
 
-        access_token = token_response.data[
-            "access"
-        ]
+        access_token = token_response.data["access"]
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION=(
-                f"Bearer {access_token}"
-            )
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
 
-        response = self.client.get(
-            self.todos_url
-        )
+        response = self.client.get(self.todos_url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK,
         )
-
 
     # =====================================
     # User data isolation via JWT
@@ -322,30 +268,19 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_200_OK,
         )
 
-        access_token = token_response.data[
-            "access"
-        ]
+        access_token = token_response.data["access"]
 
         # Authenticate using the JWT
-        self.client.credentials(
-            HTTP_AUTHORIZATION=(
-                f"Bearer {access_token}"
-            )
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
 
-        response = self.client.get(
-            self.todos_url
-        )
+        response = self.client.get(self.todos_url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK,
         )
 
-        todo_ids = [
-            todo["id"]
-            for todo in response.data
-        ]
+        todo_ids = [todo["id"] for todo in response.data]
 
         # User One's ToDo is visible
         self.assertIn(
@@ -358,7 +293,6 @@ class ClientCredentialsAPITests(TestCase):
             self.user_two_todo.id,
             todo_ids,
         )
-
 
     def test_user_one_credentials_cannot_access_user_two_todo(self):
 
@@ -377,30 +311,19 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_200_OK,
         )
 
-        access_token = token_response.data[
-            "access"
-        ]
+        access_token = token_response.data["access"]
 
         # Authenticate as User One
-        self.client.credentials(
-            HTTP_AUTHORIZATION=(
-                f"Bearer {access_token}"
-            )
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
 
-        user_two_todo_url = (
-            f"/api/todos/{self.user_two_todo.id}/"
-        )
+        user_two_todo_url = f"/api/todos/{self.user_two_todo.id}/"
 
-        response = self.client.get(
-            user_two_todo_url
-        )
+        response = self.client.get(user_two_todo_url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_404_NOT_FOUND,
         )
-
 
     # =====================================
     # Credential isolation
@@ -441,7 +364,6 @@ class ClientCredentialsAPITests(TestCase):
             response_two.data["access"],
         )
 
-
     def test_user_two_token_only_sees_user_two_todos(self):
 
         # Get JWT for User Two
@@ -459,29 +381,18 @@ class ClientCredentialsAPITests(TestCase):
             status.HTTP_200_OK,
         )
 
-        access_token = token_response.data[
-            "access"
-        ]
+        access_token = token_response.data["access"]
 
-        self.client.credentials(
-            HTTP_AUTHORIZATION=(
-                f"Bearer {access_token}"
-            )
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
 
-        response = self.client.get(
-            self.todos_url
-        )
+        response = self.client.get(self.todos_url)
 
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK,
         )
 
-        todo_ids = [
-            todo["id"]
-            for todo in response.data
-        ]
+        todo_ids = [todo["id"] for todo in response.data]
 
         self.assertIn(
             self.user_two_todo.id,

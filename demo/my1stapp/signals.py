@@ -17,7 +17,6 @@ def create_user_profile(
 ):
 
     if created:
-
         UserProfile.objects.get_or_create(
             user=instance,
         )

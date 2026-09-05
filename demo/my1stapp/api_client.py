@@ -15,6 +15,7 @@ class APIClientError(Exception):
     """
     Base exception for API client errors.
     """
+
     pass
 
 
@@ -31,7 +32,6 @@ class APINotFoundError(APIClientError):
 
 
 class APIValidationError(APIClientError):
-
     def __init__(self, message, errors=None):
 
         super().__init__(message)
@@ -48,13 +48,11 @@ class APIConnectionError(APIClientError):
 
 
 class APIClient:
-
     def __init__(self, user):
 
         self.user = user
 
         self.base_url = settings.API_BASE_URL.rstrip("/") + "/"
-
 
     # =====================================
     # Authentication
@@ -62,12 +60,9 @@ class APIClient:
 
     def get_access_token(self):
 
-        refresh = RefreshToken.for_user(
-            self.user
-        )
+        refresh = RefreshToken.for_user(self.user)
 
         return str(refresh.access_token)
-
 
     # =====================================
     # Request headers
@@ -88,13 +83,11 @@ class APIClient:
     def format_validation_errors(self, errors):
 
         if not isinstance(errors, dict):
-
             return "The submitted information was invalid."
 
         messages = []
 
         for field, field_errors in errors.items():
-
             # Convert field name to something readable
             field_name = field.replace("_", " ").title()
 
@@ -103,13 +96,9 @@ class APIClient:
                 field_errors = [field_errors]
 
             for error in field_errors:
-
-                messages.append(
-                    f"{field_name}: {error}"
-                )
+                messages.append(f"{field_name}: {error}")
 
         if messages:
-
             return " ".join(messages)
 
         return "The submitted information was invalid."
@@ -128,7 +117,6 @@ class APIClient:
         url = self.base_url + endpoint.lstrip("/")
 
         try:
-
             response = requests.request(
                 method,
                 url,
@@ -137,9 +125,7 @@ class APIClient:
                 **kwargs,
             )
 
-
         except requests.exceptions.Timeout as error:
-
             logger.error(
                 "API request timed out. Method=%s URL=%s Error=%s",
                 method,
@@ -151,9 +137,7 @@ class APIClient:
                 "The service took too long to respond. Please try again."
             )
 
-
         except requests.exceptions.ConnectionError as error:
-
             logger.error(
                 "Unable to connect to API. Method=%s URL=%s Error=%s",
                 method,
@@ -165,47 +149,35 @@ class APIClient:
                 "Unable to connect to the service. Please try again later."
             )
 
-
         except requests.exceptions.RequestException as error:
-
             logger.exception(
-                "Unexpected API communication error. "
-                "Method=%s URL=%s",
+                "Unexpected API communication error. Method=%s URL=%s",
                 method,
                 url,
             )
 
             raise APIConnectionError(
-                "Unable to communicate with the service. "
-                "Please try again later."
+                "Unable to communicate with the service. Please try again later."
             )
-
 
         # =====================================
         # Handle HTTP response codes
         # =====================================
 
         if response.status_code == 401:
-
             logger.warning(
-                "API authentication failed. "
-                "Method=%s URL=%s Status=%s User=%s",
+                "API authentication failed. Method=%s URL=%s Status=%s User=%s",
                 method,
                 url,
                 response.status_code,
                 self.user.username,
             )
 
-            raise APIAuthenticationError(
-                "Authentication with the service failed."
-            )
-
+            raise APIAuthenticationError("Authentication with the service failed.")
 
         if response.status_code == 403:
-
             logger.warning(
-                "API permission denied. "
-                "Method=%s URL=%s Status=%s User=%s",
+                "API permission denied. Method=%s URL=%s Status=%s User=%s",
                 method,
                 url,
                 response.status_code,
@@ -216,59 +188,41 @@ class APIClient:
                 "You do not have permission to perform this action."
             )
 
-
         if response.status_code == 404:
-
             logger.info(
-                "API resource not found. "
-                "Method=%s URL=%s Status=%s",
+                "API resource not found. Method=%s URL=%s Status=%s",
                 method,
                 url,
                 response.status_code,
             )
 
-            raise APINotFoundError(
-                "The requested item could not be found."
-            )
-
+            raise APINotFoundError("The requested item could not be found.")
 
         if response.status_code == 400:
-
             try:
-
                 errors = response.json()
 
             except ValueError:
-
                 errors = {}
 
-
             logger.warning(
-                "API validation error. "
-                "Method=%s URL=%s Status=%s Response=%s",
+                "API validation error. Method=%s URL=%s Status=%s Response=%s",
                 method,
                 url,
                 response.status_code,
                 errors,
             )
 
-
-            formatted_errors = self.format_validation_errors(
-                errors
-            )
-
+            formatted_errors = self.format_validation_errors(errors)
 
             raise APIValidationError(
                 formatted_errors,
                 errors=errors,
             )
 
-
         if response.status_code >= 500:
-
             logger.error(
-                "API server error. "
-                "Method=%s URL=%s Status=%s Response=%s",
+                "API server error. Method=%s URL=%s Status=%s Response=%s",
                 method,
                 url,
                 response.status_code,
@@ -276,17 +230,13 @@ class APIClient:
             )
 
             raise APIServerError(
-                "The service encountered an error. "
-                "Please try again later."
+                "The service encountered an error. Please try again later."
             )
-
 
         # Catch any other unexpected HTTP error
         if response.status_code >= 400:
-
             logger.error(
-                "Unexpected API HTTP error. "
-                "Method=%s URL=%s Status=%s Response=%s",
+                "Unexpected API HTTP error. Method=%s URL=%s Status=%s Response=%s",
                 method,
                 url,
                 response.status_code,
@@ -294,13 +244,10 @@ class APIClient:
             )
 
             raise APIClientError(
-                "An unexpected error occurred while communicating "
-                "with the service."
+                "An unexpected error occurred while communicating with the service."
             )
 
-
         return response
-
 
     # =====================================
     # To Do API
@@ -314,7 +261,6 @@ class APIClient:
         )
 
         return response.json()
-
 
     def create_todo(
         self,
@@ -335,7 +281,6 @@ class APIClient:
 
         return response.json()
 
-
     def get_todo(self, todo_id):
 
         response = self.request(
@@ -344,7 +289,6 @@ class APIClient:
         )
 
         return response.json()
-
 
     def update_todo(
         self,
@@ -359,7 +303,6 @@ class APIClient:
         )
 
         return response.json()
-
 
     def delete_todo(self, todo_id):
 

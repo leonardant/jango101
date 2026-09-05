@@ -5,7 +5,6 @@ from .models import ToDoItem, UserProfile
 
 @admin.register(ToDoItem)
 class ToDoItemAdmin(admin.ModelAdmin):
-
     list_display = (
         "title",
         "owner",
@@ -13,9 +12,7 @@ class ToDoItemAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    list_filter = (
-        "completed",
-    )
+    list_filter = ("completed",)
 
     search_fields = (
         "title",
@@ -26,16 +23,11 @@ class ToDoItemAdmin(admin.ModelAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-
     list_display = (
         "user",
         "language",
     )
 
-    list_filter = (
-        "language",
-    )
+    list_filter = ("language",)
 
-    search_fields = (
-        "user__username",
-    )
+    search_fields = ("user__username",)

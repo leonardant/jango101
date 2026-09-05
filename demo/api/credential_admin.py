@@ -29,9 +29,9 @@ User = get_user_model()
 # API CLIENT CREDENTIAL ADMIN
 # ============================================================
 
+
 @admin.register(APIClientCredential)
 class APIClientCredentialAdmin(admin.ModelAdmin):
-
     list_display = (
         "user",
         "client_id",
@@ -56,9 +56,7 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         "updated_at",
     )
 
-    list_filter = (
-        "active",
-    )
+    list_filter = ("active",)
 
     search_fields = (
         "user__username",
@@ -81,24 +79,15 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
     # =====================================
 
     class Media:
+        css = {"all": ("admin/css/api_admin.css",)}
 
-        css = {
-            "all": (
-                "admin/css/api_admin.css",
-            )
-        }
-
-        js = (
-            "admin/js/api_credentials.js",
-        )
+        js = ("admin/js/api_credentials.js",)
 
     # =====================================
     # User display
     # =====================================
 
-    @admin.display(
-        description="User"
-    )
+    @admin.display(description="User")
     def user_display(
         self,
         obj,
@@ -113,9 +102,7 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
     # Client secret display
     # =====================================
 
-    @admin.display(
-        description="Client secret"
-    )
+    @admin.display(description="Client secret")
     def client_secret_display(
         self,
         obj,
@@ -163,17 +150,11 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         urls = super().get_urls()
 
         custom_urls = [
-
             path(
                 "<int:credential_id>/regenerate-secret/",
-                self.admin_site.admin_view(
-                    self.regenerate_secret_view
-                ),
-                name=(
-                    "api_apiclientcredential_regenerate_secret"
-                ),
+                self.admin_site.admin_view(self.regenerate_secret_view),
+                name=("api_apiclientcredential_regenerate_secret"),
             ),
-
         ]
 
         return custom_urls + urls
@@ -189,10 +170,7 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
     ):
 
         if request.method != "POST":
-
-            return HttpResponseNotAllowed(
-                ["POST"]
-            )
+            return HttpResponseNotAllowed(["POST"])
 
         credential = self.get_object(
             request,
@@ -200,21 +178,16 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         )
 
         if credential is None:
-
             return JsonResponse(
                 {
-                    "error": (
-                        "Credential not found."
-                    ),
+                    "error": ("Credential not found."),
                 },
                 status=404,
             )
 
         # Regenerate through the service layer
 
-        raw_secret = regenerate_client_secret(
-            credential
-        )
+        raw_secret = regenerate_client_secret(credential)
 
         # Add this event to the user's
         # Django admin history
@@ -222,9 +195,7 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
         self.log_user_api_event(
             request=request,
             user=credential.user,
-            message=(
-                "API client secret regenerated."
-            ),
+            message=("API client secret regenerated."),
         )
 
         # Return the raw secret ONCE
@@ -247,25 +218,10 @@ class APIClientCredentialAdmin(admin.ModelAdmin):
     ):
 
         LogEntry.objects.create(
-
             user_id=request.user.pk,
-
-            content_type=(
-                ContentType.objects.get_for_model(
-                    User
-                )
-            ),
-
-            object_id=str(
-                user.pk
-            ),
-
-            object_repr=str(
-                user
-            ),
-
+            content_type=(ContentType.objects.get_for_model(User)),
+            object_id=str(user.pk),
+            object_repr=str(user),
             action_flag=CHANGE,
-
             change_message=message,
-
         )

@@ -18,9 +18,9 @@ User = get_user_model()
 # CUSTOM USER ADMIN
 # ============================================================
 
+
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-
     # =====================================
     # Custom forms
     # =====================================
@@ -34,29 +34,19 @@ class CustomUserAdmin(UserAdmin):
     # =====================================
 
     class Media:
+        css = {"all": ("admin/css/api_admin.css",)}
 
-        css = {
-            "all": (
-                "admin/css/api_admin.css",
-            )
-        }
-
-        js = (
-            "admin/js/api_credentials.js",
-        )
+        js = ("admin/js/api_credentials.js",)
 
     # =====================================
     # ADD USER PAGE
     # =====================================
 
     add_fieldsets = (
-
         (
             None,
             {
-                "classes": (
-                    "wide",
-                ),
+                "classes": ("wide",),
                 "fields": (
                     "username",
                     "language",
@@ -65,7 +55,6 @@ class CustomUserAdmin(UserAdmin):
                 ),
             },
         ),
-
     )
 
     # =====================================
@@ -83,7 +72,6 @@ class CustomUserAdmin(UserAdmin):
         # ---------------------------------
 
         if obj is None:
-
             return self.add_fieldsets
 
         # ---------------------------------
@@ -101,10 +89,7 @@ class CustomUserAdmin(UserAdmin):
         # Add language to Personal info
         # ---------------------------------
 
-        for index, fieldset in enumerate(
-            fieldsets
-        ):
-
+        for index, fieldset in enumerate(fieldsets):
             title = fieldset[0]
 
             options = fieldset[1].copy()
@@ -117,16 +102,10 @@ class CustomUserAdmin(UserAdmin):
             )
 
             if title == "Personal info":
-
                 if "language" not in fields:
+                    fields.append("language")
 
-                    fields.append(
-                        "language"
-                    )
-
-                options["fields"] = tuple(
-                    fields
-                )
+                options["fields"] = tuple(fields)
 
                 fieldsets[index] = (
                     title,
@@ -140,27 +119,18 @@ class CustomUserAdmin(UserAdmin):
         # ---------------------------------
 
         api_credentials_fieldset = (
-
             "API client credentials",
-
             {
-                "fields": (
-                    "api_credentials_display",
-                ),
+                "fields": ("api_credentials_display",),
             },
-
         )
 
         # ---------------------------------
         # Insert before Important dates
         # ---------------------------------
 
-        for index, fieldset in enumerate(
-            fieldsets
-        ):
-
+        for index, fieldset in enumerate(fieldsets):
             if fieldset[0] == "Important dates":
-
                 fieldsets.insert(
                     index,
                     api_credentials_fieldset,
@@ -169,10 +139,7 @@ class CustomUserAdmin(UserAdmin):
                 break
 
         else:
-
-            fieldsets.append(
-                api_credentials_fieldset
-            )
+            fieldsets.append(api_credentials_fieldset)
 
         return fieldsets
 
@@ -180,28 +147,19 @@ class CustomUserAdmin(UserAdmin):
     # API credential section
     # =====================================
 
-    @admin.display(
-        description="API client credentials"
-    )
+    @admin.display(description="API client credentials")
     def api_credentials_display(
         self,
         obj,
     ):
 
         if not obj:
-
             return "-"
 
         try:
-
-            credential = (
-                APIClientCredential.objects.get(
-                    user=obj
-                )
-            )
+            credential = APIClientCredential.objects.get(user=obj)
 
         except APIClientCredential.DoesNotExist:
-
             return format_html(
                 """
                 <div class="api-credentials-empty">
@@ -218,17 +176,9 @@ class CustomUserAdmin(UserAdmin):
             ],
         )
 
-        active_display = (
-            "✓"
-            if credential.active
-            else "✗"
-        )
+        active_display = "✓" if credential.active else "✗"
 
-        active_class = (
-            "api-active"
-            if credential.active
-            else "api-inactive"
-        )
+        active_class = "api-active" if credential.active else "api-inactive"
 
         return format_html(
             """
@@ -312,21 +262,12 @@ class CustomUserAdmin(UserAdmin):
 
             </div>
             """,
-
             regenerate_url,
-
             active_class,
             active_display,
-
             credential.client_id,
-
-            credential.created_at.strftime(
-                "%b. %-d, %Y, %-I:%M %p"
-            ),
-
-            credential.updated_at.strftime(
-                "%b. %-d, %Y, %-I:%M %p"
-            ),
+            credential.created_at.strftime("%b. %-d, %Y, %-I:%M %p"),
+            credential.updated_at.strftime("%b. %-d, %Y, %-I:%M %p"),
         )
 
     # =====================================
@@ -347,9 +288,6 @@ class CustomUserAdmin(UserAdmin):
         )
 
         if obj is not None:
-
-            readonly_fields.append(
-                "api_credentials_display"
-            )
+            readonly_fields.append("api_credentials_display")
 
         return readonly_fields

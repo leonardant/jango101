@@ -4,15 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('my1stapp', '0003_userprofile'),
+        ("my1stapp", "0003_userprofile"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='userprofile',
-            name='language',
-            field=models.CharField(choices=[('en-gb', 'English (Uk)'), ('fr', 'Français'), ('de', 'Deutsch')], default='en-gb', max_length=10),
+            model_name="userprofile",
+            name="language",
+            field=models.CharField(
+                choices=[
+                    ("en-gb", "English (Uk)"),
+                    ("fr", "Français"),
+                    ("de", "Deutsch"),
+                ],
+                default="en-gb",
+                max_length=10,
+            ),
         ),
     ]

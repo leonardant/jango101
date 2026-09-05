@@ -11,13 +11,9 @@ def regenerate_client_secret(
     The raw secret should only be displayed once.
     """
 
-    raw_secret = (
-        APIClientCredential.generate_client_secret()
-    )
+    raw_secret = APIClientCredential.generate_client_secret()
 
-    credential.set_client_secret(
-        raw_secret
-    )
+    credential.set_client_secret(raw_secret)
 
     credential.save(
         update_fields=[

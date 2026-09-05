@@ -8,22 +8,17 @@ from .models import UserProfile
 User = get_user_model()
 
 
-
-
 class LanguageForm(forms.ModelForm):
-
     class Meta:
-
         model = UserProfile
 
         fields = [
             "language",
         ]
 
+
 class ProfileForm(forms.ModelForm):
-
     class Meta:
-
         model = User
 
         fields = [
@@ -33,41 +28,38 @@ class ProfileForm(forms.ModelForm):
         ]
 
         widgets = {
-
             "first_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
                 }
             ),
-
             "last_name": forms.TextInput(
                 attrs={
                     "class": "form-control",
                 }
             ),
-
             "email": forms.EmailInput(
                 attrs={
                     "class": "form-control",
                 }
             ),
-
         }
 
-class StyledPasswordChangeForm(PasswordChangeForm):
 
+class StyledPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
 
         for field in self.fields.values():
+            field.widget.attrs.update(
+                {
+                    "class": "form-control",
+                }
+            )
 
-            field.widget.attrs.update({
-                "class": "form-control",
-            })
 
 class ToDoForm(forms.Form):
-
     title = forms.CharField(
         max_length=100,
         label="Title",

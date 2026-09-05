@@ -5,11 +5,9 @@ from .models import UserProfile
 
 
 class My1stAppLocaleMiddleware:
-
     def __init__(self, get_response):
 
         self.get_response = get_response
-
 
     def __call__(self, request):
 
@@ -18,11 +16,9 @@ class My1stAppLocaleMiddleware:
         # -----------------------------------
 
         if request.path.startswith("/admin/"):
-
             language = "en-gb"
 
         else:
-
             # -----------------------------------
             # My 1st App language
             # -----------------------------------
@@ -30,15 +26,11 @@ class My1stAppLocaleMiddleware:
             language = settings.LANGUAGE_CODE
 
             if request.user.is_authenticated:
-
                 try:
-
                     language = request.user.profile.language
 
                 except UserProfile.DoesNotExist:
-
                     language = settings.LANGUAGE_CODE
-
 
         translation.activate(language)
 

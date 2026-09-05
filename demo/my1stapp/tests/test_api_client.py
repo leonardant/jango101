@@ -21,7 +21,6 @@ User = get_user_model()
 
 
 class APIClientTests(TestCase):
-
     def setUp(self):
 
         self.user = User.objects.create_user(
@@ -29,10 +28,7 @@ class APIClientTests(TestCase):
             password="TestPassword123!",
         )
 
-        self.api_client = APIClient(
-            self.user
-        )
-
+        self.api_client = APIClient(self.user)
 
     # =====================================
     # Authentication and headers
@@ -47,10 +43,7 @@ class APIClientTests(TestCase):
             str,
         )
 
-        self.assertTrue(
-            token
-        )
-
+        self.assertTrue(token)
 
     def test_get_headers_returns_bearer_token(self):
 
@@ -61,12 +54,7 @@ class APIClientTests(TestCase):
             headers,
         )
 
-        self.assertTrue(
-            headers["Authorization"].startswith(
-                "Bearer "
-            )
-        )
-
+        self.assertTrue(headers["Authorization"].startswith("Bearer "))
 
     # =====================================
     # Successful requests
@@ -93,7 +81,6 @@ class APIClientTests(TestCase):
             result,
             response,
         )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_request_builds_correct_url(
@@ -126,7 +113,6 @@ class APIClientTests(TestCase):
             "http://127.0.0.1:8000/api/todos/",
         )
 
-
     @patch("my1stapp.api_client.requests.request")
     def test_request_uses_timeout(
         self,
@@ -151,7 +137,6 @@ class APIClientTests(TestCase):
             10,
         )
 
-
     # =====================================
     # Connection errors
     # =====================================
@@ -162,16 +147,9 @@ class APIClientTests(TestCase):
         mock_request,
     ):
 
-        mock_request.side_effect = (
-            requests.exceptions.Timeout(
-                "Request timed out"
-            )
-        )
+        mock_request.side_effect = requests.exceptions.Timeout("Request timed out")
 
-        with self.assertRaises(
-            APIConnectionError
-        ) as context:
-
+        with self.assertRaises(APIConnectionError) as context:
             self.api_client.request(
                 "GET",
                 "todos/",
@@ -179,12 +157,8 @@ class APIClientTests(TestCase):
 
         self.assertEqual(
             str(context.exception),
-            (
-                "The service took too long to respond. "
-                "Please try again."
-            ),
+            ("The service took too long to respond. Please try again."),
         )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_connection_error_raises_api_connection_error(
@@ -192,16 +166,11 @@ class APIClientTests(TestCase):
         mock_request,
     ):
 
-        mock_request.side_effect = (
-            requests.exceptions.ConnectionError(
-                "Unable to connect"
-            )
+        mock_request.side_effect = requests.exceptions.ConnectionError(
+            "Unable to connect"
         )
 
-        with self.assertRaises(
-            APIConnectionError
-        ) as context:
-
+        with self.assertRaises(APIConnectionError) as context:
             self.api_client.request(
                 "GET",
                 "todos/",
@@ -209,12 +178,8 @@ class APIClientTests(TestCase):
 
         self.assertEqual(
             str(context.exception),
-            (
-                "Unable to connect to the service. "
-                "Please try again later."
-            ),
+            ("Unable to connect to the service. Please try again later."),
         )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_unexpected_request_error_raises_api_connection_error(
@@ -222,16 +187,11 @@ class APIClientTests(TestCase):
         mock_request,
     ):
 
-        mock_request.side_effect = (
-            requests.exceptions.RequestException(
-                "Unexpected request error"
-            )
+        mock_request.side_effect = requests.exceptions.RequestException(
+            "Unexpected request error"
         )
 
-        with self.assertRaises(
-            APIConnectionError
-        ) as context:
-
+        with self.assertRaises(APIConnectionError) as context:
             self.api_client.request(
                 "GET",
                 "todos/",
@@ -239,12 +199,8 @@ class APIClientTests(TestCase):
 
         self.assertEqual(
             str(context.exception),
-            (
-                "Unable to communicate with the service. "
-                "Please try again later."
-            ),
+            ("Unable to communicate with the service. Please try again later."),
         )
-
 
     # =====================================
     # HTTP authentication errors
@@ -262,15 +218,11 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIAuthenticationError
-        ):
-
+        with self.assertRaises(APIAuthenticationError):
             self.api_client.request(
                 "GET",
                 "todos/",
             )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_403_raises_api_permission_error(
@@ -284,15 +236,11 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIPermissionError
-        ):
-
+        with self.assertRaises(APIPermissionError):
             self.api_client.request(
                 "GET",
                 "todos/",
             )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_404_raises_api_not_found_error(
@@ -306,15 +254,11 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APINotFoundError
-        ):
-
+        with self.assertRaises(APINotFoundError):
             self.api_client.request(
                 "GET",
                 "todos/",
             )
-
 
     # =====================================
     # Validation errors
@@ -327,9 +271,7 @@ class APIClientTests(TestCase):
     ):
 
         errors = {
-            "title": [
-                "This field is required."
-            ],
+            "title": ["This field is required."],
         }
 
         response = Mock()
@@ -340,10 +282,7 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIValidationError
-        ) as context:
-
+        with self.assertRaises(APIValidationError) as context:
             self.api_client.request(
                 "POST",
                 "todos/",
@@ -358,11 +297,8 @@ class APIClientTests(TestCase):
 
         self.assertEqual(
             str(exception),
-            (
-                "Title: This field is required."
-            ),
+            ("Title: This field is required."),
         )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_400_with_invalid_json_returns_generic_error(
@@ -374,16 +310,11 @@ class APIClientTests(TestCase):
 
         response.status_code = 400
 
-        response.json.side_effect = ValueError(
-            "Invalid JSON"
-        )
+        response.json.side_effect = ValueError("Invalid JSON")
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIValidationError
-        ) as context:
-
+        with self.assertRaises(APIValidationError) as context:
             self.api_client.request(
                 "POST",
                 "todos/",
@@ -398,7 +329,6 @@ class APIClientTests(TestCase):
             str(context.exception),
             "The submitted information was invalid.",
         )
-
 
     # =====================================
     # Server errors
@@ -418,15 +348,11 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIServerError
-        ):
-
+        with self.assertRaises(APIServerError):
             self.api_client.request(
                 "GET",
                 "todos/",
             )
-
 
     @patch("my1stapp.api_client.requests.request")
     def test_503_raises_api_server_error(
@@ -442,15 +368,11 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIServerError
-        ):
-
+        with self.assertRaises(APIServerError):
             self.api_client.request(
                 "GET",
                 "todos/",
             )
-
 
     # =====================================
     # Unexpected HTTP errors
@@ -470,15 +392,11 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        with self.assertRaises(
-            APIClientError
-        ):
-
+        with self.assertRaises(APIClientError):
             self.api_client.request(
                 "GET",
                 "todos/",
             )
-
 
     # =====================================
     # Validation error formatting
@@ -489,26 +407,16 @@ class APIClientTests(TestCase):
     ):
 
         errors = {
-            "title": [
-                "This field is required."
-            ],
-            "description": [
-                "This field is required."
-            ],
+            "title": ["This field is required."],
+            "description": ["This field is required."],
         }
 
-        result = self.api_client.format_validation_errors(
-            errors
-        )
+        result = self.api_client.format_validation_errors(errors)
 
         self.assertEqual(
             result,
-            (
-                "Title: This field is required. "
-                "Description: This field is required."
-            ),
+            ("Title: This field is required. Description: This field is required."),
         )
-
 
     def test_format_validation_errors_formats_single_error_value(
         self,
@@ -518,45 +426,34 @@ class APIClientTests(TestCase):
             "title": "This field is required.",
         }
 
-        result = self.api_client.format_validation_errors(
-            errors
-        )
+        result = self.api_client.format_validation_errors(errors)
 
         self.assertEqual(
             result,
             "Title: This field is required.",
         )
 
-
     def test_format_validation_errors_handles_non_dictionary(
         self,
     ):
 
-        result = self.api_client.format_validation_errors(
-            [
-                "Invalid data"
-            ]
-        )
+        result = self.api_client.format_validation_errors(["Invalid data"])
 
         self.assertEqual(
             result,
             "The submitted information was invalid.",
         )
-
 
     def test_format_validation_errors_handles_empty_dictionary(
         self,
     ):
 
-        result = self.api_client.format_validation_errors(
-            {}
-        )
+        result = self.api_client.format_validation_errors({})
 
         self.assertEqual(
             result,
             "The submitted information was invalid.",
         )
-
 
     # =====================================
     # To Do API convenience methods
@@ -596,7 +493,6 @@ class APIClientTests(TestCase):
             "todos/",
         )
 
-
     @patch.object(APIClient, "request")
     def test_create_todo_sends_correct_data(
         self,
@@ -634,7 +530,6 @@ class APIClientTests(TestCase):
             },
         )
 
-
     @patch.object(APIClient, "request")
     def test_create_todo_can_set_completed(
         self,
@@ -666,7 +561,6 @@ class APIClientTests(TestCase):
             },
         )
 
-
     @patch.object(APIClient, "request")
     def test_get_todo_returns_json(
         self,
@@ -682,9 +576,7 @@ class APIClientTests(TestCase):
 
         mock_request.return_value = response
 
-        result = self.api_client.get_todo(
-            5
-        )
+        result = self.api_client.get_todo(5)
 
         self.assertEqual(
             result["id"],
@@ -695,7 +587,6 @@ class APIClientTests(TestCase):
             "GET",
             "todos/5/",
         )
-
 
     @patch.object(APIClient, "request")
     def test_update_todo_sends_correct_data(
@@ -732,20 +623,15 @@ class APIClientTests(TestCase):
             },
         )
 
-
     @patch.object(APIClient, "request")
     def test_delete_todo_returns_true(
         self,
         mock_request,
     ):
 
-        result = self.api_client.delete_todo(
-            5
-        )
+        result = self.api_client.delete_todo(5)
 
-        self.assertTrue(
-            result
-        )
+        self.assertTrue(result)
 
         mock_request.assert_called_once_with(
             "DELETE",

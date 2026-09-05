@@ -15,6 +15,4 @@ def create_api_client_credential(sender, instance, created, **kwargs):
     """
 
     if created:
-        APIClientCredential.objects.get_or_create(
-            user=instance
-        )
+        APIClientCredential.objects.get_or_create(user=instance)

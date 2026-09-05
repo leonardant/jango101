@@ -10,7 +10,6 @@ User = get_user_model()
 
 
 class APIClientCredentialTests(TestCase):
-
     # =====================================
     # Credential creation tests
     # =====================================
@@ -28,7 +27,6 @@ class APIClientCredentialTests(TestCase):
             ).exists()
         )
 
-
     def test_credential_has_client_id(self):
 
         user = User.objects.create_user(
@@ -40,10 +38,7 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        self.assertTrue(
-            credential.client_id
-        )
-
+        self.assertTrue(credential.client_id)
 
     def test_client_id_is_unique(self):
 
@@ -70,7 +65,6 @@ class APIClientCredentialTests(TestCase):
             credential_two.client_id,
         )
 
-
     def test_credential_has_client_secret(self):
 
         user = User.objects.create_user(
@@ -82,10 +76,7 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        self.assertTrue(
-            credential.client_secret
-        )
-
+        self.assertTrue(credential.client_secret)
 
     def test_new_credential_is_active_by_default(self):
 
@@ -98,10 +89,7 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        self.assertTrue(
-            credential.active
-        )
-
+        self.assertTrue(credential.active)
 
     def test_user_can_only_have_one_credential(self):
 
@@ -110,17 +98,14 @@ class APIClientCredentialTests(TestCase):
             password="TestPassword123!",
         )
 
-        credential_count = (
-            APIClientCredential.objects.filter(
-                user=user,
-            ).count()
-        )
+        credential_count = APIClientCredential.objects.filter(
+            user=user,
+        ).count()
 
         self.assertEqual(
             credential_count,
             1,
         )
-
 
     # =====================================
     # Client secret hashing tests
@@ -128,9 +113,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_generated_client_secret_is_hashed(self):
 
-        raw_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        raw_secret = APIClientCredential.generate_client_secret()
 
         user = User.objects.create_user(
             username="credentialuser",
@@ -141,9 +124,7 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        credential.set_client_secret(
-            raw_secret
-        )
+        credential.set_client_secret(raw_secret)
 
         credential.save()
 
@@ -154,12 +135,9 @@ class APIClientCredentialTests(TestCase):
             raw_secret,
         )
 
-
     def test_correct_client_secret_validates(self):
 
-        raw_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        raw_secret = APIClientCredential.generate_client_secret()
 
         user = User.objects.create_user(
             username="credentialuser",
@@ -170,9 +148,7 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        credential.set_client_secret(
-            raw_secret
-        )
+        credential.set_client_secret(raw_secret)
 
         credential.save()
 
@@ -185,12 +161,9 @@ class APIClientCredentialTests(TestCase):
             )
         )
 
-
     def test_incorrect_client_secret_does_not_validate(self):
 
-        raw_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        raw_secret = APIClientCredential.generate_client_secret()
 
         user = User.objects.create_user(
             username="credentialuser",
@@ -201,9 +174,7 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        credential.set_client_secret(
-            raw_secret
-        )
+        credential.set_client_secret(raw_secret)
 
         credential.save()
 
@@ -216,20 +187,15 @@ class APIClientCredentialTests(TestCase):
             )
         )
 
-
     # =====================================
     # Secret regeneration model tests
     # =====================================
 
     def test_regenerating_secret_changes_stored_hash(self):
 
-        first_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        first_secret = APIClientCredential.generate_client_secret()
 
-        second_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        second_secret = APIClientCredential.generate_client_secret()
 
         user = User.objects.create_user(
             username="credentialuser",
@@ -240,17 +206,13 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        credential.set_client_secret(
-            first_secret
-        )
+        credential.set_client_secret(first_secret)
 
         credential.save()
 
         first_hash = credential.client_secret
 
-        credential.set_client_secret(
-            second_secret
-        )
+        credential.set_client_secret(second_secret)
 
         credential.save()
 
@@ -261,16 +223,11 @@ class APIClientCredentialTests(TestCase):
             first_hash,
         )
 
-
     def test_old_secret_does_not_work_after_regeneration(self):
 
-        old_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        old_secret = APIClientCredential.generate_client_secret()
 
-        new_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        new_secret = APIClientCredential.generate_client_secret()
 
         user = User.objects.create_user(
             username="credentialuser",
@@ -281,15 +238,11 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        credential.set_client_secret(
-            old_secret
-        )
+        credential.set_client_secret(old_secret)
 
         credential.save()
 
-        credential.set_client_secret(
-            new_secret
-        )
+        credential.set_client_secret(new_secret)
 
         credential.save()
 
@@ -302,16 +255,11 @@ class APIClientCredentialTests(TestCase):
             )
         )
 
-
     def test_new_secret_works_after_regeneration(self):
 
-        old_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        old_secret = APIClientCredential.generate_client_secret()
 
-        new_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        new_secret = APIClientCredential.generate_client_secret()
 
         user = User.objects.create_user(
             username="credentialuser",
@@ -322,15 +270,11 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        credential.set_client_secret(
-            old_secret
-        )
+        credential.set_client_secret(old_secret)
 
         credential.save()
 
-        credential.set_client_secret(
-            new_secret
-        )
+        credential.set_client_secret(new_secret)
 
         credential.save()
 
@@ -342,7 +286,6 @@ class APIClientCredentialTests(TestCase):
                 credential.client_secret,
             )
         )
-
 
     # =====================================
     # Admin regeneration endpoint tests
@@ -364,15 +307,12 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         self.assertEqual(
             response.status_code,
             302,
         )
-
 
     def test_non_staff_user_cannot_regenerate_secret(self):
 
@@ -395,15 +335,12 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         self.assertEqual(
             response.status_code,
             302,
         )
-
 
     def test_regenerate_secret_endpoint_rejects_get_request(self):
 
@@ -432,15 +369,12 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.get(
-            url
-        )
+        response = self.client.get(url)
 
         self.assertEqual(
             response.status_code,
             405,
         )
-
 
     def test_admin_can_regenerate_secret(self):
 
@@ -469,15 +403,12 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         self.assertEqual(
             response.status_code,
             200,
         )
-
 
     def test_regenerate_secret_endpoint_returns_client_secret(self):
 
@@ -506,9 +437,7 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         response_data = response.json()
 
@@ -517,10 +446,7 @@ class APIClientCredentialTests(TestCase):
             response_data,
         )
 
-        self.assertTrue(
-            response_data["client_secret"]
-        )
-
+        self.assertTrue(response_data["client_secret"])
 
     def test_regenerated_secret_matches_stored_hash(self):
 
@@ -549,15 +475,11 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         response_data = response.json()
 
-        new_secret = response_data[
-            "client_secret"
-        ]
+        new_secret = response_data["client_secret"]
 
         credential.refresh_from_db()
 
@@ -567,7 +489,6 @@ class APIClientCredentialTests(TestCase):
                 credential.client_secret,
             )
         )
-
 
     def test_regenerating_secret_changes_stored_secret(self):
 
@@ -598,9 +519,7 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         self.assertEqual(
             response.status_code,
@@ -613,7 +532,6 @@ class APIClientCredentialTests(TestCase):
             credential.client_secret,
             old_hash,
         )
-
 
     def test_old_secret_is_invalid_after_endpoint_regeneration(self):
 
@@ -632,13 +550,9 @@ class APIClientCredentialTests(TestCase):
             user=user,
         )
 
-        old_secret = (
-            APIClientCredential.generate_client_secret()
-        )
+        old_secret = APIClientCredential.generate_client_secret()
 
-        credential.set_client_secret(
-            old_secret
-        )
+        credential.set_client_secret(old_secret)
 
         credential.save()
 
@@ -652,15 +566,11 @@ class APIClientCredentialTests(TestCase):
             args=[credential.pk],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         response_data = response.json()
 
-        new_secret = response_data[
-            "client_secret"
-        ]
+        new_secret = response_data["client_secret"]
 
         credential.refresh_from_db()
 
@@ -677,7 +587,6 @@ class APIClientCredentialTests(TestCase):
                 credential.client_secret,
             )
         )
-
 
     def test_regenerate_secret_returns_404_for_missing_credential(self):
 
@@ -697,9 +606,7 @@ class APIClientCredentialTests(TestCase):
             args=[999999],
         )
 
-        response = self.client.post(
-            url
-        )
+        response = self.client.post(url)
 
         self.assertEqual(
             response.status_code,

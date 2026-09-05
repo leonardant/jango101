@@ -3,7 +3,6 @@ from django.db import models
 
 
 class ToDoItem(models.Model):
-
     title = models.CharField(
         max_length=100,
     )
@@ -33,7 +32,6 @@ class ToDoItem(models.Model):
 
 
 class UserProfile(models.Model):
-
     LANGUAGE_CHOICES = [
         ("en-gb", "English (United Kingdom)"),
         ("fr", "Français"),

@@ -7,9 +7,7 @@ User = get_user_model()
 # Remove Django's default User admin registration
 # ============================================================
 
-admin.site.unregister(
-    User
-)
+admin.site.unregister(User)
 
 
 # ============================================================
