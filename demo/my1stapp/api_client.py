@@ -1,11 +1,8 @@
 import logging
 
 import requests
-
 from django.conf import settings
-
 from rest_framework_simplejwt.tokens import RefreshToken
-
 
 # Create a logger for this module
 logger = logging.getLogger(__name__)
@@ -15,8 +12,6 @@ class APIClientError(Exception):
     """
     Base exception for API client errors.
     """
-
-    pass
 
 
 class APIAuthenticationError(APIClientError):
@@ -149,7 +144,7 @@ class APIClient:
                 "Unable to connect to the service. Please try again later."
             )
 
-        except requests.exceptions.RequestException as error:
+        except requests.exceptions.RequestException:
             logger.exception(
                 "Unexpected API communication error. Method=%s URL=%s",
                 method,

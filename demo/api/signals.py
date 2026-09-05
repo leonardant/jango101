@@ -4,7 +4,6 @@ from django.dispatch import receiver
 
 from .models import APIClientCredential
 
-
 User = get_user_model()
 
 

@@ -1,7 +1,6 @@
 from unittest.mock import Mock, patch
 
 import requests
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -15,7 +14,6 @@ from my1stapp.api_client import (
     APIServerError,
     APIValidationError,
 )
-
 
 User = get_user_model()
 

@@ -1,8 +1,7 @@
-from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth import get_user_model
+from django.core.management.base import BaseCommand, CommandError
 
 from api.models import APIClientCredential
-
 
 User = get_user_model()
 

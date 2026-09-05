@@ -1,16 +1,14 @@
 from django.contrib.auth.decorators import login_not_required
 from django.utils.decorators import method_decorator
-
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from my1stapp.models import ToDoItem
 
-from .serializers import ToDoItemSerializer, ClientCredentialsSerializer
-
+from .serializers import ClientCredentialsSerializer, ToDoItemSerializer
 
 # =====================================
 # Who Am I API endpoint

@@ -2,15 +2,13 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_not_required, login_required
 from django.urls import include, path
-
-from my1stapp.forms import StyledPasswordChangeForm
-
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
 
+from my1stapp.forms import StyledPasswordChangeForm
 
 urlpatterns = [
     # =========================

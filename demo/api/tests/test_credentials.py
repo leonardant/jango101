@@ -5,7 +5,6 @@ from django.urls import reverse
 
 from api.models import APIClientCredential
 
-
 User = get_user_model()
 
 

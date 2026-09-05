@@ -7,7 +7,6 @@ from .views import (
     ToDoListCreateAPIView,
 )
 
-
 app_name = "api"
 
 

@@ -5,17 +5,14 @@ from django.contrib.admin.models import (
 )
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
-
 from django.http import (
     HttpResponseNotAllowed,
     JsonResponse,
 )
-
 from django.urls import (
     path,
     reverse,
 )
-
 from django.utils.html import format_html
 
 from .models import APIClientCredential
