@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_not_required
 from django.utils.decorators import method_decorator
+from drf_spectacular.utils import extend_schema
 from my1stapp.models import ToDoItem
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -7,7 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import ClientCredentialsSerializer, ToDoItemSerializer
+from .serializers import (
+    ClientCredentialsSerializer,
+    ClientCredentialsTokenResponseSerializer,
+    ToDoItemSerializer,
+    WhoAmISerializer,
+)
 
 # =====================================
 # Who Am I API endpoint
@@ -21,8 +27,10 @@ from .serializers import ClientCredentialsSerializer, ToDoItemSerializer
 class WhoAmIView(APIView):
     permission_classes = (IsAuthenticated,)
 
+    @extend_schema(
+        responses=WhoAmISerializer,
+    )
     def get(self, request):
-
         return Response(
             {
                 "id": request.user.id,
@@ -47,11 +55,9 @@ class ToDoListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-
         return ToDoItem.objects.filter(owner=self.request.user).order_by("-created_at")
 
     def perform_create(self, serializer):
-
         serializer.save(owner=self.request.user)
 
 
@@ -70,7 +76,6 @@ class ToDoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-
         return ToDoItem.objects.filter(owner=self.request.user)
 
 
@@ -84,8 +89,11 @@ class ClientCredentialsTokenView(APIView):
 
     permission_classes = (AllowAny,)
 
+    @extend_schema(
+        request=ClientCredentialsSerializer,
+        responses=ClientCredentialsTokenResponseSerializer,
+    )
     def post(self, request):
-
         serializer = ClientCredentialsSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)

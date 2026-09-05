@@ -152,12 +152,28 @@ paths:
       operationId: token_create
       tags:
       - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCredentialsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientCredentialsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientCredentialsRequest'
+        required: true
       security:
       - BearerAuth: []
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCredentialsTokenResponse'
+          description: ''
   /api/whoami/:
     get:
       operationId: whoami_retrieve
@@ -168,9 +184,38 @@ paths:
       - BearerAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhoAmI'
+          description: ''
 components:
   schemas:
+    ClientCredentialsRequest:
+      type: object
+      properties:
+        client_id:
+          type: string
+          minLength: 1
+        client_secret:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - client_id
+      - client_secret
+    ClientCredentialsTokenResponse:
+      type: object
+      properties:
+        access:
+          type: string
+          description: JWT access token.
+        token_type:
+          type: string
+          description: Authentication scheme for the access token.
+      required:
+      - access
+      - token_type
     PatchedToDoItemRequest:
       type: object
       properties:
@@ -225,6 +270,20 @@ components:
       required:
       - description
       - title
+    WhoAmI:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+      - email
+      - id
+      - username
   securitySchemes:
     BearerAuth:
       type: http

@@ -4,6 +4,10 @@ from rest_framework import serializers
 
 from .models import APIClientCredential
 
+# ============================================================
+# ToDo serializers
+# ============================================================
+
 
 class ToDoItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,13 +29,17 @@ class ToDoItemSerializer(serializers.ModelSerializer):
         )
 
 
+# ============================================================
+# Authentication serializers
+# ============================================================
+
+
 class ClientCredentialsSerializer(serializers.Serializer):
     client_id = serializers.CharField()
 
     client_secret = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-
         client_id = attrs.get("client_id")
 
         client_secret = attrs.get("client_secret")
@@ -71,3 +79,26 @@ class ClientCredentialsSerializer(serializers.Serializer):
         attrs["credential"] = credential
 
         return attrs
+
+
+class ClientCredentialsTokenResponseSerializer(serializers.Serializer):
+    access = serializers.CharField(
+        help_text="JWT access token.",
+    )
+
+    token_type = serializers.CharField(
+        help_text="Authentication scheme for the access token.",
+    )
+
+
+# ============================================================
+# User serializers
+# ============================================================
+
+
+class WhoAmISerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
+    username = serializers.CharField()
+
+    email = serializers.EmailField()
