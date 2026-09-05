@@ -37,9 +37,11 @@ TEMP_DIR="$(mktemp -d)"
 
 RUFF_TEMP_REPORT="$TEMP_DIR/ruff-report.sarif"
 SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
+COVERAGE_TEMP_DIR="$TEMP_DIR/coverage"
 
 RUFF_ARCHIVE_REPORT="$ARCHIVE_DIR/ruff-report-${SHORT_COMMIT}-${TIMESTAMP}.sarif"
 SCHEMA_ARCHIVE_REPORT="$ARCHIVE_DIR/schema-${SHORT_COMMIT}-${TIMESTAMP}.yml"
+COVERAGE_ARCHIVE_DIR="$ARCHIVE_DIR/coverage-${SHORT_COMMIT}-${TIMESTAMP}"
 
 
 # ============================================================
@@ -94,7 +96,7 @@ uv run ruff check . \
     --output-format sarif \
     > "$RUFF_TEMP_REPORT"
 
-echo "Temporary Ruff report generated."
+echo "Temporary Ruff SARIF report generated."
 
 
 # ============================================================
@@ -189,6 +191,18 @@ uv run coverage report -m
 
 
 # ============================================================
+# Generate HTML coverage report
+# ============================================================
+
+section "Generating HTML coverage report"
+
+uv run coverage html \
+    --directory "$COVERAGE_TEMP_DIR"
+
+echo "Temporary HTML coverage report generated."
+
+
+# ============================================================
 # Archive successful artefacts
 # ============================================================
 
@@ -196,16 +210,37 @@ section "Archiving successful check artefacts"
 
 mkdir -p "$ARCHIVE_DIR"
 
-cp "$RUFF_TEMP_REPORT" "$RUFF_ARCHIVE_REPORT"
 
-cp "$SCHEMA_TEMP_REPORT" "$SCHEMA_ARCHIVE_REPORT"
+# ------------------------------------------------------------
+# Archive Ruff SARIF report
+# ------------------------------------------------------------
+
+cp "$RUFF_TEMP_REPORT" "$RUFF_ARCHIVE_REPORT"
 
 echo "Ruff report archived:"
 echo "  $RUFF_ARCHIVE_REPORT"
 
+
+# ------------------------------------------------------------
+# Archive OpenAPI schema
+# ------------------------------------------------------------
+
+cp "$SCHEMA_TEMP_REPORT" "$SCHEMA_ARCHIVE_REPORT"
+
 echo
 echo "OpenAPI schema archived:"
 echo "  $SCHEMA_ARCHIVE_REPORT"
+
+
+# ------------------------------------------------------------
+# Archive HTML coverage report
+# ------------------------------------------------------------
+
+cp -R "$COVERAGE_TEMP_DIR" "$COVERAGE_ARCHIVE_DIR"
+
+echo
+echo "HTML coverage report archived:"
+echo "  $COVERAGE_ARCHIVE_DIR"
 
 
 # ============================================================
@@ -225,4 +260,7 @@ echo "    $RUFF_ARCHIVE_REPORT"
 echo
 echo "  OpenAPI schema:"
 echo "    $SCHEMA_ARCHIVE_REPORT"
+echo
+echo "  HTML coverage report:"
+echo "    $COVERAGE_ARCHIVE_DIR/index.html"
 echo
