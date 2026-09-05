@@ -10,4 +10,4 @@ class My1stappConfig(AppConfig):
 
     def ready(self):
 
-        import my1stapp.signals
+        import my1stapp.signals # noqa: F401
