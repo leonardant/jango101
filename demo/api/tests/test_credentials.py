@@ -343,7 +343,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_regenerate_secret_endpoint_rejects_get_request(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",
@@ -377,7 +377,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_admin_can_regenerate_secret(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",
@@ -411,7 +411,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_regenerate_secret_endpoint_returns_client_secret(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",
@@ -449,7 +449,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_regenerated_secret_matches_stored_hash(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",
@@ -491,7 +491,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_regenerating_secret_changes_stored_secret(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",
@@ -534,7 +534,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_old_secret_is_invalid_after_endpoint_regeneration(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",
@@ -589,7 +589,7 @@ class APIClientCredentialTests(TestCase):
 
     def test_regenerate_secret_returns_404_for_missing_credential(self):
 
-        admin_user = User.objects.create_superuser(
+        User.objects.create_superuser(
             username="adminuser",
             email="admin@example.com",
             password="AdminPassword123!",

@@ -316,7 +316,7 @@ def edit_profile(request):
 @login_required
 def language_settings(request):
 
-    profile, created = request.user.profile.__class__.objects.get_or_create(
+    profile, _created = request.user.profile.__class__.objects.get_or_create(
         user=request.user
     )
 

@@ -77,7 +77,7 @@ class CustomUserChangeForm(UserChangeForm):
         )
 
         if self.instance and self.instance.pk:
-            profile, created = UserProfile.objects.get_or_create(
+            profile, _created = UserProfile.objects.get_or_create(
                 user=self.instance,
                 defaults={
                     "language": "en-gb",

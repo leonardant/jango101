@@ -99,7 +99,7 @@ class APIClientTests(TestCase):
 
         mock_request.assert_called_once()
 
-        args, kwargs = mock_request.call_args
+        args, _kwargs = mock_request.call_args
 
         self.assertEqual(
             args[0],
@@ -128,7 +128,7 @@ class APIClientTests(TestCase):
             "todos/",
         )
 
-        args, kwargs = mock_request.call_args
+        _args, kwargs = mock_request.call_args
 
         self.assertEqual(
             kwargs["timeout"],
