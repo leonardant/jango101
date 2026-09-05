@@ -227,3 +227,4 @@ demo/staticfiles/**
 demo/frontend/**
 
 repo.zip
+repo-*.zip
