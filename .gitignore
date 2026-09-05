@@ -225,3 +225,5 @@ pyvenv.cfg
 
 demo/staticfiles/**
 demo/frontend/**
+
+repo.zip
