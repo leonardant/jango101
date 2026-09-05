@@ -1,7 +1,7 @@
+from api.models import APIClientCredential
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from api.models import APIClientCredential
 from my1stapp.models import UserProfile
 
 User = get_user_model()
