@@ -14,5 +14,6 @@ repos:
         entry: ./scripts/archive.sh
         language: system
         pass_filenames: false
+        always_run: true
         stages:
           - post-commit
