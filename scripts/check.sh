@@ -8,10 +8,10 @@ set -euo pipefail
 # ============================================================
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-
 DEMO_DIR="$PROJECT_ROOT/demo"
+ARCHIVE_DIR="$PROJECT_ROOT/archives"
 
-cd "$DEMO_DIR"
+cd "$PROJECT_ROOT"
 
 
 # ============================================================
@@ -27,10 +27,39 @@ section() {
 
 
 # ============================================================
+# Build artefact information
+# ============================================================
+
+SHORT_COMMIT="$(git rev-parse --short HEAD)"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+
+TEMP_DIR="$(mktemp -d)"
+
+RUFF_TEMP_REPORT="$TEMP_DIR/ruff-report.sarif"
+SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
+
+RUFF_ARCHIVE_REPORT="$ARCHIVE_DIR/ruff-report-${SHORT_COMMIT}-${TIMESTAMP}.sarif"
+SCHEMA_ARCHIVE_REPORT="$ARCHIVE_DIR/schema-${SHORT_COMMIT}-${TIMESTAMP}.yml"
+
+
+# ============================================================
+# Cleanup
+# ============================================================
+
+cleanup() {
+    rm -rf "$TEMP_DIR"
+}
+
+trap cleanup EXIT
+
+
+# ============================================================
 # Django system checks
 # ============================================================
 
 section "Django system checks"
+
+cd "$DEMO_DIR"
 
 uv run python manage.py check
 
@@ -45,7 +74,7 @@ uv run python manage.py makemigrations --check --dry-run
 
 
 # ============================================================
-# Ruff linting
+# Ruff lint checks
 # ============================================================
 
 section "Ruff lint checks"
@@ -56,7 +85,20 @@ uv run ruff check .
 
 
 # ============================================================
-# Ruff formatting
+# Ruff SARIF report
+# ============================================================
+
+section "Generating Ruff SARIF report"
+
+uv run ruff check . \
+    --output-format sarif \
+    > "$RUFF_TEMP_REPORT"
+
+echo "Temporary Ruff report generated."
+
+
+# ============================================================
+# Ruff formatting checks
 # ============================================================
 
 section "Ruff formatting checks"
@@ -90,17 +132,15 @@ uv run pip-audit
 # OpenAPI schema validation
 # ============================================================
 
-section "OpenAPI schema validation"
+section "Generating and validating OpenAPI schema"
 
 cd "$DEMO_DIR"
 
-TEMP_SCHEMA="$(mktemp)"
-
-trap 'rm -f "$TEMP_SCHEMA"' EXIT
-
 uv run python manage.py spectacular \
-    --file "$TEMP_SCHEMA" \
+    --file "$SCHEMA_TEMP_REPORT" \
     --validate
+
+echo "Temporary OpenAPI schema generated."
 
 
 # ============================================================
@@ -109,23 +149,26 @@ uv run python manage.py spectacular \
 
 section "Checking OpenAPI schema is current"
 
-if ! diff -q schema.yml "$TEMP_SCHEMA" > /dev/null; then
+if ! diff -q schema.yml "$SCHEMA_TEMP_REPORT" > /dev/null; then
 
     echo
-    echo "ERROR: schema.yml is out of date."
+    echo "ERROR: demo/schema.yml is out of date."
     echo
     echo "Run:"
     echo
     echo "    cd demo"
     echo "    uv run python manage.py spectacular --file schema.yml --validate"
     echo
+
     exit 1
 
 fi
 
+echo "Committed schema.yml is current."
+
 
 # ============================================================
-# Tests with branch coverage
+# Full tests with branch coverage
 # ============================================================
 
 section "Running tests with branch coverage"
@@ -146,6 +189,26 @@ uv run coverage report -m
 
 
 # ============================================================
+# Archive successful artefacts
+# ============================================================
+
+section "Archiving successful check artefacts"
+
+mkdir -p "$ARCHIVE_DIR"
+
+cp "$RUFF_TEMP_REPORT" "$RUFF_ARCHIVE_REPORT"
+
+cp "$SCHEMA_TEMP_REPORT" "$SCHEMA_ARCHIVE_REPORT"
+
+echo "Ruff report archived:"
+echo "  $RUFF_ARCHIVE_REPORT"
+
+echo
+echo "OpenAPI schema archived:"
+echo "  $SCHEMA_ARCHIVE_REPORT"
+
+
+# ============================================================
 # Success
 # ============================================================
 
@@ -153,3 +216,13 @@ echo
 echo "============================================================"
 echo "ALL CHECKS PASSED"
 echo "============================================================"
+
+echo
+echo "Successful artefacts archived:"
+echo
+echo "  Ruff SARIF:"
+echo "    $RUFF_ARCHIVE_REPORT"
+echo
+echo "  OpenAPI schema:"
+echo "    $SCHEMA_ARCHIVE_REPORT"
+echo
