@@ -38,8 +38,8 @@ RUN_DIR="$ARCHIVES_DIR/${TIMESTAMP}-${SHORT_COMMIT}"
 TEMP_DIR="$(mktemp -d)"
 
 RUFF_TEMP_REPORT="$TEMP_DIR/ruff-report.sarif"
-BANDIT_TEMP_REPORT="$TEMP_DIR/bandit-report.json"
-PIP_AUDIT_TEMP_REPORT="$TEMP_DIR/pip-audit-report.json"
+BANDIT_TEMP_REPORT="$TEMP_DIR/bandit-report.html"
+PIP_AUDIT_TEMP_REPORT="$TEMP_DIR/pip-audit-report.md"
 SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
 COVERAGE_TEMP_DIR="$TEMP_DIR/coverage"
 
@@ -130,10 +130,10 @@ section "Generating Bandit security report"
 uv run bandit \
     -r api my1stapp \
     --exclude "api/tests,my1stapp/tests" \
-    --format json \
+    --format html \
     --output "$BANDIT_TEMP_REPORT"
 
-echo "Temporary Bandit JSON report generated."
+echo "Temporary Bandit HTML report generated."
 
 
 # ============================================================
@@ -154,10 +154,10 @@ uv run pip-audit
 section "Generating pip-audit dependency report"
 
 uv run pip-audit \
-    --format json \
+    --format markdown \
     --output "$PIP_AUDIT_TEMP_REPORT"
 
-echo "Temporary pip-audit JSON report generated."
+echo "Temporary pip-audit Markdown report generated."
 
 
 # ============================================================
@@ -244,10 +244,10 @@ cp "$RUFF_TEMP_REPORT" \
     "$RUN_DIR/ruff-report.sarif"
 
 cp "$BANDIT_TEMP_REPORT" \
-    "$RUN_DIR/bandit-report.json"
+    "$RUN_DIR/bandit-report.html"
 
 cp "$PIP_AUDIT_TEMP_REPORT" \
-    "$RUN_DIR/pip-audit-report.json"
+    "$RUN_DIR/pip-audit-report.md"
 
 cp "$SCHEMA_TEMP_REPORT" \
     "$RUN_DIR/schema.yml"
@@ -273,8 +273,8 @@ echo
 
 echo "Contents:"
 echo "  ruff-report.sarif"
-echo "  bandit-report.json"
-echo "  pip-audit-report.json"
+echo "  bandit-report.html"
+echo "  pip-audit-report.md"
 echo "  schema.yml"
 echo "  coverage/index.html"
 echo
