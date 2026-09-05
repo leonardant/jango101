@@ -9,7 +9,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 DEMO_DIR="$PROJECT_ROOT/demo"
-ARCHIVE_DIR="$PROJECT_ROOT/archives"
+ARCHIVES_DIR="$PROJECT_ROOT/archives"
 
 cd "$PROJECT_ROOT"
 
@@ -27,11 +27,13 @@ section() {
 
 
 # ============================================================
-# Build artefact information
+# Build run information
 # ============================================================
 
 SHORT_COMMIT="$(git rev-parse --short HEAD)"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+
+RUN_DIR="$ARCHIVES_DIR/${TIMESTAMP}-${SHORT_COMMIT}"
 
 TEMP_DIR="$(mktemp -d)"
 
@@ -40,12 +42,6 @@ BANDIT_TEMP_REPORT="$TEMP_DIR/bandit-report.json"
 PIP_AUDIT_TEMP_REPORT="$TEMP_DIR/pip-audit-report.json"
 SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
 COVERAGE_TEMP_DIR="$TEMP_DIR/coverage"
-
-RUFF_ARCHIVE_REPORT="$ARCHIVE_DIR/ruff-report-${SHORT_COMMIT}-${TIMESTAMP}.sarif"
-BANDIT_ARCHIVE_REPORT="$ARCHIVE_DIR/bandit-report-${SHORT_COMMIT}-${TIMESTAMP}.json"
-PIP_AUDIT_ARCHIVE_REPORT="$ARCHIVE_DIR/pip-audit-report-${SHORT_COMMIT}-${TIMESTAMP}.json"
-SCHEMA_ARCHIVE_REPORT="$ARCHIVE_DIR/schema-${SHORT_COMMIT}-${TIMESTAMP}.yml"
-COVERAGE_ARCHIVE_DIR="$ARCHIVE_DIR/coverage-${SHORT_COMMIT}-${TIMESTAMP}"
 
 
 # ============================================================
@@ -242,61 +238,22 @@ echo "Temporary HTML coverage report generated."
 
 section "Archiving successful check artefacts"
 
-mkdir -p "$ARCHIVE_DIR"
+mkdir -p "$RUN_DIR"
 
+cp "$RUFF_TEMP_REPORT" \
+    "$RUN_DIR/ruff-report.sarif"
 
-# ------------------------------------------------------------
-# Archive Ruff SARIF report
-# ------------------------------------------------------------
+cp "$BANDIT_TEMP_REPORT" \
+    "$RUN_DIR/bandit-report.json"
 
-cp "$RUFF_TEMP_REPORT" "$RUFF_ARCHIVE_REPORT"
+cp "$PIP_AUDIT_TEMP_REPORT" \
+    "$RUN_DIR/pip-audit-report.json"
 
-echo "Ruff report archived:"
-echo "  $RUFF_ARCHIVE_REPORT"
+cp "$SCHEMA_TEMP_REPORT" \
+    "$RUN_DIR/schema.yml"
 
-
-# ------------------------------------------------------------
-# Archive Bandit JSON report
-# ------------------------------------------------------------
-
-cp "$BANDIT_TEMP_REPORT" "$BANDIT_ARCHIVE_REPORT"
-
-echo
-echo "Bandit report archived:"
-echo "  $BANDIT_ARCHIVE_REPORT"
-
-
-# ------------------------------------------------------------
-# Archive pip-audit JSON report
-# ------------------------------------------------------------
-
-cp "$PIP_AUDIT_TEMP_REPORT" "$PIP_AUDIT_ARCHIVE_REPORT"
-
-echo
-echo "pip-audit report archived:"
-echo "  $PIP_AUDIT_ARCHIVE_REPORT"
-
-
-# ------------------------------------------------------------
-# Archive OpenAPI schema
-# ------------------------------------------------------------
-
-cp "$SCHEMA_TEMP_REPORT" "$SCHEMA_ARCHIVE_REPORT"
-
-echo
-echo "OpenAPI schema archived:"
-echo "  $SCHEMA_ARCHIVE_REPORT"
-
-
-# ------------------------------------------------------------
-# Archive HTML coverage report
-# ------------------------------------------------------------
-
-cp -R "$COVERAGE_TEMP_DIR" "$COVERAGE_ARCHIVE_DIR"
-
-echo
-echo "HTML coverage report archived:"
-echo "  $COVERAGE_ARCHIVE_DIR"
+cp -R "$COVERAGE_TEMP_DIR" \
+    "$RUN_DIR/coverage"
 
 
 # ============================================================
@@ -309,20 +266,15 @@ echo "ALL CHECKS PASSED"
 echo "============================================================"
 
 echo
-echo "Successful artefacts archived:"
+echo "Successful artefacts archived in:"
 echo
-echo "  Ruff SARIF:"
-echo "    $RUFF_ARCHIVE_REPORT"
+echo "  $RUN_DIR"
 echo
-echo "  Bandit JSON:"
-echo "    $BANDIT_ARCHIVE_REPORT"
-echo
-echo "  pip-audit JSON:"
-echo "    $PIP_AUDIT_ARCHIVE_REPORT"
-echo
-echo "  OpenAPI schema:"
-echo "    $SCHEMA_ARCHIVE_REPORT"
-echo
-echo "  HTML coverage report:"
-echo "    $COVERAGE_ARCHIVE_DIR/index.html"
+
+echo "Contents:"
+echo "  ruff-report.sarif"
+echo "  bandit-report.json"
+echo "  pip-audit-report.json"
+echo "  schema.yml"
+echo "  coverage/index.html"
 echo

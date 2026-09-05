@@ -86,11 +86,11 @@ echo "Commit message: $COMMIT_MESSAGE"
 
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 
-ARCHIVE_DIR="$PROJECT_ROOT/archives"
+ARCHIVES_DIR="$PROJECT_ROOT/archives"
 
-ARCHIVE_FILE="repo-${SHORT_COMMIT}-${TIMESTAMP}.zip"
+RUN_DIR="$ARCHIVES_DIR/${TIMESTAMP}-${SHORT_COMMIT}"
 
-ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_FILE"
+ARCHIVE_FILE="$RUN_DIR/repo.zip"
 
 
 # ============================================================
@@ -99,9 +99,10 @@ ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_FILE"
 
 section "Preparing archive directory"
 
-mkdir -p "$ARCHIVE_DIR"
+mkdir -p "$RUN_DIR"
 
-echo "Archive directory: $ARCHIVE_DIR"
+echo "Archive directory:"
+echo "  $RUN_DIR"
 
 
 # ============================================================
@@ -112,7 +113,7 @@ section "Creating Git archive"
 
 git archive \
     --format=zip \
-    --output="$ARCHIVE_PATH" \
+    --output="$ARCHIVE_FILE" \
     HEAD
 
 
@@ -122,15 +123,33 @@ git archive \
 
 section "Verifying archive"
 
-if [[ ! -f "$ARCHIVE_PATH" ]]; then
+if [[ ! -f "$ARCHIVE_FILE" ]]; then
     echo "ERROR: Archive was not created."
     exit 1
 fi
 
-ARCHIVE_SIZE="$(du -h "$ARCHIVE_PATH" | cut -f1)"
+ARCHIVE_SIZE="$(du -h "$ARCHIVE_FILE" | cut -f1)"
 
-echo "Archive created successfully"
+echo "Archive created successfully."
 echo "Archive size: $ARCHIVE_SIZE"
+
+
+# ============================================================
+# Create metadata file
+# ============================================================
+
+section "Creating archive metadata"
+
+cat > "$RUN_DIR/metadata.txt" << EOF
+Archive created: $(date '+%Y-%m-%d %H:%M:%S')
+Branch: $BRANCH
+Short commit: $SHORT_COMMIT
+Full commit: $FULL_COMMIT
+Commit message: $COMMIT_MESSAGE
+EOF
+
+echo "Metadata created:"
+echo "  $RUN_DIR/metadata.txt"
 
 
 # ============================================================
@@ -143,7 +162,11 @@ echo "ARCHIVE CREATED SUCCESSFULLY"
 echo "============================================================"
 
 echo
-echo "Commit:  $SHORT_COMMIT"
-echo "Branch:  $BRANCH"
-echo "Archive: $ARCHIVE_PATH"
+echo "Archive folder:"
+echo "  $RUN_DIR"
+echo
+
+echo "Contents:"
+echo "  repo.zip"
+echo "  metadata.txt"
 echo
