@@ -7,6 +7,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+
 from my1stapp.forms import StyledPasswordChangeForm
 
 urlpatterns = [

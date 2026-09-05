@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
-from my1stapp.models import ToDoItem
 from rest_framework import status
 from rest_framework.test import APITestCase
+
+from my1stapp.models import ToDoItem
 
 User = get_user_model()
 

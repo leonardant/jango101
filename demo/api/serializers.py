@@ -1,6 +1,7 @@
 from django.contrib.auth.hashers import check_password
-from my1stapp.models import ToDoItem
 from rest_framework import serializers
+
+from my1stapp.models import ToDoItem
 
 from .models import APIClientCredential
 

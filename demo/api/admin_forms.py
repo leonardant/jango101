@@ -4,6 +4,7 @@ from django.contrib.auth.forms import (
     UserChangeForm,
     UserCreationForm,
 )
+
 from my1stapp.models import UserProfile
 
 User = get_user_model()
