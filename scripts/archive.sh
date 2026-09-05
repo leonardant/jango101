@@ -8,6 +8,7 @@ set -euo pipefail
 # ============================================================
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+ARTIFACTS_DIR="$PROJECT_ROOT/.artifacts"
 ARCHIVES_DIR="$PROJECT_ROOT/archives"
 
 cd "$PROJECT_ROOT"
@@ -40,28 +41,24 @@ echo "Git repository: OK"
 
 
 # ============================================================
-# Check for uncommitted changes
+# Check staged artefacts exist
 # ============================================================
 
-section "Checking working tree"
+section "Checking staged artefacts"
 
-if [[ -n "$(git status --porcelain)" ]]; then
+if [[ ! -d "$ARTIFACTS_DIR" ]]; then
 
     echo
-    echo "ERROR: The working tree contains uncommitted changes."
+    echo "ERROR: No staged artefacts found."
     echo
-    echo "Please commit or stash your changes before creating an archive."
+    echo "Run ./scripts/check.sh successfully first."
     echo
-    echo "Current changes:"
-    echo
-
-    git status --short
 
     exit 1
 
 fi
 
-echo "Working tree is clean: OK"
+echo "Staged artefacts found."
 
 
 # ============================================================
@@ -74,6 +71,9 @@ BRANCH="$(git branch --show-current)"
 SHORT_COMMIT="$(git rev-parse --short HEAD)"
 FULL_COMMIT="$(git rev-parse HEAD)"
 COMMIT_MESSAGE="$(git log -1 --pretty=%s)"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+
+RUN_DIR="$ARCHIVES_DIR/${TIMESTAMP}-${SHORT_COMMIT}"
 
 echo "Branch:         $BRANCH"
 echo "Short commit:   $SHORT_COMMIT"
@@ -82,76 +82,78 @@ echo "Commit message: $COMMIT_MESSAGE"
 
 
 # ============================================================
-# Find latest successful check folder for this commit
+# Create archive directory
 # ============================================================
 
-section "Finding successful check artefacts"
+section "Creating archive directory"
 
-if [[ ! -d "$ARCHIVES_DIR" ]]; then
-    echo "ERROR: No archives directory exists."
-    echo
-    echo "Run ./scripts/check.sh successfully before creating an archive."
-    exit 1
-fi
-
-
-RUN_DIR="$(
-    find "$ARCHIVES_DIR" \
-        -maxdepth 1 \
-        -type d \
-        -name "*-${SHORT_COMMIT}" \
-        -printf "%f\n" \
-        | sort \
-        | tail -n 1
-)"
-
-
-if [[ -z "$RUN_DIR" ]]; then
-
-    echo
-    echo "ERROR: No successful check archive was found for commit:"
-    echo
-    echo "  $SHORT_COMMIT"
-    echo
-    echo "Run:"
-    echo
-    echo "  ./scripts/check.sh"
-    echo
-    echo "successfully before running:"
-    echo
-    echo "  ./scripts/archive.sh"
-    echo
-
-    exit 1
-
-fi
-
-
-RUN_DIR="$ARCHIVES_DIR/$RUN_DIR"
-
-echo "Using check archive folder:"
-echo "  $RUN_DIR"
+mkdir -p "$RUN_DIR"
 
 
 # ============================================================
-# Verify expected check artefacts exist
+# Copy staged artefacts
 # ============================================================
 
-section "Verifying successful check artefacts"
+section "Copying check artefacts"
+
+cp -R "$ARTIFACTS_DIR/." "$RUN_DIR/"
+
+echo "Check artefacts copied."
+
+
+# ============================================================
+# Create Git source archive
+# ============================================================
+
+section "Creating Git source archive"
+
+git archive \
+    --format=zip \
+    --output="$RUN_DIR/repo.zip" \
+    HEAD
+
+echo "Source archive created."
+
+
+# ============================================================
+# Create metadata
+# ============================================================
+
+section "Creating archive metadata"
+
+cat > "$RUN_DIR/metadata.txt" << EOF
+Archive created: $(date '+%Y-%m-%d %H:%M:%S')
+Branch: $BRANCH
+Short commit: $SHORT_COMMIT
+Full commit: $FULL_COMMIT
+Commit message: $COMMIT_MESSAGE
+EOF
+
+echo "Metadata created."
+
+
+# ============================================================
+# Verify archive
+# ============================================================
+
+section "Verifying archive artefacts"
 
 REQUIRED_FILES=(
     "$RUN_DIR/ruff-report.sarif"
     "$RUN_DIR/bandit-report.html"
     "$RUN_DIR/pip-audit-report.md"
     "$RUN_DIR/schema.yml"
+    "$RUN_DIR/drf-spectacular-report.txt"
+    "$RUN_DIR/repo.zip"
+    "$RUN_DIR/metadata.txt"
 )
-
 
 for FILE in "${REQUIRED_FILES[@]}"; do
 
     if [[ ! -f "$FILE" ]]; then
 
-        echo "ERROR: Required check artefact is missing:"
+        echo
+        echo "ERROR: Required archive artefact is missing:"
         echo
         echo "  $FILE"
         echo
@@ -165,9 +167,8 @@ done
 
 if [[ ! -d "$RUN_DIR/coverage" ]]; then
 
-    echo "ERROR: Coverage report directory is missing:"
     echo
-    echo "  $RUN_DIR/coverage"
+    echo "ERROR: Coverage directory is missing:"
     echo
 
     exit 1
@@ -175,61 +176,7 @@ if [[ ! -d "$RUN_DIR/coverage" ]]; then
 fi
 
 
-echo "All required check artefacts are present."
-
-
-# ============================================================
-# Create Git archive
-# ============================================================
-
-section "Creating Git archive"
-
-ARCHIVE_FILE="$RUN_DIR/repo.zip"
-
-git archive \
-    --format=zip \
-    --output="$ARCHIVE_FILE" \
-    HEAD
-
-
-# ============================================================
-# Verify archive
-# ============================================================
-
-section "Verifying archive"
-
-if [[ ! -f "$ARCHIVE_FILE" ]]; then
-
-    echo "ERROR: Archive was not created."
-
-    exit 1
-
-fi
-
-
-ARCHIVE_SIZE="$(du -h "$ARCHIVE_FILE" | cut -f1)"
-
-echo "Archive created successfully."
-echo "Archive size: $ARCHIVE_SIZE"
-
-
-# ============================================================
-# Create metadata file
-# ============================================================
-
-section "Creating archive metadata"
-
-cat > "$RUN_DIR/metadata.txt" << EOF
-Archive created: $(date '+%Y-%m-%d %H:%M:%S')
-Branch: $BRANCH
-Short commit: $SHORT_COMMIT
-Full commit: $FULL_COMMIT
-Commit message: $COMMIT_MESSAGE
-EOF
-
-
-echo "Metadata created:"
-echo "  $RUN_DIR/metadata.txt"
+echo "All archive artefacts verified."
 
 
 # ============================================================
@@ -242,7 +189,7 @@ echo "ARCHIVE CREATED SUCCESSFULLY"
 echo "============================================================"
 
 echo
-echo "Complete release artefacts:"
+echo "Archive location:"
 echo
 echo "  $RUN_DIR"
 echo
@@ -254,5 +201,6 @@ echo "  ruff-report.sarif"
 echo "  bandit-report.html"
 echo "  pip-audit-report.md"
 echo "  schema.yml"
-echo "  coverage/"
+echo "  drf-spectacular-report.txt"
+echo "  coverage/index.html"
 echo

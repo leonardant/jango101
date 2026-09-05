@@ -242,6 +242,7 @@ htmlcov/
 
 # Local archives
 archives/
+.artifacts
 
 # Generated OpenAPI temporary files
 schema-temp.yml

@@ -9,6 +9,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 DEMO_DIR="$PROJECT_ROOT/demo"
+ARTIFACTS_DIR="$PROJECT_ROOT/.artifacts"
 
 cd "$PROJECT_ROOT"
 
@@ -23,6 +24,34 @@ section() {
     echo "$1"
     echo "============================================================"
 }
+
+
+# ============================================================
+# Prepare artefact directory
+# ============================================================
+
+section "Preparing artefact directory"
+
+rm -rf "$ARTIFACTS_DIR"
+
+mkdir -p "$ARTIFACTS_DIR"
+
+
+# ============================================================
+# Cleanup artefacts on failure
+# ============================================================
+
+SUCCESS=false
+
+cleanup() {
+
+    if [[ "$SUCCESS" != true ]]; then
+        rm -rf "$ARTIFACTS_DIR"
+    fi
+
+}
+
+trap cleanup EXIT
 
 
 # ============================================================
@@ -57,6 +86,19 @@ uv run ruff check .
 
 
 # ============================================================
+# Ruff SARIF report
+# ============================================================
+
+section "Generating Ruff SARIF report"
+
+uv run ruff check . \
+    --output-format sarif \
+    > "$ARTIFACTS_DIR/ruff-report.sarif"
+
+echo "Ruff SARIF report generated."
+
+
+# ============================================================
 # Ruff formatting checks
 # ============================================================
 
@@ -79,6 +121,21 @@ uv run bandit \
 
 
 # ============================================================
+# Bandit HTML report
+# ============================================================
+
+section "Generating Bandit HTML report"
+
+uv run bandit \
+    -r api my1stapp \
+    --exclude "api/tests,my1stapp/tests" \
+    --format html \
+    > "$ARTIFACTS_DIR/bandit-report.html"
+
+echo "Bandit HTML report generated."
+
+
+# ============================================================
 # pip-audit dependency scan
 # ============================================================
 
@@ -90,6 +147,19 @@ uv run pip-audit
 
 
 # ============================================================
+# pip-audit Markdown report
+# ============================================================
+
+section "Generating pip-audit Markdown report"
+
+uv run pip-audit \
+    --format markdown \
+    > "$ARTIFACTS_DIR/pip-audit-report.md"
+
+echo "pip-audit Markdown report generated."
+
+
+# ============================================================
 # OpenAPI schema validation
 # ============================================================
 
@@ -97,17 +167,13 @@ section "Generating and validating OpenAPI schema"
 
 cd "$DEMO_DIR"
 
-TEMP_SCHEMA="$(mktemp)"
-
-cleanup() {
-    rm -f "$TEMP_SCHEMA"
-}
-
-trap cleanup EXIT
-
 uv run python manage.py spectacular \
-    --file "$TEMP_SCHEMA" \
-    --validate
+    --file "$ARTIFACTS_DIR/schema.yml" \
+    --validate \
+    > "$ARTIFACTS_DIR/drf-spectacular-report.txt" 2>&1
+
+echo "OpenAPI schema generated."
+echo "drf-spectacular report generated."
 
 
 # ============================================================
@@ -116,7 +182,7 @@ uv run python manage.py spectacular \
 
 section "Checking OpenAPI schema is current"
 
-if ! diff -q schema.yml "$TEMP_SCHEMA" > /dev/null; then
+if ! diff -q schema.yml "$ARTIFACTS_DIR/schema.yml" > /dev/null; then
 
     echo
     echo "ERROR: demo/schema.yml is out of date."
@@ -135,20 +201,97 @@ echo "Committed schema.yml is current."
 
 
 # ============================================================
-# Full tests
+# Full tests with branch coverage
 # ============================================================
 
-section "Running full test suite"
+section "Running tests with branch coverage"
 
-uv run python manage.py test
+uv run coverage run \
+    --branch \
+    --source=api,my1stapp \
+    manage.py test
+
+
+# ============================================================
+# Coverage report
+# ============================================================
+
+section "Coverage report"
+
+uv run coverage report -m
+
+
+# ============================================================
+# Generate HTML coverage report
+# ============================================================
+
+section "Generating HTML coverage report"
+
+uv run coverage html \
+    --directory "$ARTIFACTS_DIR/coverage"
+
+echo "HTML coverage report generated."
+
+
+# ============================================================
+# Verify generated artefacts
+# ============================================================
+
+section "Verifying generated artefacts"
+
+REQUIRED_FILES=(
+    "$ARTIFACTS_DIR/ruff-report.sarif"
+    "$ARTIFACTS_DIR/bandit-report.html"
+    "$ARTIFACTS_DIR/pip-audit-report.md"
+    "$ARTIFACTS_DIR/schema.yml"
+    "$ARTIFACTS_DIR/drf-spectacular-report.txt"
+)
+
+for FILE in "${REQUIRED_FILES[@]}"; do
+
+    if [[ ! -f "$FILE" ]]; then
+
+        echo
+        echo "ERROR: Expected artefact was not generated:"
+        echo
+        echo "  $FILE"
+        echo
+
+        exit 1
+
+    fi
+
+done
+
+
+if [[ ! -d "$ARTIFACTS_DIR/coverage" ]]; then
+
+    echo
+    echo "ERROR: Coverage report directory was not generated:"
+    echo
+    echo "  $ARTIFACTS_DIR/coverage"
+    echo
+
+    exit 1
+
+fi
+
+echo "All expected artefacts were generated successfully."
 
 
 # ============================================================
 # Success
 # ============================================================
 
+SUCCESS=true
+
 echo
 echo "============================================================"
 echo "ALL CHECKS PASSED"
 echo "============================================================"
+
+echo
+echo "Artefacts staged in:"
+echo
+echo "  $ARTIFACTS_DIR"
 echo
