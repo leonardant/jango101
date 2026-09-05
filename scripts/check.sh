@@ -218,7 +218,7 @@ uv run coverage run \
 
 section "Coverage report"
 
-uv run coverage report -m
+uv run coverage report -m --fail-under=55
 
 
 # ============================================================
