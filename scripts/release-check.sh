@@ -8,7 +8,6 @@ set -euo pipefail
 # ============================================================
 
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-
 DEMO_DIR="$PROJECT_ROOT/demo"
 
 cd "$DEMO_DIR"
@@ -32,7 +31,8 @@ section() {
 
 section "Django deployment checks"
 
-uv run python manage.py check --deploy
+DJANGO_SETTINGS_MODULE=demo.settings_deploy \
+    uv run python manage.py check --deploy
 
 
 # ============================================================
@@ -61,7 +61,8 @@ uv run python manage.py spectacular \
 
 section "Collecting static files"
 
-uv run python manage.py collectstatic --noinput
+DJANGO_SETTINGS_MODULE=demo.settings_deploy \
+    uv run python manage.py collectstatic --noinput
 
 
 # ============================================================
