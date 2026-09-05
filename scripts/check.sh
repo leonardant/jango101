@@ -40,7 +40,10 @@ TEMP_DIR="$(mktemp -d)"
 RUFF_TEMP_REPORT="$TEMP_DIR/ruff-report.sarif"
 BANDIT_TEMP_REPORT="$TEMP_DIR/bandit-report.html"
 PIP_AUDIT_TEMP_REPORT="$TEMP_DIR/pip-audit-report.md"
+
 SCHEMA_TEMP_REPORT="$TEMP_DIR/schema.yml"
+DRF_SPECTACULAR_TEMP_REPORT="$TEMP_DIR/drf-spectacular-report.txt"
+
 COVERAGE_TEMP_DIR="$TEMP_DIR/coverage"
 
 
@@ -170,9 +173,11 @@ cd "$DEMO_DIR"
 
 uv run python manage.py spectacular \
     --file "$SCHEMA_TEMP_REPORT" \
-    --validate
+    --validate \
+    > "$DRF_SPECTACULAR_TEMP_REPORT" 2>&1
 
 echo "Temporary OpenAPI schema generated."
+echo "Temporary drf-spectacular report generated."
 
 
 # ============================================================
@@ -243,6 +248,7 @@ REQUIRED_FILES=(
     "$BANDIT_TEMP_REPORT"
     "$PIP_AUDIT_TEMP_REPORT"
     "$SCHEMA_TEMP_REPORT"
+    "$DRF_SPECTACULAR_TEMP_REPORT"
 )
 
 
@@ -299,6 +305,9 @@ cp "$PIP_AUDIT_TEMP_REPORT" \
 cp "$SCHEMA_TEMP_REPORT" \
     "$RUN_DIR/schema.yml"
 
+cp "$DRF_SPECTACULAR_TEMP_REPORT" \
+    "$RUN_DIR/drf-spectacular-report.txt"
+
 cp -R "$COVERAGE_TEMP_DIR" \
     "$RUN_DIR/coverage"
 
@@ -323,5 +332,6 @@ echo "  ruff-report.sarif"
 echo "  bandit-report.html"
 echo "  pip-audit-report.md"
 echo "  schema.yml"
+echo "  drf-spectacular-report.txt"
 echo "  coverage/index.html"
 echo
