@@ -64,6 +64,12 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-groups
 
+      # ==========================================================
+      # Playwright
+      # ==========================================================
+
+      - name: Install Playwright Chromium
+        run: uv run playwright install --with-deps chromium
 
       # ==========================================================
       # Django checks
@@ -169,3 +175,11 @@ jobs:
       - name: Display coverage report
         working-directory: demo
         run: uv run coverage report -m
+
+      # ==========================================================
+      # Playwright end-to-end tests
+      # ==========================================================
+
+      - name: Run Playwright tests
+        working-directory: demo
+        run: uv run pytest
