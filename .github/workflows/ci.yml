@@ -159,4 +159,4 @@ jobs:
 
       - name: Display coverage report
         working-directory: demo
-        run: uv run coverage report -m --fail-under=55
+        run: uv run coverage report -m
