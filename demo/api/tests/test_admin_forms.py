@@ -21,15 +21,26 @@ class CustomUserCreationFormTests(TestCase):
             }
         )
 
-        self.assertTrue(form.is_valid(), form.errors)
+        self.assertTrue(
+            form.is_valid(),
+            form.errors,
+        )
 
         user = form.save()
 
-        self.assertEqual(user.username, "new_user")
+        self.assertEqual(
+            user.username,
+            "new_user",
+        )
 
-        profile = UserProfile.objects.get(user=user)
+        profile = UserProfile.objects.get(
+            user=user,
+        )
 
-        self.assertEqual(profile.language, "en-gb")
+        self.assertEqual(
+            profile.language,
+            "en-gb",
+        )
 
     def test_save_with_commit_false_does_not_create_profile(self):
         form = CustomUserCreationForm(
@@ -41,14 +52,23 @@ class CustomUserCreationFormTests(TestCase):
             }
         )
 
-        self.assertTrue(form.is_valid(), form.errors)
+        self.assertTrue(
+            form.is_valid(),
+            form.errors,
+        )
 
-        user = form.save(commit=False)
+        user = form.save(
+            commit=False,
+        )
 
-        self.assertIsNone(user.pk)
+        self.assertIsNone(
+            user.pk,
+        )
 
         self.assertFalse(
-            UserProfile.objects.filter(user__username="unsaved_user").exists()
+            UserProfile.objects.filter(
+                user__username="unsaved_user",
+            ).exists()
         )
 
 
@@ -60,11 +80,17 @@ class CustomUserChangeFormTests(TestCase):
         )
 
     def test_initialises_language_from_existing_profile(self):
-        profile = UserProfile.objects.get(user=self.user)
+        profile = UserProfile.objects.get(
+            user=self.user,
+        )
+
         profile.language = "fr"
+
         profile.save()
 
-        form = CustomUserChangeForm(instance=self.user)
+        form = CustomUserChangeForm(
+            instance=self.user,
+        )
 
         self.assertEqual(
             form.fields["language"].initial,
@@ -72,22 +98,62 @@ class CustomUserChangeFormTests(TestCase):
         )
 
     def test_creates_missing_profile_when_initialised(self):
-        UserProfile.objects.filter(user=self.user).delete()
+        UserProfile.objects.filter(
+            user=self.user,
+        ).delete()
 
-        self.assertFalse(UserProfile.objects.filter(user=self.user).exists())
+        self.assertFalse(
+            UserProfile.objects.filter(
+                user=self.user,
+            ).exists()
+        )
 
-        form = CustomUserChangeForm(instance=self.user)
+        form = CustomUserChangeForm(
+            instance=self.user,
+        )
 
-        self.assertTrue(UserProfile.objects.filter(user=self.user).exists())
+        self.assertTrue(
+            UserProfile.objects.filter(
+                user=self.user,
+            ).exists()
+        )
 
         self.assertEqual(
             form.fields["language"].initial,
             "en-gb",
         )
 
+    def test_unsaved_user_does_not_create_profile_when_initialised(self):
+        unsaved_user = User(
+            username="unsaved_user",
+        )
+
+        form = CustomUserChangeForm(
+            instance=unsaved_user,
+        )
+
+        self.assertEqual(
+            form.instance,
+            unsaved_user,
+        )
+
+        self.assertIsNone(
+            unsaved_user.pk,
+        )
+
+        self.assertFalse(
+            UserProfile.objects.filter(
+                user__username="unsaved_user",
+            ).exists()
+        )
+
     def test_save_updates_profile_language(self):
-        profile = UserProfile.objects.get(user=self.user)
+        profile = UserProfile.objects.get(
+            user=self.user,
+        )
+
         profile.language = "en-gb"
+
         profile.save()
 
         form = CustomUserChangeForm(
@@ -95,12 +161,19 @@ class CustomUserChangeFormTests(TestCase):
             data={
                 "username": self.user.username,
                 "password": self.user.password,
-                "date_joined": self.user.date_joined.strftime("%Y-%m-%d %H:%M:%S"),
+                "date_joined": (
+                    self.user.date_joined.strftime(
+                        "%Y-%m-%d %H:%M:%S",
+                    )
+                ),
                 "language": "fr",
             },
         )
 
-        self.assertTrue(form.is_valid(), form.errors)
+        self.assertTrue(
+            form.is_valid(),
+            form.errors,
+        )
 
         form.save()
 
@@ -109,4 +182,48 @@ class CustomUserChangeFormTests(TestCase):
         self.assertEqual(
             profile.language,
             "fr",
+        )
+
+    def test_save_with_commit_false_does_not_update_profile(self):
+        profile = UserProfile.objects.get(
+            user=self.user,
+        )
+
+        profile.language = "en-gb"
+
+        profile.save()
+
+        form = CustomUserChangeForm(
+            instance=self.user,
+            data={
+                "username": self.user.username,
+                "password": self.user.password,
+                "date_joined": (
+                    self.user.date_joined.strftime(
+                        "%Y-%m-%d %H:%M:%S",
+                    )
+                ),
+                "language": "fr",
+            },
+        )
+
+        self.assertTrue(
+            form.is_valid(),
+            form.errors,
+        )
+
+        user = form.save(
+            commit=False,
+        )
+
+        self.assertEqual(
+            user,
+            self.user,
+        )
+
+        profile.refresh_from_db()
+
+        self.assertEqual(
+            profile.language,
+            "en-gb",
         )
