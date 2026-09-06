@@ -38,23 +38,6 @@ mkdir -p "$ARTIFACTS_DIR"
 
 
 # ============================================================
-# Cleanup artefacts on failure
-# ============================================================
-
-SUCCESS=false
-
-cleanup() {
-
-    if [[ "$SUCCESS" != true ]]; then
-        rm -rf "$ARTIFACTS_DIR"
-    fi
-
-}
-
-trap cleanup EXIT
-
-
-# ============================================================
 # Django system checks
 # ============================================================
 
@@ -201,10 +184,10 @@ echo "Committed schema.yml is current."
 
 
 # ============================================================
-# Full tests with branch coverage
+# Django tests with branch coverage
 # ============================================================
 
-section "Running tests with branch coverage"
+section "Running Django tests with branch coverage"
 
 uv run coverage run \
     --branch \
@@ -234,6 +217,31 @@ echo "HTML coverage report generated."
 
 
 # ============================================================
+# Playwright tests
+# ============================================================
+
+section "Running Playwright tests"
+
+PLAYWRIGHT_OUTPUT_DIR="$ARTIFACTS_DIR/playwright-output"
+
+mkdir -p "$PLAYWRIGHT_OUTPUT_DIR"
+
+cd "$DEMO_DIR"
+
+uv run pytest \
+    playwright_tests \
+    --html="$ARTIFACTS_DIR/playwright-report.html" \
+    --self-contained-html \
+    --screenshot=only-on-failure \
+    --full-page-screenshot \
+    --video=retain-on-failure \
+    --tracing=retain-on-failure \
+    --output="$PLAYWRIGHT_OUTPUT_DIR"
+
+echo "Playwright tests completed."
+
+
+# ============================================================
 # Verify generated artefacts
 # ============================================================
 
@@ -245,6 +253,7 @@ REQUIRED_FILES=(
     "$ARTIFACTS_DIR/pip-audit-report.md"
     "$ARTIFACTS_DIR/schema.yml"
     "$ARTIFACTS_DIR/drf-spectacular-report.txt"
+    "$ARTIFACTS_DIR/playwright-report.html"
 )
 
 for FILE in "${REQUIRED_FILES[@]}"; do
@@ -276,14 +285,13 @@ if [[ ! -d "$ARTIFACTS_DIR/coverage" ]]; then
 
 fi
 
+
 echo "All expected artefacts were generated successfully."
 
 
 # ============================================================
 # Success
 # ============================================================
-
-SUCCESS=true
 
 echo
 echo "============================================================"
@@ -294,4 +302,3 @@ echo
 echo "Artefacts staged in:"
 echo
 echo "  $ARTIFACTS_DIR"
-echo
