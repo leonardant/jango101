@@ -91,6 +91,19 @@ uv run ruff format --check .
 
 
 # ============================================================
+# djLint Django template checks
+# ============================================================
+
+section "djLint Django template checks"
+
+uv run djlint \
+    demo/templates \
+    demo/my1stapp/templates \
+    --profile django \
+    --check
+
+
+# ============================================================
 # Bandit security scan
 # ============================================================
 
@@ -230,6 +243,7 @@ cd "$DEMO_DIR"
 
 uv run pytest \
     playwright_tests \
+    -n auto \
     --html="$ARTIFACTS_DIR/playwright-report.html" \
     --self-contained-html \
     --screenshot=only-on-failure \
