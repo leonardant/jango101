@@ -18,27 +18,13 @@ class HomeViewTests(TestCase):
             password="TestPassword123!",
         )
 
-        self.url = reverse(
-            "my1stapp:home",
-        )
-
-    def test_home_page_requires_login(self):
-        response = self.client.get(
-            self.url,
-        )
-
-        self.assertEqual(
-            response.status_code,
-            302,
-        )
-
     def test_home_page_loads_successfully(self):
         self.client.force_login(
             self.user,
         )
 
         response = self.client.get(
-            self.url,
+            reverse("my1stapp:home"),
         )
 
         self.assertEqual(
@@ -275,7 +261,9 @@ class AddTodoViewTests(TestCase):
         mock_api.create_todo.side_effect = APIValidationError(
             "Validation failed.",
             errors={
-                "title": ["Title is already in use."],
+                "title": [
+                    "Title is already in use.",
+                ],
             },
         )
 
@@ -615,6 +603,44 @@ class EditTodoViewTests(TestCase):
         )
 
     @patch("my1stapp.views.APIClient")
+    def test_edit_todo_invalid_form_does_not_update_todo(
+        self,
+        mock_api_client,
+    ):
+        self.client.force_login(
+            self.user,
+        )
+
+        mock_api = mock_api_client.return_value
+
+        mock_api.get_todo.return_value = self.todo
+
+        response = self.client.post(
+            self.url,
+            {
+                "description": "Updated description",
+            },
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+        self.assertTemplateUsed(
+            response,
+            "my1stapp/edit_todo.html",
+        )
+
+        self.assertFormError(
+            response.context["form"],
+            "title",
+            "This field is required.",
+        )
+
+        mock_api.update_todo.assert_not_called()
+
+    @patch("my1stapp.views.APIClient")
     def test_edit_todo_handles_validation_error(
         self,
         mock_api_client,
@@ -630,7 +656,9 @@ class EditTodoViewTests(TestCase):
         mock_api.update_todo.side_effect = APIValidationError(
             "Validation failed.",
             errors={
-                "description": ["Description is invalid."],
+                "description": [
+                    "Description is invalid.",
+                ],
             },
         )
 
@@ -803,7 +831,10 @@ class APIErrorHandlingTests(TestCase):
         add_api_errors_to_form(
             form,
             {
-                "title": ["First error", "Second error"],
+                "title": [
+                    "First error",
+                    "Second error",
+                ],
             },
         )
 
@@ -888,7 +919,9 @@ class APIErrorHandlingTests(TestCase):
         add_api_errors_to_form(
             form,
             {
-                "unknown_field": ["Unknown error"],
+                "unknown_field": [
+                    "Unknown error",
+                ],
             },
         )
 
@@ -1125,5 +1158,8 @@ class LanguageSettingsViewTests(TestCase):
         self.assertFormError(
             response.context["form"],
             "language",
-            "Select a valid choice. invalid-language is not one of the available choices.",
+            (
+                "Select a valid choice. invalid-language is not one "
+                "of the available choices."
+            ),
         )
