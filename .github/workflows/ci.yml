@@ -141,6 +141,15 @@ jobs:
 
 
       # ==========================================================
+      # Collect static files
+      # ==========================================================
+
+      - name: Collect static files
+        working-directory: demo
+        run: uv run python manage.py collectstatic --noinput
+
+
+      # ==========================================================
       # Tests with branch coverage
       # ==========================================================
 
