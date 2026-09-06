@@ -66,7 +66,6 @@ class CustomUserAdmin(UserAdmin):
         request,
         obj=None,
     ):
-
         # ---------------------------------
         # ADD USER
         # ---------------------------------
@@ -152,7 +151,6 @@ class CustomUserAdmin(UserAdmin):
         self,
         obj,
     ):
-
         if not obj:
             return "-"
 
@@ -160,13 +158,11 @@ class CustomUserAdmin(UserAdmin):
             credential = APIClientCredential.objects.get(user=obj)
 
         except APIClientCredential.DoesNotExist:
-            return format_html(
-                """
-                <div class="api-credentials-empty">
-                    No API client credential exists
-                    for this user.
-                </div>
-                """
+            return (
+                '<div class="api-credentials-empty">'
+                "No API client credential exists "
+                "for this user."
+                "</div>"
             )
 
         regenerate_url = reverse(
@@ -208,7 +204,6 @@ class CustomUserAdmin(UserAdmin):
 
                 </div>
 
-
                 <div class="api-credential-row">
 
                     <div class="api-credential-label">
@@ -220,7 +215,6 @@ class CustomUserAdmin(UserAdmin):
                     </div>
 
                 </div>
-
 
                 <div class="api-credential-row">
 
@@ -234,7 +228,6 @@ class CustomUserAdmin(UserAdmin):
 
                 </div>
 
-
                 <div class="api-credential-row">
 
                     <div class="api-credential-label">
@@ -246,7 +239,6 @@ class CustomUserAdmin(UserAdmin):
                     </div>
 
                 </div>
-
 
                 <div class="api-credential-row">
 
@@ -279,7 +271,6 @@ class CustomUserAdmin(UserAdmin):
         request,
         obj=None,
     ):
-
         readonly_fields = list(
             super().get_readonly_fields(
                 request,
