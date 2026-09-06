@@ -1,432 +1,202 @@
 {% load static icons %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>{% block title %}Sensor Application{% endblock %}</title>
-
-    <!-- Tabler CSS -->
-    <link
-        rel="stylesheet"
-        href="{% static 'tabler/css/tabler.min.css' %}"
-    >
-
-    {% block extra_css %}{% endblock %}
-
-</head>
-
-
-<body>
-
-<div class="page">
-
-    <!-- ========================= -->
-    <!-- Sidebar                   -->
-    <!-- ========================= -->
-    <aside class="navbar navbar-vertical navbar-expand-lg">
-
-        <div class="container-fluid">
-
-            <!-- Mobile menu button -->
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#sidebar-menu"
-                aria-controls="sidebar-menu"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-
-            <!-- Application name -->
-            <a
-                href="{% url 'my1stapp:home' %}"
-                class="navbar-brand"
-            >
-
-                {% icon "activity" 28 %}
-
-                <span class="ms-2">
-                    Sensor App
-                </span>
-
-            </a>
-
-
-            <!-- Navigation -->
-            <div
-                class="collapse navbar-collapse"
-                id="sidebar-menu"
-            >
-
-                <ul class="navbar-nav pt-lg-3">
-
-                    <!-- Home -->
-                    <li class="nav-item">
-
-                        <a
-                            class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
-                            href="{% url 'my1stapp:home' %}"
-                        >
-
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                {% icon "home" %}
-                            </span>
-
-                            <span class="nav-link-title">
-                                Home
-                            </span>
-
-                        </a>
-
-                    </li>
-
-
-                    <!-- To Do Items -->
-                    <li class="nav-item">
-
-                        <a
-                            class="nav-link {% if request.resolver_match.url_name == 'todos' %}active{% endif %}"
-                            href="{% url 'my1stapp:todos' %}"
-                        >
-
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                {% icon "checklist" %}
-                            </span>
-
-                            <span class="nav-link-title">
-                                To Do Items
-                            </span>
-
-                        </a>
-
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </div>
-
-    </aside>
-
-
-    <!-- ========================= -->
-    <!-- Main area                 -->
-    <!-- ========================= -->
-    <div class="page-wrapper">
-
-
-        <!-- ========================= -->
-        <!-- Top header                -->
-        <!-- ========================= -->
-        <header class="navbar navbar-expand-md d-print-none">
-
-            <div class="container-xl">
-
-                <div class="navbar-nav ms-auto">
-
-    {% if user.is_authenticated %}
-
-    <div class="nav-item dropdown">
-
-        <!-- User menu toggle -->
-        <button
-            id="user-menu-toggle"
-            type="button"
-            class="nav-link d-flex lh-1 text-reset p-0 border-0 bg-transparent"
-            aria-label="Open user menu"
-            aria-expanded="false"
-            style="cursor: pointer;"
-        >
-
-            <!-- User avatar -->
-            <span class="avatar">
-                {{ user.username|slice:":1"|upper }}
-            </span>
-
-
-            <!-- Username -->
-            <div class="d-none d-xl-block ps-2 text-start">
-
-                <div>
-                    {{ user.username }}
-                </div>
-
-                <div class="mt-1 small text-secondary">
-                    Logged in
-                </div>
-
-            </div>
-
-        </button>
-
-
-        <!-- User dropdown -->
-        <div
-            id="user-menu-dropdown"
-            class="dropdown-menu dropdown-menu-end"
-        >
-
-            <!-- Profile -->
-            <a
-                class="dropdown-item d-flex align-items-center"
-                href="{% url 'my1stapp:profile' %}"
-            >
-
-                {% icon "user" 18 %}
-
-                <span class="ms-2">
-                    Profile
-                </span>
-
-            </a>
-
-
-            <!-- Change Password -->
-            <a
-                class="dropdown-item d-flex align-items-center"
-                href="{% url 'password_change' %}"
-            >
-
-                {% icon "key" 18 %}
-
-                <span class="ms-2">
-                    Change Password
-                </span>
-
-            </a>
-
-
-            <div class="dropdown-divider"></div>
-
-
-            <!-- Logout -->
-            <form
-                method="post"
-                action="{% url 'logout' %}"
-            >
-
-                {% csrf_token %}
-
-                <button
-                    type="submit"
-                    class="dropdown-item d-flex align-items-center"
-                >
-
-                    {% icon "logout" 18 %}
-
-                    <span class="ms-2">
-                        Logout
-                    </span>
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-{% endif %}
-
-</div>
-
-            </div>
-
-        </header>
-
-
-        <!-- ========================= -->
-        <!-- Page header               -->
-        <!-- ========================= -->
-        <div class="page-header d-print-none">
-
-            <div class="container-xl">
-
-                <div class="row g-2 align-items-center">
-
-                    <!-- Page title and breadcrumbs -->
-                    <div class="col">
-
-                        {% block breadcrumbs %}
-                        {% endblock %}
-
-
-                        <h2 class="page-title">
-
-                            {% block page_title %}
-                                Sensor Application
-                            {% endblock %}
-
-                        </h2>
-
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Sensor Application{% endblock %}</title>
+        <!-- Tabler CSS -->
+        <link rel="stylesheet" href="{% static 'tabler/css/tabler.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/app.css' %}">
+        {% block extra_css %}{% endblock %}
+    </head>
+    <body>
+        <div class="page">
+            <!-- ========================= -->
+            <!-- Sidebar                   -->
+            <!-- ========================= -->
+            <aside class="navbar navbar-vertical navbar-expand-lg">
+                <div class="container-fluid">
+                    <!-- Mobile menu button -->
+                    <button class="navbar-toggler"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#sidebar-menu"
+                            aria-controls="sidebar-menu"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Application name -->
+                    <a href="{% url 'my1stapp:home' %}" class="navbar-brand">
+                        {% icon "activity" 28 %}
+                        <span class="ms-2">Sensor App</span>
+                    </a>
+                    <!-- Navigation -->
+                    <div class="collapse navbar-collapse" id="sidebar-menu">
+                        <ul class="navbar-nav pt-lg-3">
+                            <!-- Home -->
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                                   href="{% url 'my1stapp:home' %}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">{% icon "home" %}</span>
+                                    <span class="nav-link-title">Home</span>
+                                </a>
+                            </li>
+                            <!-- To Do Items -->
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'todos' %}active{% endif %}"
+                                   href="{% url 'my1stapp:todos' %}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">{% icon "checklist" %}</span>
+                                    <span class="nav-link-title">To Do Items</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-
-
-                    <!-- Page-specific actions -->
-                    <div class="col-auto ms-auto d-print-none">
-
-                        {% block page_actions %}
-                        {% endblock %}
-
-                    </div>
-
                 </div>
-
+            </aside>
+            <!-- ========================= -->
+            <!-- Main area                 -->
+            <!-- ========================= -->
+            <div class="page-wrapper">
+                <!-- ========================= -->
+                <!-- Top header                -->
+                <!-- ========================= -->
+                <header class="navbar navbar-expand-md d-print-none">
+                    <div class="container-xl">
+                        <div class="navbar-nav ms-auto">
+                            {% if user.is_authenticated %}
+                                <div class="nav-item dropdown">
+                                    <!-- User menu toggle -->
+                                    <button id="user-menu-toggle"
+                                            type="button"
+                                            class="nav-link d-flex lh-1 text-reset p-0 border-0 bg-transparent"
+                                            aria-label="Open user menu"
+                                            aria-expanded="false">
+                                        <!-- User avatar -->
+                                        <span class="avatar">{{ user.username|slice:":1"|upper }}</span>
+                                        <!-- Username -->
+                                        <div class="d-none d-xl-block ps-2 text-start">
+                                            <div>{{ user.username }}</div>
+                                            <div class="mt-1 small text-secondary">Logged in</div>
+                                        </div>
+                                    </button>
+                                    <!-- User dropdown -->
+                                    <div id="user-menu-dropdown" class="dropdown-menu dropdown-menu-end">
+                                        <!-- Profile -->
+                                        <a class="dropdown-item d-flex align-items-center"
+                                           href="{% url 'my1stapp:profile' %}">
+                                            {% icon "user" 18 %}
+                                            <span class="ms-2">Profile</span>
+                                        </a>
+                                        <!-- Change Password -->
+                                        <a class="dropdown-item d-flex align-items-center"
+                                           href="{% url 'password_change' %}">
+                                            {% icon "key" 18 %}
+                                            <span class="ms-2">Change Password</span>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <!-- Logout -->
+                                        <form method="post" action="{% url 'logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item d-flex align-items-center">
+                                                {% icon "logout" 18 %}
+                                                <span class="ms-2">Logout</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </header>
+                <!-- ========================= -->
+                <!-- Page header               -->
+                <!-- ========================= -->
+                <div class="page-header d-print-none">
+                    <div class="container-xl">
+                        <div class="row g-2 align-items-center">
+                            <!-- Page title and breadcrumbs -->
+                            <div class="col">
+                                {% block breadcrumbs %}{% endblock %}
+                                <h2 class="page-title">
+                                    {% block page_title %}
+                                        Sensor Application
+                                    {% endblock %}
+                                </h2>
+                            </div>
+                            <!-- Page-specific actions -->
+                            <div class="col-auto ms-auto d-print-none">
+                                {% block page_actions %}{% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ========================= -->
+                <!-- Page content              -->
+                <!-- ========================= -->
+                <div class="page-body">
+                    <div class="container-xl">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+                <!-- ========================= -->
+                <!-- Footer                    -->
+                <!-- ========================= -->
+                <footer class="footer footer-transparent d-print-none">
+                    <div class="container-xl">
+                        <div class="text-center text-secondary">Sensor Application</div>
+                    </div>
+                </footer>
             </div>
-
         </div>
-
-
         <!-- ========================= -->
-        <!-- Page content              -->
+        <!-- Django Toast Messages     -->
         <!-- ========================= -->
-        <div class="page-body">
-
-            <div class="container-xl">
-
-                {% block content %}
-                {% endblock %}
-
-            </div>
-
-        </div>
-
-
-        <!-- ========================= -->
-        <!-- Footer                    -->
-        <!-- ========================= -->
-        <footer class="footer footer-transparent d-print-none">
-
-            <div class="container-xl">
-
-                <div class="text-center text-secondary">
-
-                    Sensor Application
-
-                </div>
-
-            </div>
-
-        </footer>
-
-
-    </div>
-
-</div>
-
-
-<!-- ========================= -->
-<!-- Django Toast Messages     -->
-<!-- ========================= -->
-
-{% if messages %}
-
-    <div
-        class="toast-container position-fixed bottom-0 end-0 p-3"
-        style="z-index: 1100;"
-    >
-
-        {% for message in messages %}
-
-            <div
-                class="toast border-0
-                {% if message.tags == 'success' %}
-                    text-bg-success
-                {% elif message.tags == 'error' %}
-                    text-bg-danger
-                {% elif message.tags == 'warning' %}
-                    text-bg-warning
-                {% else %}
-                    text-bg-info
-                {% endif %}"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true"
-                data-bs-delay="5000"
-            >
-
-                <div class="d-flex align-items-center">
-
-                    <!-- Message type icon -->
-                    <div class="ps-3">
-
-                        {% if message.tags == 'success' %}
-
-                            {% icon "circle-check" 24 %}
-
-                        {% elif message.tags == 'error' %}
-
-                            {% icon "alert-circle" 24 %}
-
-                        {% elif message.tags == 'warning' %}
-
-                            {% icon "alert-triangle" 24 %}
-
-                        {% else %}
-
-                            {% icon "info-circle" 24 %}
-
-                        {% endif %}
-
+        {% if messages %}
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                {% for message in messages %}
+                    <div class="toast border-0 {% if message.tags == 'success' %} text-bg-success {% elif message.tags == 'error' %} text-bg-danger {% elif message.tags == 'warning' %} text-bg-warning {% else %} text-bg-info {% endif %}"
+                         role="alert"
+                         aria-live="assertive"
+                         aria-atomic="true"
+                         data-bs-delay="5000">
+                        <div class="d-flex align-items-center">
+                            <!-- Message type icon -->
+                            <div class="ps-3">
+                                {% if message.tags == "success" %}
+                                    {% icon "circle-check" 24 %}
+                                {% elif message.tags == "error" %}
+                                    {% icon "alert-circle" 24 %}
+                                {% elif message.tags == "warning" %}
+                                    {% icon "alert-triangle" 24 %}
+                                {% else %}
+                                    {% icon "info-circle" 24 %}
+                                {% endif %}
+                            </div>
+                            <!-- Message -->
+                            <div class="toast-body">{{ message }}</div>
+                            <!-- Close button -->
+                            <button type="button"
+                                    class="btn-close me-2 m-auto"
+                                    data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                        </div>
                     </div>
-
-
-                    <!-- Message -->
-                    <div class="toast-body">
-
-                        {{ message }}
-
-                    </div>
-
-
-                    <!-- Close button -->
-                    <button
-                        type="button"
-                        class="btn-close me-2 m-auto"
-                        data-bs-dismiss="toast"
-                        aria-label="Close"
-                    ></button>
-
-                </div>
-
+                {% endfor %}
             </div>
-
-        {% endfor %}
-
-    </div>
-
-{% endif %}
-
-
-<!-- ========================= -->
-<!-- JavaScript                 -->
-<!-- ========================= -->
-
-<!-- Bootstrap JavaScript -->
-<script
-    src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"
-></script>
-
-<!-- Tabler JavaScript -->
-<script
-    src="{% static 'tabler/js/tabler.min.js' %}"
-></script>
-
-
-<!-- ========================= -->
-<!-- Django Toast Messages     -->
-<!-- ========================= -->
-
-<script>
+        {% endif %}
+        <!-- ========================= -->
+        <!-- JavaScript                 -->
+        <!-- ========================= -->
+        <!-- Bootstrap JavaScript -->
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- Tabler JavaScript -->
+        <script src="{% static 'tabler/js/tabler.min.js' %}"></script>
+        <!-- ========================= -->
+        <!-- Django Toast Messages     -->
+        <!-- ========================= -->
+        <script>
 
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -480,16 +250,10 @@
 
     });
 
-</script>
-
-
-<!-- ========================= -->
-<!-- Page-specific JavaScript  -->
-<!-- ========================= -->
-
-{% block extra_js %}
-{% endblock %}
-
-
-</body>
+        </script>
+        <!-- ========================= -->
+        <!-- Page-specific JavaScript  -->
+        <!-- ========================= -->
+        {% block extra_js %}{% endblock %}
+    </body>
 </html>
