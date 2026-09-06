@@ -1,5 +1,8 @@
+from unittest.mock import patch
+
 from django.contrib import admin
 from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 
@@ -28,16 +31,14 @@ class CustomUserAdminTests(TestCase):
     def test_media_includes_custom_css_and_javascript(self):
         media = self.model_admin.media
 
-        media_string = str(media)
-
         self.assertIn(
             "api_admin",
-            media_string,
+            str(media),
         )
 
         self.assertIn(
             "api_credentials",
-            media_string,
+            str(media),
         )
 
     def test_get_fieldsets_for_new_user_returns_add_fieldsets(self):
@@ -64,7 +65,9 @@ class CustomUserAdminTests(TestCase):
                 personal_info_fields = options["fields"]
                 break
 
-        self.assertIsNotNone(personal_info_fields)
+        self.assertIsNotNone(
+            personal_info_fields,
+        )
 
         self.assertIn(
             "language",
@@ -86,6 +89,184 @@ class CustomUserAdminTests(TestCase):
             titles,
         )
 
+    def test_get_fieldsets_inserts_api_credentials_before_important_dates(
+        self,
+    ):
+        fieldsets = self.model_admin.get_fieldsets(
+            self.request,
+            obj=self.user,
+        )
+
+        titles = [fieldset[0] for fieldset in fieldsets]
+
+        api_index = titles.index(
+            "API client credentials",
+        )
+
+        important_dates_index = titles.index(
+            "Important dates",
+        )
+
+        self.assertLess(
+            api_index,
+            important_dates_index,
+        )
+
+    def test_get_fieldsets_appends_api_credentials_when_important_dates_missing(
+        self,
+    ):
+        parent_fieldsets = (
+            (
+                "Personal info",
+                {
+                    "fields": (
+                        "username",
+                        "email",
+                    ),
+                },
+            ),
+        )
+
+        with patch.object(
+            UserAdmin,
+            "get_fieldsets",
+            return_value=parent_fieldsets,
+        ):
+            fieldsets = self.model_admin.get_fieldsets(
+                self.request,
+                obj=self.user,
+            )
+
+        titles = [fieldset[0] for fieldset in fieldsets]
+
+        self.assertEqual(
+            titles,
+            [
+                "Personal info",
+                "API client credentials",
+            ],
+        )
+
+        self.assertIn(
+            "language",
+            fieldsets[0][1]["fields"],
+        )
+
+    def test_get_fieldsets_continues_when_personal_info_is_missing(
+        self,
+    ):
+        parent_fieldsets = (
+            (
+                "Permissions",
+                {
+                    "fields": (
+                        "is_active",
+                        "is_staff",
+                    ),
+                },
+            ),
+            (
+                "Important dates",
+                {
+                    "fields": (
+                        "last_login",
+                        "date_joined",
+                    ),
+                },
+            ),
+        )
+
+        with patch.object(
+            UserAdmin,
+            "get_fieldsets",
+            return_value=parent_fieldsets,
+        ):
+            fieldsets = self.model_admin.get_fieldsets(
+                self.request,
+                obj=self.user,
+            )
+
+        titles = [fieldset[0] for fieldset in fieldsets]
+
+        self.assertIn(
+            "Permissions",
+            titles,
+        )
+
+        self.assertIn(
+            "API client credentials",
+            titles,
+        )
+
+        self.assertIn(
+            "Important dates",
+            titles,
+        )
+
+        api_index = titles.index(
+            "API client credentials",
+        )
+
+        important_dates_index = titles.index(
+            "Important dates",
+        )
+
+        self.assertLess(
+            api_index,
+            important_dates_index,
+        )
+
+    def test_get_fieldsets_does_not_duplicate_existing_language_field(
+        self,
+    ):
+        parent_fieldsets = (
+            (
+                "Personal info",
+                {
+                    "fields": (
+                        "username",
+                        "email",
+                        "language",
+                    ),
+                },
+            ),
+            (
+                "Important dates",
+                {
+                    "fields": (
+                        "last_login",
+                        "date_joined",
+                    ),
+                },
+            ),
+        )
+
+        with patch.object(
+            UserAdmin,
+            "get_fieldsets",
+            return_value=parent_fieldsets,
+        ):
+            fieldsets = self.model_admin.get_fieldsets(
+                self.request,
+                obj=self.user,
+            )
+
+        personal_info_fields = None
+
+        for title, options in fieldsets:
+            if title == "Personal info":
+                personal_info_fields = options["fields"]
+                break
+
+        self.assertIsNotNone(
+            personal_info_fields,
+        )
+
+        self.assertEqual(
+            personal_info_fields.count("language"),
+            1,
+        )
+
     def test_api_credentials_display_returns_dash_without_user(self):
         result = self.model_admin.api_credentials_display(
             None,
@@ -101,12 +282,6 @@ class CustomUserAdminTests(TestCase):
             user=self.user,
         ).delete()
 
-        self.assertFalse(
-            APIClientCredential.objects.filter(
-                user=self.user,
-            ).exists()
-        )
-
         result = self.model_admin.api_credentials_display(
             self.user,
         )
@@ -117,14 +292,13 @@ class CustomUserAdminTests(TestCase):
         )
 
     def test_api_credentials_display_shows_active_credential(self):
-        APIClientCredential.objects.filter(
+        credential, _ = APIClientCredential.objects.get_or_create(
             user=self.user,
-        ).delete()
-
-        credential = APIClientCredential.objects.create(
-            user=self.user,
-            active=True,
         )
+
+        credential.active = True
+
+        credential.save()
 
         result = self.model_admin.api_credentials_display(
             self.user,
@@ -160,14 +334,13 @@ class CustomUserAdminTests(TestCase):
         )
 
     def test_api_credentials_display_shows_inactive_credential(self):
-        APIClientCredential.objects.filter(
+        credential, _ = APIClientCredential.objects.get_or_create(
             user=self.user,
-        ).delete()
-
-        credential = APIClientCredential.objects.create(
-            user=self.user,
-            active=False,
         )
+
+        credential.active = False
+
+        credential.save()
 
         result = self.model_admin.api_credentials_display(
             self.user,
