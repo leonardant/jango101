@@ -7,7 +7,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from my1stapp.forms import StyledPasswordChangeForm
+from my1stapp.auth_views import CustomPasswordChangeView
 
 urlpatterns = [
     # =========================
@@ -53,10 +53,7 @@ urlpatterns = [
     ),
     path(
         "accounts/password-change/",
-        auth_views.PasswordChangeView.as_view(
-            form_class=StyledPasswordChangeForm,
-            template_name="registration/password_change_form.html",
-        ),
+        CustomPasswordChangeView.as_view(),
         name="password_change",
     ),
     path(
