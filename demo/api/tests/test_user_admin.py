@@ -69,6 +69,8 @@ class CustomUserAdminTests(TestCase):
             personal_info_fields,
         )
 
+        assert personal_info_fields is not None
+
         self.assertIn(
             "language",
             personal_info_fields,
@@ -261,6 +263,8 @@ class CustomUserAdminTests(TestCase):
         self.assertIsNotNone(
             personal_info_fields,
         )
+
+        assert personal_info_fields is not None
 
         self.assertEqual(
             personal_info_fields.count("language"),

@@ -1,7 +1,10 @@
+from typing import cast
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from my1stapp.models import ToDoItem
 from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.test import APIClient
 
 from api.models import APIClientCredential
@@ -10,9 +13,10 @@ User = get_user_model()
 
 
 class ClientCredentialsAPITests(TestCase):
-    def setUp(self):
+    api_client: APIClient
 
-        self.client = APIClient()
+    def setUp(self):
+        self.api_client = APIClient()
 
         # =====================================
         # Create two users
@@ -81,14 +85,16 @@ class ClientCredentialsAPITests(TestCase):
     # =====================================
 
     def test_valid_credentials_return_access_token(self):
-
-        response = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_one.client_id,
-                "client_secret": self.secret_one,
-            },
-            format="json",
+        response = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_one.client_id,
+                    "client_secret": self.secret_one,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -104,14 +110,16 @@ class ClientCredentialsAPITests(TestCase):
         self.assertTrue(response.data["access"])
 
     def test_valid_credentials_return_bearer_token_type(self):
-
-        response = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_one.client_id,
-                "client_secret": self.secret_one,
-            },
-            format="json",
+        response = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_one.client_id,
+                    "client_secret": self.secret_one,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -129,8 +137,7 @@ class ClientCredentialsAPITests(TestCase):
     # =====================================
 
     def test_invalid_client_id_is_rejected(self):
-
-        response = self.client.post(
+        response = self.api_client.post(
             self.token_url,
             {
                 "client_id": ("this-client-id-does-not-exist"),
@@ -145,8 +152,7 @@ class ClientCredentialsAPITests(TestCase):
         )
 
     def test_invalid_client_secret_is_rejected(self):
-
-        response = self.client.post(
+        response = self.api_client.post(
             self.token_url,
             {
                 "client_id": self.credential_one.client_id,
@@ -161,8 +167,7 @@ class ClientCredentialsAPITests(TestCase):
         )
 
     def test_missing_client_id_is_rejected(self):
-
-        response = self.client.post(
+        response = self.api_client.post(
             self.token_url,
             {
                 "client_secret": self.secret_one,
@@ -176,8 +181,7 @@ class ClientCredentialsAPITests(TestCase):
         )
 
     def test_missing_client_secret_is_rejected(self):
-
-        response = self.client.post(
+        response = self.api_client.post(
             self.token_url,
             {
                 "client_id": self.credential_one.client_id,
@@ -195,12 +199,11 @@ class ClientCredentialsAPITests(TestCase):
     # =====================================
 
     def test_inactive_credentials_are_rejected(self):
-
         self.credential_one.active = False
 
         self.credential_one.save()
 
-        response = self.client.post(
+        response = self.api_client.post(
             self.token_url,
             {
                 "client_id": self.credential_one.client_id,
@@ -219,14 +222,16 @@ class ClientCredentialsAPITests(TestCase):
     # =====================================
 
     def test_access_token_can_access_todos_api(self):
-
-        token_response = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_one.client_id,
-                "client_secret": self.secret_one,
-            },
-            format="json",
+        token_response = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_one.client_id,
+                    "client_secret": self.secret_one,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -236,9 +241,9 @@ class ClientCredentialsAPITests(TestCase):
 
         access_token = token_response.data["access"]
 
-        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
+        self.api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
-        response = self.client.get(self.todos_url)
+        response = self.api_client.get(self.todos_url)
 
         self.assertEqual(
             response.status_code,
@@ -250,15 +255,17 @@ class ClientCredentialsAPITests(TestCase):
     # =====================================
 
     def test_jwt_only_returns_correct_users_todos(self):
-
         # Get JWT for User One
-        token_response = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_one.client_id,
-                "client_secret": self.secret_one,
-            },
-            format="json",
+        token_response = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_one.client_id,
+                    "client_secret": self.secret_one,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -269,9 +276,12 @@ class ClientCredentialsAPITests(TestCase):
         access_token = token_response.data["access"]
 
         # Authenticate using the JWT
-        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
+        self.api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
-        response = self.client.get(self.todos_url)
+        response = cast(
+            Response,
+            self.api_client.get(self.todos_url),
+        )
 
         self.assertEqual(
             response.status_code,
@@ -293,15 +303,17 @@ class ClientCredentialsAPITests(TestCase):
         )
 
     def test_user_one_credentials_cannot_access_user_two_todo(self):
-
         # Get JWT for User One
-        token_response = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_one.client_id,
-                "client_secret": self.secret_one,
-            },
-            format="json",
+        token_response = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_one.client_id,
+                    "client_secret": self.secret_one,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -312,11 +324,11 @@ class ClientCredentialsAPITests(TestCase):
         access_token = token_response.data["access"]
 
         # Authenticate as User One
-        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
+        self.api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
         user_two_todo_url = f"/api/todos/{self.user_two_todo.id}/"
 
-        response = self.client.get(user_two_todo_url)
+        response = self.api_client.get(user_two_todo_url)
 
         self.assertEqual(
             response.status_code,
@@ -328,23 +340,28 @@ class ClientCredentialsAPITests(TestCase):
     # =====================================
 
     def test_each_users_credentials_produce_different_tokens(self):
-
-        response_one = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_one.client_id,
-                "client_secret": self.secret_one,
-            },
-            format="json",
+        response_one = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_one.client_id,
+                    "client_secret": self.secret_one,
+                },
+                format="json",
+            ),
         )
 
-        response_two = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_two.client_id,
-                "client_secret": self.secret_two,
-            },
-            format="json",
+        response_two = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_two.client_id,
+                    "client_secret": self.secret_two,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -363,15 +380,17 @@ class ClientCredentialsAPITests(TestCase):
         )
 
     def test_user_two_token_only_sees_user_two_todos(self):
-
         # Get JWT for User Two
-        token_response = self.client.post(
-            self.token_url,
-            {
-                "client_id": self.credential_two.client_id,
-                "client_secret": self.secret_two,
-            },
-            format="json",
+        token_response = cast(
+            Response,
+            self.api_client.post(
+                self.token_url,
+                {
+                    "client_id": self.credential_two.client_id,
+                    "client_secret": self.secret_two,
+                },
+                format="json",
+            ),
         )
 
         self.assertEqual(
@@ -381,9 +400,12 @@ class ClientCredentialsAPITests(TestCase):
 
         access_token = token_response.data["access"]
 
-        self.client.credentials(HTTP_AUTHORIZATION=(f"Bearer {access_token}"))
+        self.api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
-        response = self.client.get(self.todos_url)
+        response = cast(
+            Response,
+            self.api_client.get(self.todos_url),
+        )
 
         self.assertEqual(
             response.status_code,

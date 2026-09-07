@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
@@ -77,11 +79,14 @@ class CustomUserAdmin(UserAdmin):
         # EDIT EXISTING USER
         # ---------------------------------
 
-        fieldsets = list(
-            super().get_fieldsets(
-                request,
-                obj,
-            )
+        fieldsets = cast(
+            list[tuple[Any, dict[str, Any]]],
+            list(
+                super().get_fieldsets(
+                    request,
+                    obj,
+                )
+            ),
         )
 
         # ---------------------------------
@@ -117,7 +122,7 @@ class CustomUserAdmin(UserAdmin):
         # API credentials section
         # ---------------------------------
 
-        api_credentials_fieldset = (
+        api_credentials_fieldset: tuple[Any, dict[str, Any]] = (
             "API client credentials",
             {
                 "fields": ("api_credentials_display",),

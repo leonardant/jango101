@@ -1,4 +1,7 @@
+from typing import cast
+
 from django.contrib.auth.decorators import login_not_required
+from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from drf_spectacular.utils import extend_schema
 from my1stapp.models import ToDoItem
@@ -55,10 +58,14 @@ class ToDoListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return ToDoItem.objects.filter(owner=self.request.user).order_by("-created_at")
+        user = cast(User, self.request.user)
+
+        return ToDoItem.objects.filter(owner=user).order_by("-created_at")
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        user = cast(User, self.request.user)
+
+        serializer.save(owner=user)
 
 
 # =====================================
@@ -76,7 +83,9 @@ class ToDoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return ToDoItem.objects.filter(owner=self.request.user)
+        user = cast(User, self.request.user)
+
+        return ToDoItem.objects.filter(owner=user)
 
 
 # =====================================

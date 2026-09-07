@@ -25,14 +25,10 @@ class CustomPasswordChangeViewTests(TestCase):
             self.password_change_url,
         )
 
-        self.assertEqual(
-            response.status_code,
-            302,
-        )
-
-        self.assertIn(
-            reverse("login"),
-            response.url,
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={self.password_change_url}",
+            fetch_redirect_response=False,
         )
 
     def test_logged_in_user_can_view_password_change_form(self):

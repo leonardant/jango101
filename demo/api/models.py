@@ -1,4 +1,5 @@
 import secrets
+from typing import Any
 
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
@@ -36,18 +37,17 @@ class APIClientCredential(models.Model):
     )
 
     @staticmethod
-    def generate_client_id():
+    def generate_client_id() -> str:
         return secrets.token_urlsafe(24)
 
     @staticmethod
-    def generate_client_secret():
+    def generate_client_secret() -> str:
         return secrets.token_urlsafe(48)
 
-    def set_client_secret(self, raw_secret):
+    def set_client_secret(self, raw_secret: str) -> None:
         self.client_secret = make_password(raw_secret)
 
-    def save(self, *args, **kwargs):
-
+    def save(self, *args: Any, **kwargs: Any) -> None:
         if not self.client_id:
             self.client_id = self.generate_client_id()
 
@@ -57,5 +57,5 @@ class APIClientCredential(models.Model):
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.user.username} ({self.client_id})"

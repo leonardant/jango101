@@ -89,6 +89,16 @@ section "Ruff formatting checks"
 
 uv run ruff format --check .
 
+# ============================================================
+# Mypy static type checks
+# ============================================================
+
+section "Mypy static type checks"
+
+cd "$DEMO_DIR"
+
+uv run mypy api my1stapp
+
 
 # ============================================================
 # djLint Django template checks
@@ -97,8 +107,8 @@ uv run ruff format --check .
 section "djLint Django template checks"
 
 uv run djlint \
-    demo/templates \
-    demo/my1stapp/templates \
+    "$DEMO_DIR/templates" \
+    "$DEMO_DIR/my1stapp/templates" \
     --profile django \
     --check
 
