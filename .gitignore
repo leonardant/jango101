@@ -246,3 +246,5 @@ archives/
 
 # Generated OpenAPI temporary files
 schema-temp.yml
+
+*Zone.Identifier
